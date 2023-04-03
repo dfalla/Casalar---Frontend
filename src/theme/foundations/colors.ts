@@ -1,0 +1,107 @@
+export const colors = {
+	'primary-text': '#343434',
+	shori: {
+		500: '#545FFD',
+		600: '#2230FC',
+		700: '#0312E8',
+		soft2: '#FFFFFF',
+		gray: '#BFBFBF',
+		blueIcons: '#0D6EFD',
+		body: '#686C71',
+	},
+	quanta: {
+		500: '#032852',
+		600: '#74D0B1',
+		700: '#032852',
+	},
+	brand: {
+		quanta: {
+			1: '#D1EFE5',
+			0: '#F5FFFC',
+			2: '#74D0B1',
+			5: '#01836A',
+			7: '#02555E',
+			8: '#03465A',
+			9: '#032852',
+			10: '#BE1A1A',
+			secondary: {
+				selected: '#5A2005',
+				25: '#FEEFE8',
+				icon: '#F58958',
+			},
+		},
+		clonika: {
+			blue: {
+				50: '#E1E7F3',
+				100: '#B1C4E4',
+				500: '#5770AD',
+				300: '#7198CE',
+				600: '#3B4E8C',
+				700: '#283675',
+				800: '#162060',
+			},
+			gray: '#D9D9D9',
+		},
+		background: {
+			main: '#F6F6F6',
+			main_inverse: '#FFFFFF',
+		},
+		success: '#59812A',
+		primary: '#545FFD',
+		disabled: {
+			primary: '#AEB4FE',
+		},
+		subtle: {
+			status: '#F8E1E0',
+			header: '#E9EBFE',
+			success: '#EFF7E6',
+		},
+		text: {
+			secondary: '#F58958',
+			subtle: '#8C8C8C',
+			main: '#404040',
+			main_inverse: '#C32826',
+			body: '#212529',
+		},
+		error: '#C32826',
+		neutral: {
+			gray: {
+				50: '#F6F6F6',
+				200: '#D9D9D9',
+				600: '#737373',
+				700: '#4D4D4D',
+				900: '#1C1C1C',
+			},
+		},
+	},
+	coral: {
+		25: '#FEEFE8',
+		50: '#FBCDB8',
+	},
+	// customs schemes
+	primary: {
+		50: '#dff1ff',
+		100: '#afd2ff',
+		200: '#7eb3ff',
+		300: '#4c95ff',
+		400: '#1b77fd',
+		500: '#025de4',
+		600: '#0048b2',
+		700: '#003480',
+		800: '#001f50',
+		900: '#000a20',
+	},
+	terceary: {
+		50: '#e9f3fe',
+		100: '#d2dae1',
+		200: '#b9c0c6',
+		300: '#9ea6ad',
+		400: '#848d95',
+		500: '#6a737b',
+		600: '#525a61',
+		700: '#394046',
+		800: '#20262d',
+		900: '#020e17',
+	},
+}
+export default colors
