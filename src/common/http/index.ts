@@ -1,1 +1,3 @@
-export * from './axios'
+import Http from './axios'
+
+export default Http;

@@ -1,18 +1,23 @@
-import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
+import { StrictMode } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { Provider } from "react-redux"
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { queryClient } from './common'
 import { ChakraProvider } from '@chakra-ui/react'
+import App from './App'
+import { queryClient } from './common'
+import { store } from './core'
 
 import theme from './theme'
+import { AppRouter } from './router/AppRouter'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
-        <App />
+        <Provider store = { store }>
+          <AppRouter />
+        </Provider>
         <ReactQueryDevtools initialIsOpen/>
       </QueryClientProvider>
     </ChakraProvider>
