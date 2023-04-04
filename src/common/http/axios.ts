@@ -1,4 +1,4 @@
-import Axios, { AxiosRequestConfig } from 'axios';
+import Axios, { AxiosRequestConfig, AxiosHeaders } from 'axios';
 import { getEnvVariables } from '../helpers';
 import { SafeAny } from '../types';
 
@@ -10,10 +10,14 @@ const api = Axios.create({
 })
 
 api.interceptors.request.use((config) => { 
-    (config.headers as SafeAny)= {
-        ...config.headers,
-        'x-token': localStorage.getItem('token')
+
+    if (config && config.headers) { 
+        config.headers["x-token"] = localStorage.getItem('token')
     }
+    // (config.headers as SafeAny)= {
+    //     ...config.headers,
+    //     'x-token': localStorage.getItem('token')
+    // }
 
     return config;
 })
