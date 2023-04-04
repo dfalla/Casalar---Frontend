@@ -1,13 +1,22 @@
 import { createUser } from "../interfaces";
+import Http from "../libs";
 import axios from "../libs/axios";
 
-export const loginRequest = async (email: string, password: string) =>
-  axios.post("/api/auth/login", {
-    email,
-    password,
+export interface LoginArgs {
+  username: string;
+  password: string;
+}
+
+export const loginRequest = async ({ password, username }: LoginArgs) =>{
+  const res = await Http.post("/auth/login", {
+    username,
+    password
   });
 
-export const registerRequest = async (data: createUser) =>
-  axios.post("/api/auth/register", data);
+  console.log('res', res);
+}
 
-export const profileRequest = async () => axios.get("/api/auth/profile");
+// export const registerRequest = async (data: createUser) =>
+//   axios.post("/auth/register", data);
+
+// export const profileRequest = async () => axios.get("/api/auth/profile");
