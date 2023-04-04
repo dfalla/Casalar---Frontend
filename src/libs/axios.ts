@@ -11,16 +11,15 @@ const baseURL = "http://localhost:8000/api"
 
 const api = Axios.create({
   baseURL,
-  withCredentials: true,
+  // withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
+  
     const token = useAuthStore.getState().token;
-    if(config && config.headers){
-        config.headers['x-token'] = {
-          Authorization: `Bearer ${token}`,
-        };
 
+    if (config && config.headers) { 
+      config.headers["x-token"] = token
     }
   
   return config;
