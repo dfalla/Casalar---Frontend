@@ -1,6 +1,7 @@
 import { createUser } from "../interfaces";
 import Http from "../libs";
 import axios from "../libs/axios";
+import { useAuthStore } from "../store";
 
 export interface LoginArgs {
   username: string;
@@ -8,12 +9,23 @@ export interface LoginArgs {
 }
 
 export const loginRequest = async ({ password, username }: LoginArgs) =>{
-  const res = await Http.post("/auth/login", {
-    username,
-    password
-  });
 
-  console.log('res', res);
+  try {
+    const {data} = await Http.post("/auth/login", {
+      username,
+      password
+    });
+
+    return data;
+
+  } catch (error) {
+    //Tabajar aquí
+    console.log(error)
+  }
+  
+
+
+
 }
 
 // export const registerRequest = async (data: createUser) =>

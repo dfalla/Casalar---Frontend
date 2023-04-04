@@ -1,14 +1,11 @@
 import {create} from "zustand";
 import { persist } from "zustand/middleware";
 import { SafeAny } from "../common";
-import { profileRequest, registerRequest } from "../api";
+// import { profileRequest, registerRequest } from "../api";
 
 export interface Profile {
-    _id?: string;
-    email?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    __v?: number;
+    nombre?: string;
+    apellido?: string;
 }
 
 
@@ -27,7 +24,8 @@ type State = {
 
 type Actions = {
     setToken: (token: string) => void;
-    register: (user: createUser) => void;
+    setProfile: (profile: Profile) => void;
+    register?: (user: createUser) => void;
     logout: () => void;
     cleanErrors: () => void;
 };
@@ -44,23 +42,28 @@ export const useAuthStore = create(
             token,
             isAuth: !!token,
           })),
-        register: async (user: createUser) => {
-          try {
-            const resRegister = await registerRequest(user);
-            set(() => ({
-              token: resRegister.data.token,
-              isAuth: true,
-            }));
-          } catch (error) {
-            set(() => ({ errors: (error as SafeAny).response.data }));
-          }
-        },
-        getProfile: async () => {
-          const resProfile = await profileRequest();
-          set(() => ({
-            profile: resProfile.data,
-          }));
-        },
+        setProfile: (profile: Profile) => {
+          set((state) => ({
+            profile
+          }))
+          },
+        // register: async (user: createUser) => {
+        //   try {
+        //     const resRegister = await registerRequest(user);
+        //     set(() => ({
+        //       token: resRegister.data.token,
+        //       isAuth: true,
+        //     }));
+        //   } catch (error) {
+        //     set(() => ({ errors: (error as SafeAny).response.data }));
+        //   }
+        // },
+        // getProfile: async () => {
+        //   const resProfile = await profileRequest();
+        //   set(() => ({
+        //     profile: resProfile.data,
+        //   }));
+        // },
         logout: () => set(() => ({ token: null, profile: {}, isAuth: false })),
         cleanErrors: () => set(() => ({ errors: null })),
       }),

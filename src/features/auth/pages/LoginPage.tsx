@@ -10,11 +10,15 @@ import {
     Stack,
     Image,
   } from '@chakra-ui/react';
+
+
   
   import { Formik, Form, Field } from 'formik';
   import * as Yup from 'yup'
-//   import { InputField } from '../../../common';
-//   import { useAuthStore } from '../../../core';
+import { InputField } from '../../../common';
+import { useAuthStore } from '../../../store';
+import { loginRequest } from '../../../api';
+import { useNavigate } from 'react-router-dom';
   
   export interface InitialValues{
     username: string;
@@ -32,14 +36,20 @@ import {
   })
   
   export const LoginPage = () => {
-  
-    // const { startLogin } = useAuthStore()
+
+    const navigate = useNavigate();
+    const setToken = useAuthStore((state) => state.setToken);
+    const setProfile = useAuthStore((state) => state.setProfile);
+    
     return (
       <Formik
         initialValues={ initialValues }
-        onSubmit={ (values: InitialValues) => {
-          const { username, password } = values;
-        //   startLogin({username, password})
+        onSubmit={ async ({username, password}: InitialValues) => {
+          const data = await loginRequest({username, password})
+          console.log('data', data);
+          setToken(data.token)
+          setProfile({nombre: data.nombre, apellido: data.apellido})
+          navigate('/')
         }}
         validationSchema={validationSchema}
       >
@@ -50,7 +60,7 @@ import {
                 <Stack spacing={4} w={'full'} maxW={'md'}>
                   <Heading fontSize={'2xl'}>Ingresa con tu cuenta</Heading>
                   <Form>
-                    {/* <InputField
+                    <InputField
                       label='usuario'
                       name='username'
                       placeholder='DFalla'
@@ -61,7 +71,7 @@ import {
                       type='password'
                       name='password'
                       placeholder='***********'
-                    /> */}
+                    />
                     <Stack spacing={6}>
                       <Stack
                         direction={{ base: 'column', sm: 'row' }}

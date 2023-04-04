@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import Swal from "sweetalert2";
 import {
   IconButton,
   Avatar,
@@ -34,6 +35,7 @@ import {
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
+import { useAuthStore } from '../../store';
 // import { useAuthStore } from '../hooks';
 
 interface LinkItemProps {
@@ -53,6 +55,7 @@ export const Sidebar = ({
 }: {
   children: ReactNode;
 }) => {
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -150,14 +153,26 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-//   const { startLogout, user } = useAuthStore();
+  const logout = useAuthStore((state) => state.logout);
+  const profile = useAuthStore((state) => state.profile);
 
-//   const nombre = localStorage.getItem('name');
-//   const apellido = localStorage.getItem('lastName');
+  const { apellido, nombre } = profile;
+  const logoutSesion = () => {
+    Swal.fire({
+      title: `¿Desea cerrar sesión?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Salir',
+      cancelButtonText: 'Cancelar',
+    }).then(( result )=>{
+      if(result.isConfirmed) {
+        logout();
+      }
+    });
+  }
 
-
-//   console.log('user', user);
-//   const logout = () => startLogout();
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -210,7 +225,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2">
-                  <Text fontSize="sm" color='black'>Jorge Daniels</Text>
+                  <Text fontSize="sm" color='black'>{ `${nombre} ${apellido}` }</Text>
                   
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -225,7 +240,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem> */}
               <MenuItem
-                // onClick={ logout }
+                onClick={ ()=>{
+                  logoutSesion();
+                } }
               >Cerrar Sesión</MenuItem>
             </MenuList>
           </Menu>
