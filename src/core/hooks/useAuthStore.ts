@@ -1,9 +1,9 @@
-import { useDispatch } from "react-redux"
 import Swal from "sweetalert2";
 import Http from "../../common/http";
 import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store";
-import { useAppSelector } from "./hooks";
+import { useAppDispatch, useAppSelector } from "./hooks";
 import { SafeAny, modalNotification } from "../../common";
+import { Navigate } from "react-router-dom";
 
 export interface ArgsLogin {
     username: string;
@@ -20,16 +20,20 @@ export interface ArgsRegister {
 
 export const useAuthStore = () => {
     const { status, user, errorMessage } = useAppSelector(state => state.auth);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const startLogin = async({username, password}: ArgsLogin) =>{
         dispatch(onChecking());
 
         try {
-            const { data } = await Http.post('/auth', {username, password});
+            const { data } = await Http.post('/auth/login', {username, password});
+            console.log('data',data)
             localStorage.setItem('token', data.token);
             localStorage.setItem('token-init-date', new Date().getTime());
-            dispatch(onLogin({name: data.nombre, uid: data.uid, token: data.token}));
+            localStorage.setItem('name', data.nombre);
+            localStorage.setItem('lastName', data.apellido);
+
+            dispatch(onLogin({name: data.nombre, lastName: data.apellido, uid: data.uid, token: data.token}));
 
             console.log(data);
 
@@ -98,7 +102,7 @@ export const useAuthStore = () => {
           }).then(( result )=>{
             if(result.isConfirmed) {
                 localStorage.clear();
-                dispatch( onLogout );
+                dispatch( onLogout({payload: 'Error al cerrar sesión'}) );
             }
         });
     }

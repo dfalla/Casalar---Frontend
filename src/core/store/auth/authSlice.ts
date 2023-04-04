@@ -3,6 +3,7 @@ import { RootState } from '../store';
 
 export interface User {
   name?: string;
+  lastName?: string;
   uid?: string;
   token?: string;
 }
@@ -14,7 +15,7 @@ export interface InitialState{
 }
 
 const initialState: InitialState = {
-  status: 'checking',
+  status: 'not-authenticated',
   user: {},
   errorMessage: undefined
 }
