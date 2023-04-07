@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAuthStore } from "../store";
 import { LoginPage, RegisterPage } from "../features";
 import { Container, ProtectedRoutes } from "../common";
+import { Backpacks, MotorcycleParts } from "../features/products";
 
 export const AppRouter = () => {
 
@@ -16,8 +17,9 @@ export const AppRouter = () => {
                 <Route path="/auth/register" element={<RegisterPage/>} />
 
                 <Route path="/" element={<ProtectedRoutes isAllowed={isAuth} />}>
-                  <Route path="/profile" element={<h1>Profile</h1>} />
-                  <Route path="/dashboard" element={<h1>dashboard</h1>} />
+                  <Route index element={<h1>Productos Motorepuestos</h1>}/>
+                  <Route path="/mochilas" element={<Backpacks/>} />
+                  <Route path="/motorepuestos" element={<MotorcycleParts/>} />
                 </Route>
             </Routes>
         </Container>

@@ -27,6 +27,7 @@ import {
   FiMenu,
   FiChevronDown,
 } from 'react-icons/fi';
+import { NavLink } from 'react-router-dom'
 import { FaMotorcycle } from "react-icons/fa";
 import { GiBackpack } from "react-icons/gi";
 import { IconType } from 'react-icons';
@@ -36,10 +37,13 @@ import { useAuthStore } from '../../../store';
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  path: string;
 }
+
+
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Motorepuestos', icon: FaMotorcycle },
-  { name: 'Mochilas', icon: GiBackpack },
+  { name: 'Motorepuestos', icon: FaMotorcycle, path: '/motorepuestos' },
+  { name: 'Mochilas', icon: GiBackpack, path: '/mochilas' },
 ];
 
 export const Sidebar = ({
@@ -97,7 +101,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} path={link.path}>
           {link.name}
         </NavItem>
       ))}
@@ -107,11 +111,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
+  path: string;
   children: ReactText;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, path ,children, ...rest }: NavItemProps) => {
   return (
-    <Link href="#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+    <NavLink to={path} style={{ textDecoration: 'none' }}>
       <Flex
         align="center"
         p="4"
@@ -136,7 +141,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
         )}
         {children}
       </Flex>
-    </Link>
+    </NavLink>
   );
 };
 
@@ -171,11 +176,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      // bg={useColorModeValue('white', 'gray.900')}
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
-      {...rest}>
+      {...rest}
+    >
       <IconButton
         display={{ base: 'flex', md: 'none' }}
         onClick={onOpen}

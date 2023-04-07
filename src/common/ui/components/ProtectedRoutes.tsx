@@ -17,7 +17,7 @@ export const ProtectedRoutes = ({
   return (
     <>
       <Sidebar>
-        {children ? children : <Outlet />};
+        {children ? children : <Outlet />}
       </Sidebar>
     </>
   )
