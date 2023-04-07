@@ -1,5 +1,5 @@
 import { useField, ErrorMessage } from "formik"
-import { Input } from '@chakra-ui/react'
+import { Box, Input } from '@chakra-ui/react'
 
 interface Props { 
     label: string;
@@ -17,7 +17,11 @@ export const InputField = ({ label, ...props }: Props) => {
     <>
         <label htmlFor={props.id || props.name}>{label}</label>
         <Input className="input-text" type="text" {...field} {...props} />
-        <ErrorMessage name={ props.name } component="span"/>
+        <Box
+          color={'red'}
+        >
+          <ErrorMessage name={ props.name }/>
+        </Box>
         
     </>
   )

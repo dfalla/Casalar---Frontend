@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Container, ProtectedRoutes } from "../common";
 import { useAuthStore } from "../store";
-import { LoginPage } from "../features";
+import { LoginPage, RegisterPage } from "../features";
+import { Container, ProtectedRoutes } from "../common";
 
 export const AppRouter = () => {
 
@@ -13,7 +13,7 @@ export const AppRouter = () => {
         <Container>
             <Routes>
                 <Route path="/auth/login" element={<LoginPage/>} />
-                <Route path="/register" element={<h1>Register</h1>} />
+                <Route path="/auth/register" element={<RegisterPage/>} />
 
                 <Route path="/" element={<ProtectedRoutes isAllowed={isAuth} />}>
                   <Route path="/profile" element={<h1>Profile</h1>} />

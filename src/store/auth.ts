@@ -8,13 +8,6 @@ export interface Profile {
     apellido?: string;
 }
 
-
-export interface createUser {
-    email: string;
-    password: string;
-    fullName: string;
-}
-
 type State = {
     token: string | null;
     profile: Profile;
@@ -25,7 +18,6 @@ type State = {
 type Actions = {
     setToken: (token: string) => void;
     setProfile: (profile: Profile) => void;
-    register?: (user: createUser) => void;
     logout: () => void;
     cleanErrors: () => void;
 };
@@ -46,24 +38,7 @@ export const useAuthStore = create(
           set((state) => ({
             profile
           }))
-          },
-        // register: async (user: createUser) => {
-        //   try {
-        //     const resRegister = await registerRequest(user);
-        //     set(() => ({
-        //       token: resRegister.data.token,
-        //       isAuth: true,
-        //     }));
-        //   } catch (error) {
-        //     set(() => ({ errors: (error as SafeAny).response.data }));
-        //   }
-        // },
-        // getProfile: async () => {
-        //   const resProfile = await profileRequest();
-        //   set(() => ({
-        //     profile: resProfile.data,
-        //   }));
-        // },
+        },
         logout: () => set(() => ({ token: null, profile: {}, isAuth: false })),
         cleanErrors: () => set(() => ({ errors: null })),
       }),
