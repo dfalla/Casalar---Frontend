@@ -26,6 +26,7 @@ import {
 import {
   FiMenu,
   FiChevronDown,
+  FiBell,
 } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom'
 import { FaMotorcycle } from "react-icons/fa";
@@ -54,7 +55,7 @@ export const Sidebar = ({
   
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')} >
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}
@@ -197,7 +198,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         Logo
       </Text>
 
-      <HStack spacing={{ base: '0', md: '6' }}>
+      <HStack spacing={{ base: '0', md: '6' }} position={'fixed'}>
+        <IconButton
+          size="lg"
+          variant="ghost"
+          aria-label="open menu"
+          icon={<FiBell />}
+        />
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton

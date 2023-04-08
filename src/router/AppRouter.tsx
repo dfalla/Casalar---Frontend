@@ -17,9 +17,9 @@ export const AppRouter = () => {
                 <Route path="/auth/register" element={<RegisterPage/>} />
 
                 <Route path="/" element={<ProtectedRoutes isAllowed={isAuth} />}>
-                  <Route index element={<h1>Productos Motorepuestos</h1>}/>
-                  <Route path="/mochilas" element={<Backpacks/>} />
-                  <Route path="/motorepuestos" element={<MotorcycleParts/>} />
+                  <Route index element={<MotorcycleParts/>}/>
+                  <Route path="/mochilas" element={<Backpacks/>}/>
+                  <Route path="/motorepuestos" element={<MotorcycleParts/>}/>
                 </Route>
             </Routes>
         </Container>

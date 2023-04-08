@@ -2,7 +2,9 @@ import Http from "../libs"
 
 export const getProducts = async() => {
     try {
-        const products = await Http.get('/productos')
+
+        const { data } = await Http.get('/productos')
+        return data.products!;
 
     } catch (error) {
         console.log('error', error)
