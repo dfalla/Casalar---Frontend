@@ -41,7 +41,6 @@ interface LinkItemProps {
   path: string;
 }
 
-
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Motorepuestos', icon: FaMotorcycle, path: '/motorepuestos' },
   { name: 'Mochilas', icon: GiBackpack, path: '/mochilas' },
@@ -52,10 +51,9 @@ export const Sidebar = ({
 }: {
   children: ReactNode;
 }) => {
-  
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')} >
+    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}
@@ -72,6 +70,7 @@ export const Sidebar = ({
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
+      {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
@@ -102,7 +101,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} path={link.path}>
+        <NavItem key={link.name} icon={link.icon}>
           {link.name}
         </NavItem>
       ))}
@@ -115,9 +114,9 @@ interface NavItemProps extends FlexProps {
   path: string;
   children: ReactText;
 }
-const NavItem = ({ icon, path ,children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, path, children, ...rest }: NavItemProps) => {
   return (
-    <NavLink to={path} style={{ textDecoration: 'none' }}>
+    <Link href={path} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
         align="center"
         p="4"
@@ -142,7 +141,7 @@ const NavItem = ({ icon, path ,children, ...rest }: NavItemProps) => {
         )}
         {children}
       </Flex>
-    </NavLink>
+    </Link>
   );
 };
 
@@ -170,18 +169,17 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       }
     });
   }
-
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
+      bg={useColorModeValue('white', 'gray.900')}
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
-      {...rest}
-    >
+      {...rest}>
       <IconButton
         display={{ base: 'flex', md: 'none' }}
         onClick={onOpen}
@@ -198,7 +196,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         Logo
       </Text>
 
-      <HStack spacing={{ base: '0', md: '6' }} position={'fixed'}>
+      <HStack spacing={{ base: '0', md: '6' }}>
         <IconButton
           size="lg"
           variant="ghost"
@@ -208,12 +206,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton
-              as={Button}
-              rightIcon={<FiChevronDown color='black'/>}
-              py={2}
-              transition="all 0.3s"
-              bg={'inherit'}
-            >
+               as={Button}
+               rightIcon={<FiChevronDown color='black'/>}
+               py={2}
+               transition="all 0.3s"
+               bg={'inherit'}>
               <HStack>
                 <Avatar
                   size={'sm'}
@@ -226,8 +223,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2">
-                  <Text fontSize="sm" color='black'>{ `${nombre} ${apellido}` }</Text>
+                  <Text fontSize="sm" color={'black'}>{`${nombre} ${apellido}`}</Text>
+                  <Text fontSize="xs" color="gray.600">
+                    Aquí va el Rol
+                  </Text>
                 </VStack>
+                <Box display={{ base: 'none', md: 'flex' }}>
+                  <FiChevronDown />
+                </Box>
               </HStack>
             </MenuButton>
             <MenuList
@@ -235,7 +238,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               borderColor={useColorModeValue('gray.200', 'gray.700')}>
               {/* <MenuItem>Profile</MenuItem>
               <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem> */}
+              <MenuItem>Billing</MenuItem>
+              <MenuItem>Sign out</MenuItem> */}
               <MenuItem
                 onClick={ ()=>{
                   logoutSesion();
