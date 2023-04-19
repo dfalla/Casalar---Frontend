@@ -1,11 +1,14 @@
 import { useQuery } from "@tanstack/react-query"
 import { Card } from "../../../common"
 import { getProducts } from "../../../api/motorcycle";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
+
+
+
 
 export const MotorcycleParts = () => {
 
-  const { data, isLoading, error, isError } = useQuery({ queryKey: ['productos'], queryFn: getProducts })
+  const { data, isLoading, error, isError } = useQuery({ queryKey: ['aceites'], queryFn: getProducts })
   console.log('data desde el componente MotorcycleParts', data)
 
   if(isLoading){
@@ -13,19 +16,20 @@ export const MotorcycleParts = () => {
   }
   
   return (
-    <Box 
-      zIndex={100}
-    >
-      <Flex 
-        gap={5}
-        flexDirection={['column', 'column', 'row']}
-      >
+    
+    <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))' marginTop={20}>
         {
           data.map((element: any)=>(
-            <Card key={element.id} nombre={element.nombre} descripcion={element.descripcion}/>
+            <Card 
+              key={element.id} 
+              marca={element.marca} 
+              cantidad={element.cantidad} 
+              imagen={element.imagen} 
+              precio={element.precio}
+              stock={element.stock}
+            />
           ))
         }
-      </Flex>
-    </Box>
+    </SimpleGrid>
   )
 }
