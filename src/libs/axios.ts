@@ -6,7 +6,7 @@ import { useAuthStore } from "../store/auth";
 //     ? process.env.DOMAIN
 //     : "http://localhost:3000";
 
-const baseURL = "http://localhost:3001/api"
+const baseURL = "http://localhost:8000/api"
  
 
 const api = Axios.create({
