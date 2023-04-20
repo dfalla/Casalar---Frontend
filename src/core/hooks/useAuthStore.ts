@@ -29,7 +29,7 @@ export const useAuthStore = () => {
             const { data } = await Http.post('/auth/login', {username, password});
             console.log('data',data)
             localStorage.setItem('token', data.token);
-            localStorage.setItem('token-init-date', new Date().getTime());
+            localStorage.setItem('token-init-date', new Date().getTime().toString());
             localStorage.setItem('name', data.nombre);
             localStorage.setItem('lastName', data.apellido);
 
@@ -53,7 +53,7 @@ export const useAuthStore = () => {
         try {
             const { data } = await Http.post('/auth/register', { nombre, apellido, password, username });
             localStorage.setItem('token', data.token);
-            localStorage.setItem('token-init-date', new Date().getTime());
+            localStorage.setItem('token-init-date', new Date().getTime().toString());
 
             dispatch(onLogin({ name: data.name, uid: data.uid, token: data.token }));
 
@@ -79,7 +79,7 @@ export const useAuthStore = () => {
             const { data } = await Http.get('/auth/renew');
 
             localStorage.setItem('token', data.token);
-            localStorage.setItem('token-init-date', new Date().getTime());
+            localStorage.setItem('token-init-date', new Date().getTime().toString());
 
             dispatch(onLogin({ name: data.nombre, uid: data.uid }));
 
