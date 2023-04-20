@@ -53,7 +53,7 @@ export const Sidebar = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}  >
+    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}
@@ -181,8 +181,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
       position={'fixed'}
       width={['100vw','100vw','calc(100vw - 239px)']}
-      // width={'calc(100vw - 239px)'}
-      zIndex={9999}
+      zIndex={999}
       {...rest}
     >
       <IconButton
