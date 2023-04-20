@@ -180,7 +180,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
       position={'fixed'}
-      width={'calc(100vw - 239px)'}
+      width={['100vw','100vw','calc(100vw - 239px)']}
+      // width={'calc(100vw - 239px)'}
       zIndex={9999}
       {...rest}
     >
