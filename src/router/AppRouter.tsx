@@ -3,7 +3,6 @@ import { useAuthStore } from "../store";
 import { LoginPage, RegisterPage } from "../features";
 import { Container, ProtectedRoutes } from "../common";
 import { Backpacks, MotorcycleParts } from "../features/products";
-import { checkAuthToken } from "../api";
 
 export const AppRouter = () => {
 

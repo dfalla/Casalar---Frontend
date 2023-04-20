@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { SafeAny } from "../common";
 import { modalNotification } from "../helpers/modalNotifications";
 import Http from "../libs";
@@ -51,21 +52,22 @@ export const registerRequest = async ({apellido, nombre, password, username}:Reg
 }
 
 export const checkAuthToken = async() => {
+  const navigate = useNavigate();
 
-  // const logout = useAuthStore((state) => state.logout);
-  // const setToken = useAuthStore((state) => state.setToken);
-
-
-    const token = JSON.parse(localStorage.getItem('auth')!).state.token;
-
-    // if(!token) return logout();
-
+  const token = JSON.parse(localStorage.getItem('auth')!).state.token;
+    
+    if(!token) {
+      localStorage.clear();
+      navigate('/auth/login')
+    } 
+      
     try {
       
-      const { data } = await Http.get('/auth/renew');
+      const { data } = await Http.get("/auth/renew");
+      
+      console.log("data desde checkAuthToken", data)
+
       return data.token;
-      console.log("data", data)
-      // setToken(data.token);
 
     } catch (error) {
       console.log(error)

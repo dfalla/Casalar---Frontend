@@ -1,19 +1,21 @@
 import { useQuery } from "@tanstack/react-query"
 import { Card } from "../../../common"
 import { getProducts } from "../../../api/motorcycle";
-import { Box, Text, SimpleGrid, Heading } from "@chakra-ui/react";
+import { Box, SimpleGrid, Heading } from "@chakra-ui/react";
 
 export const MotorcycleParts = () => {
-
   const { data, isLoading, error, isError } = useQuery({ queryKey: ['aceites'], queryFn: getProducts })
 
   if(isLoading){
     return <h1>Cargando los Datos, espere por favor</h1>
   }
+
+  
   
   return (
 
     <Box marginTop={20}>
+
       <Box textAlign={'center'}>
         <Heading>ACEITES</Heading>
       </Box>
