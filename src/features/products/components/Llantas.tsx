@@ -7,7 +7,7 @@ export const Llantas = () => {
   const { data, isLoading, error, isError } = useQuery({ queryKey: ['llantas'], queryFn: getLlantas })
 
   return (
-    <AccordionItem>
+    <AccordionItem marginBottom={10}>
         <h2>
           <AccordionButton 
             bg={'brand.clonika.blue.800'} 
@@ -18,7 +18,7 @@ export const Llantas = () => {
             }}
           >
             <Box as="span" flex='1' textAlign='center'>
-            <Heading>LLantas</Heading>
+              <Heading>LLantas</Heading>
             </Box>
             <AccordionIcon />
           </AccordionButton>

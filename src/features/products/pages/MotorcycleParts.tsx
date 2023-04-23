@@ -15,9 +15,9 @@ export const MotorcycleParts = () => {
 
   return (
     <Box marginTop={20}>
-      <Accordion defaultIndex={[0]} allowMultiple>
-        <Llantas/>
+      <Accordion allowMultiple>
         <Aceites/>
+        <Llantas/>
       </Accordion>
     </Box>
     
