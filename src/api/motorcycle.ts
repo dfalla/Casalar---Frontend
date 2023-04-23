@@ -25,12 +25,15 @@ export const getLlantas = async() => {
 }
 
 export const createAceite = async( values: CreateAceitesArgs) => {
+    console.log('values desde createAceite', values)
     const { cantidad, descripcion, imagen, marca, precio, stock } = values;
+    
     const formData = new FormData();
 
     for(let key in values){
         formData.append(key, (values as SafeAny)[key]);
     }
+
     try {
         const { data } = await Http.post('/aceites', formData, {
             headers: {

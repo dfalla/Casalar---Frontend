@@ -4,5 +4,5 @@ export interface CreateAceitesArgs{
     precio: string;
     stock: string;
     descripcion: string;
-    imagen: File;
+    imagen: File | null;
 }

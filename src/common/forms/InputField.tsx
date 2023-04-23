@@ -4,7 +4,7 @@ import { Box, Input } from '@chakra-ui/react'
 interface Props { 
     label: string;
     name: string;
-    type?: 'text' | 'email' | 'password';
+    type?: 'text' | 'email' | 'password' | 'file' | 'number';
     placeholder?: string;
     [x: string]: any;
 }

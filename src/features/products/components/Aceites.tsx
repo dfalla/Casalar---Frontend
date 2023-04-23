@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
-import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon  } from "@chakra-ui/react";
+import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon, Button, FormControl, FormLabel, Input  } from "@chakra-ui/react";
 import { Card } from "../../../common"
 import { getAceites } from "../../../api/motorcycle";
-
+import { FormProducto } from "../domain";
 
 export const Aceites = () => {
   const { data, isLoading, error, isError } = useQuery({ queryKey: ['aceites'], queryFn: getAceites })
@@ -29,6 +29,7 @@ export const Aceites = () => {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4} bg={'brand.clonika.blue.800'}>
+          <FormProducto variant='aceite'/>
           <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))' >
             {
               data.map((element: any)=>(
