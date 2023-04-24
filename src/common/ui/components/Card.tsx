@@ -78,32 +78,25 @@ export const Card = ({marca, cantidad, imagen, precio, stock} : CardArgs) => {
           </Stack>
         </Stack>
         <Stack mt={8} direction={'row'} spacing={4}>
-            <Button
-                flex={1}
-                fontSize={'sm'}
-                bg={'brand.clonika.blue.800'}
-                color={'white'}
-                rounded={'full'}
-            >
-                Agregar
-            </Button>
-            <Button
-                flex={1}
-                fontSize={'sm'}
-                rounded={'full'}
-                bg={'blue.400'}
-                color={'white'}
-                boxShadow={
-                '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
-                }
-                _hover={{
-                bg: 'blue.500',
-                }}
-                _focus={{
-                bg: 'blue.500',
-                }}>
-                Editar
-            </Button>
+          <Button
+            flex={1}
+            fontSize={'sm'}
+            rounded={'full'}
+            bg={'brand.clonika.blue.800'}
+            color={'white'}
+            boxShadow={
+            '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
+            }
+            _hover={{
+            bg: 'blue.500',
+            }}
+            _focus={{
+            bg: 'blue.500',
+            }}
+          >
+
+            Editar
+          </Button>
         </Stack>
       </Box>
     );

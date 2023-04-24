@@ -1,10 +1,15 @@
-import { useQuery } from "@tanstack/react-query"
 import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon  } from "@chakra-ui/react";
 import { Card } from "../../../common"
-import { getLlantas } from "../../../api/motorcycle";
+import { useGetLlantas } from "../hooks";
 
 export const Llantas = () => {
-  const { data, isLoading, error, isError } = useQuery({ queryKey: ['llantas'], queryFn: getLlantas })
+  const {data, isError, isLoading} = useGetLlantas();
+  
+  if(isLoading){
+    
+    // COLOCAR UN SPINNER
+    return <h1>Cargando los Datos, espere por favor</h1>
+  }
 
   return (
     <AccordionItem marginBottom={10}>

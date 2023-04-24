@@ -10,7 +10,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -28,12 +27,12 @@ import {
   FiChevronDown,
   FiBell,
 } from 'react-icons/fi';
-import { NavLink } from 'react-router-dom'
 import { FaMotorcycle } from "react-icons/fa";
 import { GiBackpack } from "react-icons/gi";
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import { useAuthStore } from '../../../store';
+import { NavLink } from "react-router-dom";
 
 interface LinkItemProps {
   name: string;
@@ -116,7 +115,7 @@ interface NavItemProps extends FlexProps {
 }
 const NavItem = ({ icon, path, children, ...rest }: NavItemProps) => {
   return (
-    <Link href={path} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+    <NavLink to={path} style={{ textDecoration: 'none' }}>
       <Flex
         align="center"
         p="4"
@@ -141,7 +140,7 @@ const NavItem = ({ icon, path, children, ...rest }: NavItemProps) => {
         )}
         {children}
       </Flex>
-    </Link>
+    </NavLink>
   );
 };
 

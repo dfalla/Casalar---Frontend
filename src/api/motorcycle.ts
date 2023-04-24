@@ -27,9 +27,6 @@ export const getLlantas = async() => {
 
 export const createAceite = async( values: CreateAceitesArgs) => {
     
-    console.log('values desde createAceite', values)
-    const { cantidad, descripcion, imagen, marca, precio, stock } = values;
-    
     const formData = new FormData();
 
     for(let key in values){
@@ -38,12 +35,9 @@ export const createAceite = async( values: CreateAceitesArgs) => {
 
     try {
         const { data } = await Http.post('/aceites', formData)
-
         setTimeout(() => {
             modalNotificationsSuccess(data.msg)
         }, 1500);
-        
-        console.log('data desde createAceite', data)
     } catch (error) {
         console.log('error', error)
     }

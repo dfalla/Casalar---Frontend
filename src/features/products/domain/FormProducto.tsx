@@ -1,6 +1,6 @@
 import { useRef }  from 'react';
 import { useNavigate } from "react-router-dom";
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup'
 import {
@@ -23,6 +23,7 @@ import {
 import { CreateAceitesArgs } from '../../../interfaces';
 import { InputField, SafeAny } from '../../../common';
 import { createAceite } from '../../../api';
+import { modalNotificationsSuccess } from '../../../helpers';
 
 
   
@@ -49,6 +50,8 @@ interface FormProductoArgs {
 }
 
 export const FormProducto = ({variant}: FormProductoArgs) => {
+  const queryClient = useQueryClient();  
+
   const navigate = useNavigate();
   let mutationFn;
 
@@ -56,9 +59,23 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
    mutationFn = createAceite
   }
 
-  const { mutate } = useMutation({
+  const { mutate, data } = useMutation({
     mutationFn,
-    onSuccess: () =>{
+    onSuccess: async() =>{
+      switch (variant) {
+        case 'aceite':
+          await queryClient.invalidateQueries({
+            queryKey: ['aceites'], 
+            refetchType: 'active',
+          })
+          break;
+
+          default:
+          break;
+      }
+
+      
+
       onClose()
       navigate('/motorepuestos')
     }

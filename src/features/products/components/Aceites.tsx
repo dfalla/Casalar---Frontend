@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query"
 import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon, Button, FormControl, FormLabel, Input  } from "@chakra-ui/react";
 import { Card } from "../../../common"
-import { getAceites } from "../../../api/motorcycle";
 import { FormProducto } from "../domain";
+import { useGetAceites } from "../hooks";
+import { useEffect } from "react";
 
 export const Aceites = () => {
-  const { data, isLoading, error, isError } = useQuery({ queryKey: ['aceites'], queryFn: getAceites })
+  const {data, isError, isLoading} = useGetAceites();
 
   if(isLoading){
+    
+    // COLOCAR UN SPINNER
     return <h1>Cargando los Datos, espere por favor</h1>
   }
 
