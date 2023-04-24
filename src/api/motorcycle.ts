@@ -1,6 +1,7 @@
 import Http from "../libs"
 import { CreateAceitesArgs } from "../interfaces";
 import { SafeAny } from "../common";
+import { modalNotificationsSuccess } from "../helpers";
 
 export const getAceites = async() => {
     try {
@@ -25,6 +26,7 @@ export const getLlantas = async() => {
 }
 
 export const createAceite = async( values: CreateAceitesArgs) => {
+    
     console.log('values desde createAceite', values)
     const { cantidad, descripcion, imagen, marca, precio, stock } = values;
     
@@ -35,12 +37,8 @@ export const createAceite = async( values: CreateAceitesArgs) => {
     }
 
     try {
-        const { data } = await Http.post('/aceites', formData, {
-            headers: {
-                "Content-Type" : "multipart/form-data"
-            }
-        })
-
+        const { data } = await Http.post('/aceites', formData)
+        modalNotificationsSuccess(data.msg)
         console.log('data desde createAceite', data)
     } catch (error) {
         console.log('error', error)

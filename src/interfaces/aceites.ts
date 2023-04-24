@@ -1,3 +1,5 @@
+import { SafeAny } from "../common";
+
 export interface CreateAceitesArgs{
     marca: string;
     cantidad: string;

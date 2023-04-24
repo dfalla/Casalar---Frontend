@@ -13,12 +13,16 @@ import {
   Button,
   VStack,
   HStack,
-  Input
+  Input,
+  FormControl,
+  FormLabel,
+  Text
 } from '@chakra-ui/react';
 import { CreateAceitesArgs } from '../../../interfaces';
-import { InputField } from '../../../common';
+import { InputField, SafeAny } from '../../../common';
 import { useMutation } from '@tanstack/react-query';
 import { createAceite } from '../../../api';
+import { useNavigate } from "react-router-dom";
 
 
   
@@ -45,7 +49,7 @@ interface FormProductoArgs {
 }
 
 export const FormProducto = ({variant}: FormProductoArgs) => {
-
+  const navigate = useNavigate();
   let mutationFn;
 
   if(variant === 'aceite'){
@@ -80,6 +84,7 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
               switch (variant) {
                 case 'aceite':
                   mutate(values);
+                  navigate('/motorepuestos')
                 default:
                   break;
               }
@@ -88,49 +93,65 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
             validationSchema={validationSchema}
         >
                 {
-                    ()=>(
-                        <Form>
-                          <VStack alignItems={'flex-start'} marginBottom={4}>
+                  ({setFieldValue})=>(
+                      <Form>
+                        <VStack alignItems={'flex-start'} marginBottom={4}>
 
-                            <InputField
-                                name='marca'
-                                label='Marca'
-                                type='text'
-                            /> 
-                            <InputField
-                                name='descripcion'
-                                label='Descripcion del producto'
-                                type='text'
-                            /> 
-                            <InputField
-                                name='cantidad'
-                                label='¿Cuantos productos de esta marca existen en el almacén?'
-                                type='text'
-                            /> 
-                            <InputField
-                                name='precio'
-                                label='Precio del producto'
-                                type='number'
-                            /> 
-                            <InputField
-                                name='stock'
-                                label='¿Hay productos en stock?'
-                                type='text'
-                            /> 
-                            <InputField
-                                name='imagen'
-                                label='Selecciona una imagen'
-                                type='file'
-                            /> 
-                          </VStack>
-                          <HStack justifyContent={'space-between'}>
-                            <Button bg='brand.clonika.blue.800' mr={3} type='submit'>
-                                Registrar
-                            </Button>
-                            <Button onClick={onClose} colorScheme='red'>Cancelar</Button>
-                          </HStack>
-                        </Form>
-                    )
+                          <InputField
+                            name='marca'
+                            label='Marca'
+                            type='text'
+                            variant={'filled'}
+                          /> 
+
+                          <InputField
+                            name='descripcion'
+                            label='Descripcion del producto'
+                            type='text'
+                            variant={'filled'}
+                          /> 
+
+                          <InputField
+                            name='cantidad'
+                            label='¿Cuantos productos de esta marca existen en el almacén?'
+                            type='text'
+                            variant={'filled'}
+                          /> 
+
+                          <InputField
+                            name='precio'
+                            label='Precio del producto'
+                            type='number'
+                            variant={'filled'}
+                          /> 
+
+                          <InputField
+                            name='stock'
+                            label='¿Hay productos en stock?'
+                            type='text'
+                            variant={'filled'}
+                          /> 
+
+                          <Text fontWeight={'bold'}>
+                            Selecciona una imagen
+                          </Text>
+                          <Input
+                            name='imagen'
+                            onChange={(e: SafeAny)=>setFieldValue('imagen', e.target.files[0])}
+                            type='file'
+                          /> 
+
+                        </VStack>
+
+                        <HStack justifyContent={'space-between'}>
+                          <Button bg='brand.clonika.blue.800' mr={3} type='submit'>
+                              Registrar
+                          </Button>
+                          <Button onClick={onClose} colorScheme='red'>Cancelar</Button>
+                        </HStack>
+
+                      </Form>
+                  )
                 }
             </Formik>
           </ModalBody>

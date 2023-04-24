@@ -11,6 +11,9 @@ const baseURL = "http://localhost:8000/api"
 
 const api = Axios.create({
   baseURL,
+  headers: {
+    "Content-Type" : "multipart/form-data"
+  }
   // withCredentials: true,
 });
 

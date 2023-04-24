@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { SafeAny } from "../common";
-import { modalNotification } from "../helpers/modalNotifications";
+import { modalNotificationWarning } from "../helpers/modalNotifications";
 import Http from "../libs";
 import { useAuthStore } from "../store";
 
@@ -28,7 +28,7 @@ export const loginRequest = async ({ password, username }: LoginArgs) =>{
     return data;
 
   } catch (error) {
-    modalNotification((error as SafeAny).response.data.msg)
+    modalNotificationWarning((error as SafeAny).response.data.msg)
   }
 }
 
@@ -46,7 +46,7 @@ export const registerRequest = async ({apellido, nombre, password, username}:Reg
     return data;
 
   } catch (error) {
-    modalNotification((error as SafeAny).response.data.msg)
+    modalNotificationWarning((error as SafeAny).response.data.msg)
   }
   
 }
