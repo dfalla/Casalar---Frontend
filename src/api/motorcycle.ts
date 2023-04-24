@@ -38,7 +38,11 @@ export const createAceite = async( values: CreateAceitesArgs) => {
 
     try {
         const { data } = await Http.post('/aceites', formData)
-        modalNotificationsSuccess(data.msg)
+
+        setTimeout(() => {
+            modalNotificationsSuccess(data.msg)
+        }, 1500);
+        
         console.log('data desde createAceite', data)
     } catch (error) {
         console.log('error', error)

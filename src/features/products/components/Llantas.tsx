@@ -18,7 +18,7 @@ export const Llantas = () => {
             }}
           >
             <Box as="span" flex='1' textAlign='center'>
-              <Heading>LLantas</Heading>
+              <Heading>LLANTAS</Heading>
             </Box>
             <AccordionIcon />
           </AccordionButton>

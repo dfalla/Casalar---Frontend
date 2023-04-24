@@ -1,4 +1,6 @@
-import { useEffect, useRef }  from 'react';
+import { useRef }  from 'react';
+import { useNavigate } from "react-router-dom";
+import { useMutation } from '@tanstack/react-query';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup'
 import {
@@ -20,9 +22,7 @@ import {
 } from '@chakra-ui/react';
 import { CreateAceitesArgs } from '../../../interfaces';
 import { InputField, SafeAny } from '../../../common';
-import { useMutation } from '@tanstack/react-query';
 import { createAceite } from '../../../api';
-import { useNavigate } from "react-router-dom";
 
 
   
@@ -58,6 +58,10 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
 
   const { mutate } = useMutation({
     mutationFn,
+    onSuccess: () =>{
+      onClose()
+      navigate('/motorepuestos')
+    }
   })
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -84,7 +88,7 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
               switch (variant) {
                 case 'aceite':
                   mutate(values);
-                  navigate('/motorepuestos')
+                  
                 default:
                   break;
               }
@@ -96,7 +100,6 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
                   ({setFieldValue})=>(
                       <Form>
                         <VStack alignItems={'flex-start'} marginBottom={4}>
-
                           <InputField
                             name='marca'
                             label='Marca'
@@ -113,7 +116,7 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
 
                           <InputField
                             name='cantidad'
-                            label='¿Cuantos productos de esta marca existen en el almacén?'
+                            label='¿Cuantos hay en el almacén?'
                             type='text'
                             variant={'filled'}
                           /> 
@@ -140,7 +143,6 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
                             onChange={(e: SafeAny)=>setFieldValue('imagen', e.target.files[0])}
                             type='file'
                           /> 
-
                         </VStack>
 
                         <HStack justifyContent={'space-between'}>
@@ -149,7 +151,6 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
                           </Button>
                           <Button onClick={onClose} colorScheme='red'>Cancelar</Button>
                         </HStack>
-
                       </Form>
                   )
                 }
