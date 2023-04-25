@@ -7,9 +7,12 @@ import {
     Stack,
     Image,
     Button
-  } from '@chakra-ui/react';
-
+} from '@chakra-ui/react';
+import { constants } from '../../../constants';
+import { useDeleteAceite } from '../../../features/products/hooks';
 export interface CardArgs{
+  id: number;
+  variant: string;
   marca: string;
   cantidad: string;
   imagen: string;
@@ -18,7 +21,11 @@ export interface CardArgs{
 }
 
 
-export const Card = ({marca, cantidad, imagen, precio, stock} : CardArgs) => {
+export const Card = ({marca, cantidad, imagen, precio, stock, id, variant} : CardArgs) => {
+  if(variant === constants.aceite){
+    const { mutate: deleteAceite } = useDeleteAceite();
+  }
+
     return (
       <Box
         role={'group'}
@@ -78,6 +85,14 @@ export const Card = ({marca, cantidad, imagen, precio, stock} : CardArgs) => {
           </Stack>
         </Stack>
         <Stack mt={8} direction={'row'} spacing={4}>
+          <Button 
+            colorScheme='red'
+            flex={1}
+            fontSize={'sm'}
+            rounded={'full'}
+          >
+            Eliminar 
+          </Button>
           <Button
             flex={1}
             fontSize={'sm'}
@@ -88,10 +103,7 @@ export const Card = ({marca, cantidad, imagen, precio, stock} : CardArgs) => {
             '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
             }
             _hover={{
-            bg: 'blue.500',
-            }}
-            _focus={{
-            bg: 'blue.500',
+              bg: 'brand.clonika.blue.700',
             }}
           >
 

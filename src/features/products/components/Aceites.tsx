@@ -1,11 +1,12 @@
 import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon, Button, FormControl, FormLabel, Input  } from "@chakra-ui/react";
 import { Card } from "../../../common"
 import { FormProducto } from "../domain";
-import { useGetAceites } from "../hooks";
+import { useDeleteAceite, useGetAceites } from "../hooks";
 import { useEffect } from "react";
 
 export const Aceites = () => {
   const {data, isError, isLoading} = useGetAceites();
+  const { mutate } = useDeleteAceite();
 
   if(isLoading){
     
@@ -37,6 +38,8 @@ export const Aceites = () => {
               data.map((element: any)=>(
                 <Card 
                   key={element.id} 
+                  id={ element.id }
+                  variant={'aceite'}
                   marca={element.marca} 
                   cantidad={element.cantidad} 
                   imagen={element.imagen} 

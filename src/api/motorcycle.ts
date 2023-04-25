@@ -42,3 +42,12 @@ export const createAceite = async( values: CreateAceitesArgs) => {
         console.log('error', error)
     }
 }
+
+export const deleteAceite = async(id: number) => {
+    try {
+        const { data } = await Http.delete(`/aceites/${id}`);
+        console.log(data);
+    } catch (error) {
+        console.log('error', error)
+    }
+}
