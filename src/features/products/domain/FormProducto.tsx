@@ -24,6 +24,7 @@ import { CreateAceitesArgs } from '../../../interfaces';
 import { InputField, SafeAny } from '../../../common';
 import { createAceite } from '../../../api';
 import { modalNotificationsSuccess } from '../../../helpers';
+import { constants } from '../../../constants';
 
 
   
@@ -37,7 +38,6 @@ const initialValues: CreateAceitesArgs = {
 }
 
 const validationSchema = Yup.object({
-    cantidad: Yup.string().required('Este campo es requerido'),
     descripcion: Yup.string().required('Este campo es requerido'),
     precio: Yup.string().required('Este campo es requerido'),
     marca: Yup.string().required('Este campo es requerido'),
@@ -55,7 +55,7 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
   const navigate = useNavigate();
   let mutationFn;
 
-  if(variant === 'aceite'){
+  if(variant === constants.aceite){
    mutationFn = createAceite
   }
 
@@ -102,10 +102,11 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
         <Formik
             initialValues={ initialValues }
             onSubmit={ (values) => {
+              console.log(values);
+
               switch (variant) {
-                case 'aceite':
+                case constants.aceite:
                   mutate(values);
-                  
                 default:
                   break;
               }
@@ -132,13 +133,6 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
                           /> 
 
                           <InputField
-                            name='cantidad'
-                            label='¿Cuantos hay en el almacén?'
-                            type='text'
-                            variant={'filled'}
-                          /> 
-
-                          <InputField
                             name='precio'
                             label='Precio del producto'
                             type='number'
@@ -147,8 +141,8 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
 
                           <InputField
                             name='stock'
-                            label='¿Hay productos en stock?'
-                            type='text'
+                            label='¿Cuántos productos hay en Stock?'
+                            type='number'
                             variant={'filled'}
                           /> 
 

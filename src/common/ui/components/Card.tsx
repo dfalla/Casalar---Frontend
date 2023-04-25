@@ -10,20 +10,42 @@ import {
 } from '@chakra-ui/react';
 import { constants } from '../../../constants';
 import { useDeleteAceite } from '../../../features/products/hooks';
+import { UseMutateFunction } from '@tanstack/react-query';
+import Swal from 'sweetalert2';
 export interface CardArgs{
   id: number;
   variant: string;
+  descripcion: string;
   marca: string;
-  cantidad: string;
   imagen: string;
   precio: string;
   stock: string;
 }
 
 
-export const Card = ({marca, cantidad, imagen, precio, stock, id, variant} : CardArgs) => {
+export const Card = ({marca, imagen, precio, stock, id, variant, descripcion} : CardArgs) => {
+
+  let deleteProduct: UseMutateFunction<void, unknown, number, unknown>;
+
   if(variant === constants.aceite){
     const { mutate: deleteAceite } = useDeleteAceite();
+    deleteProduct = deleteAceite;
+  }
+
+  const deleteItem = (id: number) => {
+    Swal.fire({
+      title: `¿Estás seguro que desea eliminar el ${variant} de marca ${marca}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'Cancelar',
+    }).then(( result )=>{
+      if(result.isConfirmed) {
+        deleteProduct(id)
+      }
+    });
   }
 
     return (
@@ -73,11 +95,11 @@ export const Card = ({marca, cantidad, imagen, precio, stock, id, variant} : Car
             { marca }
           </Text>
           <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
-            cantidad: { cantidad }
+            { descripcion }
           </Heading>
           <Stack direction={'row'} align={'center'}>
             <Text fontWeight={800} >
-             en stock: { stock }
+             En stock: { stock }
             </Text>
             <Text color={'gray.600'}>
              { `S/.${precio} ` }
@@ -86,6 +108,7 @@ export const Card = ({marca, cantidad, imagen, precio, stock, id, variant} : Car
         </Stack>
         <Stack mt={8} direction={'row'} spacing={4}>
           <Button 
+            onClick={()=>deleteItem(id)}
             colorScheme='red'
             flex={1}
             fontSize={'sm'}
@@ -106,7 +129,6 @@ export const Card = ({marca, cantidad, imagen, precio, stock, id, variant} : Car
               bg: 'brand.clonika.blue.700',
             }}
           >
-
             Editar
           </Button>
         </Stack>

@@ -1,12 +1,13 @@
-import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon, Button, FormControl, FormLabel, Input  } from "@chakra-ui/react";
+import { Box, SimpleGrid, Heading, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon  } from "@chakra-ui/react";
 import { Card } from "../../../common"
 import { FormProducto } from "../domain";
-import { useDeleteAceite, useGetAceites } from "../hooks";
-import { useEffect } from "react";
+import { useGetAceites } from "../hooks";
+import { ElementArgs } from "../../../interfaces";
+
+
 
 export const Aceites = () => {
   const {data, isError, isLoading} = useGetAceites();
-  const { mutate } = useDeleteAceite();
 
   if(isLoading){
     
@@ -35,13 +36,13 @@ export const Aceites = () => {
           <FormProducto variant='aceite'/>
           <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))' >
             {
-              data.map((element: any)=>(
+              data.map((element: ElementArgs)=>(
                 <Card 
                   key={element.id} 
                   id={ element.id }
                   variant={'aceite'}
+                  descripcion={element.descripcion}
                   marca={element.marca} 
-                  cantidad={element.cantidad} 
                   imagen={element.imagen} 
                   precio={element.precio}
                   stock={element.stock}

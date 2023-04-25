@@ -26,6 +26,7 @@ export const getLlantas = async() => {
 }
 
 export const createAceite = async( values: CreateAceitesArgs) => {
+    console.log('values dese createAceite', values);
     
     const formData = new FormData();
 
