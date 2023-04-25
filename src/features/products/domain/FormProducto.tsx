@@ -1,5 +1,5 @@
-import { useRef }  from 'react';
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState }  from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup'
@@ -23,13 +23,12 @@ import {
 import { CreateAceitesArgs } from '../../../interfaces';
 import { InputField, SafeAny } from '../../../common';
 import { createAceite } from '../../../api';
-import { modalNotificationsSuccess } from '../../../helpers';
-import { constants } from '../../../constants';
+import { PRODUCT } from '../../../constants';
+import { useAuthStore } from '../../../store';
 
 
   
-const initialValues: CreateAceitesArgs = {
-    cantidad: '',
+const INITIALVALUES: CreateAceitesArgs = {
     descripcion: '',
     precio: '',
     marca: '',
@@ -46,16 +45,33 @@ const validationSchema = Yup.object({
 })
 
 interface FormProductoArgs {
-  variant: string;
+  variant?: string;
+  edit?: boolean;
 }
 
-export const FormProducto = ({variant}: FormProductoArgs) => {
+export const FormProducto = ({variant, edit}: FormProductoArgs) => {
+  const setOnClose = useAuthStore((state) => state.setOnClose);
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const initialRef = useRef(null)
+  const finalRef = useRef(null)
+
+  const [initialValues, setInitialValues] = useState<CreateAceitesArgs>(INITIALVALUES);
+
+  const params = useParams();
+
   const queryClient = useQueryClient();  
 
   const navigate = useNavigate();
   let mutationFn;
 
-  if(variant === constants.aceite){
+
+  useEffect(() => {
+    if(edit || params.id) onOpen();
+  }, [params.id]);
+
+  if(variant === PRODUCT.aceite){
    mutationFn = createAceite
   }
 
@@ -73,21 +89,22 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
           default:
           break;
       }
-
-      
-
       onClose()
       navigate('/motorepuestos')
     }
   })
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const initialRef = useRef(null)
-  const finalRef = useRef(null)
+  const closeModal = () => {
+    onClose();
+    navigate(`/motorepuestos`)
+  }
+  
 
   return (
     <>
-      <Button variant={'outline'} color='white' onClick={onOpen}>Registrar nueva marca</Button>
+      <Button variant={'outline'} color='white' onClick={onOpen}>
+        Registrar nuevo producto
+      </Button>
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
@@ -96,24 +113,27 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign={'center'}>Registrar nueva marca de aceite</ModalHeader>
+          <ModalHeader textAlign={'center'}>
+          { params.id ? 'Editar ' : 'Registrar nuevo ' }
+            Producto
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-        <Formik
-            initialValues={ initialValues }
-            onSubmit={ (values) => {
-              console.log(values);
+            <Formik
+              initialValues={ initialValues }
+              onSubmit={ (values) => {
+                console.log(values);
 
-              switch (variant) {
-                case constants.aceite:
-                  mutate(values);
-                default:
-                  break;
-              }
-              
-            }}
-            validationSchema={validationSchema}
-        >
+                switch (variant) {
+                  case PRODUCT.aceite:
+                    mutate(values);
+                  default:
+                    break;
+                }
+                
+              }}
+              validationSchema={validationSchema}
+            >
                 {
                   ({setFieldValue})=>(
                       <Form>
@@ -158,9 +178,11 @@ export const FormProducto = ({variant}: FormProductoArgs) => {
 
                         <HStack justifyContent={'space-between'}>
                           <Button bg='brand.clonika.blue.800' mr={3} type='submit'>
-                              Registrar
+                            { params.id ? 'Editar' : 'Registrar' }
                           </Button>
-                          <Button onClick={onClose} colorScheme='red'>Cancelar</Button>
+                          <Button onClick={closeModal} colorScheme='red'>
+                            Cancelar
+                          </Button>
                         </HStack>
                       </Form>
                   )

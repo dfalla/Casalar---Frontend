@@ -4,7 +4,12 @@ import { getAceites, getLlantas } from "../../../api/motorcycle";
 import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon  } from "@chakra-ui/react";
 import { Aceites, Llantas } from "../components";
 
-export const MotorcycleParts = () => {
+interface MotorcyclePartsProps {
+  edit?: boolean;
+}
+
+
+export const MotorcycleParts = ( { edit }: MotorcyclePartsProps ) => {
   // const { data, isLoading, error, isError } = useQuery({ queryKey: ['aceites'], queryFn: getAceites })
   const { data, isLoading, error, isError } = useQuery({ queryKey: ['llantas'], queryFn: getLlantas })
 
@@ -16,7 +21,7 @@ export const MotorcycleParts = () => {
   return (
     <Box marginTop={20}>
       <Accordion allowMultiple>
-        <Aceites/>
+        <Aceites edit={ edit }/>
         <Llantas/>
       </Accordion>
     </Box>

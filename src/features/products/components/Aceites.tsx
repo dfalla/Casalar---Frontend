@@ -3,10 +3,13 @@ import { Card } from "../../../common"
 import { FormProducto } from "../domain";
 import { useGetAceites } from "../hooks";
 import { ElementArgs } from "../../../interfaces";
+import { useEffect } from "react";
 
+interface AceitesProps {
+  edit?: boolean;
+}
 
-
-export const Aceites = () => {
+export const Aceites = ({ edit }: AceitesProps) => {
   const {data, isError, isLoading} = useGetAceites();
 
   if(isLoading){
@@ -33,7 +36,7 @@ export const Aceites = () => {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4} bg={'brand.clonika.blue.800'}>
-          <FormProducto variant='aceite'/>
+          <FormProducto variant='aceite' edit={edit}/>
           <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))' >
             {
               data.map((element: ElementArgs)=>(

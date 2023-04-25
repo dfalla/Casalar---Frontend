@@ -3,22 +3,13 @@ import { CreateAceitesArgs } from "../interfaces";
 import { SafeAny } from "../common";
 import { modalNotificationsSuccess } from "../helpers";
 
+//ACEITES
+
 export const getAceites = async() => {
     try {
 
         const { data } = await Http.get('/aceites')
         return data.aceites!;
-
-    } catch (error) {
-        console.log('error', error)
-    }
-}
-
-export const getLlantas = async() => {
-    try {
-
-        const { data } = await Http.get('/llantas')
-        return data.llantas!;
 
     } catch (error) {
         console.log('error', error)
@@ -48,6 +39,19 @@ export const deleteAceite = async(id: number) => {
     try {
         const { data } = await Http.delete(`/aceites/${id}`);
         console.log(data);
+    } catch (error) {
+        console.log('error', error)
+    }
+}
+
+//LLANTAS
+
+export const getLlantas = async() => {
+    try {
+
+        const { data } = await Http.get('/llantas')
+        return data.llantas!;
+
     } catch (error) {
         console.log('error', error)
     }
