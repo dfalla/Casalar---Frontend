@@ -10,14 +10,12 @@ export interface Profile {
 
 type State = {
     token: string | null;
-    onClose?: () => void;
     profile: Profile;
     isAuth: boolean;
     errors: SafeAny;
 };
 
 type Actions = {
-    setOnClose: (onClose: () => void) => void;
     setToken: (token: string) => void;
     setProfile: (profile: Profile) => void;
     logout: () => void;
@@ -38,11 +36,6 @@ export const useAuthStore = create(
             isAuth: !!token,
           })),
 
-        setOnClose: ( onClose: () => void) => 
-          set((state) => ({
-            onClose
-          })),
-          
         setProfile: (profile: Profile) => {
           set((state) => ({
             profile

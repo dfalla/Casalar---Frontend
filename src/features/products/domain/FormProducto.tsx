@@ -22,9 +22,10 @@ import {
 } from '@chakra-ui/react';
 import { CreateAceitesArgs } from '../../../interfaces';
 import { InputField, SafeAny } from '../../../common';
-import { createAceite } from '../../../api';
+import { createAceite, getAceite } from '../../../api';
 import { PRODUCT } from '../../../constants';
 import { useAuthStore } from '../../../store';
+import { useGetAceiteById } from '../hooks/useGetAceiteById';
 
 
   
@@ -50,7 +51,6 @@ interface FormProductoArgs {
 }
 
 export const FormProducto = ({variant, edit}: FormProductoArgs) => {
-  const setOnClose = useAuthStore((state) => state.setOnClose);
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -66,10 +66,37 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
   const navigate = useNavigate();
   let mutationFn;
 
+  const closeModal = () => {
+    onClose();
+    navigate(`/motorepuestos`)
+  }
+
+  useEffect(() => {
+    if(isOpen === false) closeModal();
+  }, [isOpen]);
+
 
   useEffect(() => {
     if(edit || params.id) onOpen();
   }, [params.id]);
+
+  // const getAceiteById = async(id: string) =>{
+  //   const data = await getAceite(id)
+  //   return data;
+  // }
+
+  useEffect(() => {
+    if(variant === PRODUCT.aceite && params.id && edit === true){
+      console.log({variant, params: params.id, edit})
+      getAceite(params.id).then(res => console.log('res', res))
+    }
+  }, [variant, params.id, edit]);
+
+  if(variant === PRODUCT.aceite){
+    if(params.id && edit === true) mutationFn = createAceite;
+    mutationFn = createAceite;
+
+  }
 
   if(variant === PRODUCT.aceite){
    mutationFn = createAceite
@@ -79,11 +106,13 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
     mutationFn,
     onSuccess: async() =>{
       switch (variant) {
-        case 'aceite':
-          await queryClient.invalidateQueries({
-            queryKey: ['aceites'], 
-            refetchType: 'active',
-          })
+        case PRODUCT.aceite:
+          if(!params.id){
+            await queryClient.invalidateQueries({
+              queryKey: ['aceites'], 
+              refetchType: 'active',
+            })
+          }
           break;
 
           default:
@@ -93,12 +122,6 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
       navigate('/motorepuestos')
     }
   })
-
-  const closeModal = () => {
-    onClose();
-    navigate(`/motorepuestos`)
-  }
-  
 
   return (
     <>
@@ -115,7 +138,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
         <ModalContent>
           <ModalHeader textAlign={'center'}>
           { params.id ? 'Editar ' : 'Registrar nuevo ' }
-            Producto
+            producto
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
@@ -123,10 +146,11 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
               initialValues={ initialValues }
               onSubmit={ (values) => {
                 console.log(values);
-
                 switch (variant) {
                   case PRODUCT.aceite:
+                    
                     mutate(values);
+                    
                   default:
                     break;
                 }

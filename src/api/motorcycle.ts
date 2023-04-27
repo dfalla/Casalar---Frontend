@@ -16,6 +16,15 @@ export const getAceites = async() => {
     }
 }
 
+export const getAceite = async(id: string) =>{
+    try {
+        const { data } = await Http.get(`/aceites/${id}`)
+        return data;
+    } catch (error) {
+        console.log("error",error)
+    }
+}
+
 export const createAceite = async( values: CreateAceitesArgs) => {
     console.log('values dese createAceite', values);
     
@@ -27,6 +36,25 @@ export const createAceite = async( values: CreateAceitesArgs) => {
 
     try {
         const { data } = await Http.post('/aceites', formData)
+        setTimeout(() => {
+            modalNotificationsSuccess(data.msg)
+        }, 1500);
+    } catch (error) {
+        console.log('error', error)
+    }
+}
+
+export const updateAceite = async( values: CreateAceitesArgs, id: string) => {
+    console.log('values dese createAceite', values);
+    
+    const formData = new FormData();
+
+    for(let key in values){
+        formData.append(key, (values as SafeAny)[key]);
+    }
+
+    try {
+        const { data } = await Http.post(`/aceites/${id}`, formData)
         setTimeout(() => {
             modalNotificationsSuccess(data.msg)
         }, 1500);
