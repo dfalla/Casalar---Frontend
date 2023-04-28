@@ -21,6 +21,11 @@ import {
   MenuItem,
   MenuList,
   Button,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel
 } from '@chakra-ui/react';
 import {
   FiMenu,
@@ -34,15 +39,37 @@ import { ReactText } from 'react';
 import { useAuthStore } from '../../../store';
 import { NavLink } from "react-router-dom";
 
-interface LinkItemProps {
-  name: string;
-  icon: IconType;
+interface SubContent {
+  title: string;
   path: string;
 }
 
+interface LinkItemProps {
+  name: string;
+  icon: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+  path: string;
+  subContent: SubContent[];
+}
+
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Motorepuestos', icon: FaMotorcycle, path: '/motorepuestos' },
-  { name: 'Mochilas', icon: GiBackpack, path: '/mochilas' },
+  { 
+    name: 'Motorepuestos', 
+    icon: <FaMotorcycle/>, 
+    path: '/motorepuestos', 
+    subContent: [
+      {
+        title: 'aceites',
+        path: '/aceites'
+      },
+      {
+        title: 'llantas',
+        path: '/llantas'
+      }
+    ] 
+  },
+  // { name: 'Motorepuestos', icon: FaMotorcycle, path: '/motorepuestos', subContent: ['aceites', 'llantas'] },
+
+  // { name: 'Mochilas', icon: GiBackpack, path: '/mochilas' },
 ];
 
 export const Sidebar = ({
@@ -100,9 +127,43 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} path={link.path}>
-          {link.name}
-        </NavItem>
+        <Accordion allowMultiple borderColor={'white'}>
+          <AccordionItem key={link.name}>
+            <h2>
+              <AccordionButton>
+                <Box as={Button}  flex='1' textAlign='left' color={'black'} leftIcon={link.icon}>
+                  {link.name}
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+
+            <AccordionPanel pb={4}>
+              { link.subContent.map((item)=>(
+                <VStack>
+                  <Button
+                    as={Box}
+                    width={'100%'}
+                    color='black' 
+                    _hover={{
+                      backgroundColor: 'grey'
+                    }}
+                  >
+                    <NavLink
+                      to={item.path}
+                    >
+                      { item.title }
+                    </NavLink>
+                  </Button>
+                </VStack>
+                
+              ))}
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+        // <NavItem key={link.name} icon={link.icon} path={link.path}>
+        //   {link.name}
+        // </NavItem>
       ))}
     </Box>
   );

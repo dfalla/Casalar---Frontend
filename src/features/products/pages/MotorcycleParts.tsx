@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
-import { Card } from "../../../common"
 import { getAceites, getLlantas } from "../../../api/motorcycle";
-import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon  } from "@chakra-ui/react";
+import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon, Text  } from "@chakra-ui/react";
 import { Aceites, Llantas } from "../components";
 
 interface MotorcyclePartsProps {
@@ -10,20 +9,10 @@ interface MotorcyclePartsProps {
 
 
 export const MotorcycleParts = ( { edit }: MotorcyclePartsProps ) => {
-  // const { data, isLoading, error, isError } = useQuery({ queryKey: ['aceites'], queryFn: getAceites })
-  const { data, isLoading, error, isError } = useQuery({ queryKey: ['llantas'], queryFn: getLlantas })
-
-
-  if(isLoading){
-    return <h1>Cargando los Datos, espere por favor</h1>
-  }
-
+  
   return (
     <Box marginTop={20}>
-      <Accordion allowMultiple>
-        <Aceites edit={ edit }/>
-        <Llantas/>
-      </Accordion>
+      <h1> Tabla de todos los productos </h1>
     </Box>
     
   )

@@ -7,7 +7,16 @@ export interface ElementArgs{
     stock: string;
 }
 
-export interface CreateAceitesArgs{
+export interface ProductArgs{
+    marca: string;
+    precio: string;
+    stock: string;
+    descripcion: string;
+    imagen: File | null;
+}
+
+export interface UpdateAceitesArgs{
+    id: string;
     marca: string;
     precio: string;
     stock: string;

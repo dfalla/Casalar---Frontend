@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAuthStore } from "../store";
 import { LoginPage, RegisterPage } from "../features";
 import { Container, ProtectedRoutes } from "../common";
-import { Backpacks, FormProducto, MotorcycleParts } from "../features/products";
+import { Aceites, Backpacks, FormProducto, MotorcycleParts, Llantas } from "../features/products";
 
 export const AppRouter = () => {
 
@@ -16,9 +16,14 @@ export const AppRouter = () => {
                 <Route path="/auth/register" element={<RegisterPage/>} />
 
                 <Route path="/" element={<ProtectedRoutes isAllowed={isAuth} />}>
-                  <Route index element={<MotorcycleParts/>}/>
+                  <Route index element={<Aceites/>}/>
                   <Route path="/motorepuestos" element={<MotorcycleParts/>}/>
-                  <Route path="/motorepuestos/:id" element={<MotorcycleParts edit={true}/>}/>
+                  <Route path="/motorepuestos/aceites" element={<Aceites/>}/>
+                  <Route path="/motorepuestos/llantas" element={<Llantas/>}/>
+                  
+                  {/* <Route path="/motorepuestos/aceite/:id" element={<MotorcycleParts edit={true}/>}/>
+                  <Route path="/motorepuestos/llanta/:id" element={<MotorcycleParts edit={true}/>}/> */}
+
                   <Route path="/mochilas" element={<Backpacks/>}/>
                 </Route>
             </Routes>

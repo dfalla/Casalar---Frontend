@@ -9,7 +9,7 @@ import {
     Button
 } from '@chakra-ui/react';
 import { PRODUCT } from '../../../constants';
-import { useDeleteAceite } from '../../../features/products/hooks';
+import { useDeleteAceite, useDeleteLlanta } from '../../../features/products/hooks';
 import { UseMutateFunction } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
@@ -34,6 +34,11 @@ export const Card = ({marca, imagen, precio, stock, id, variant, descripcion} : 
     deleteProduct = deleteAceite;
   }
 
+  if(variant === PRODUCT.llanta){
+    const { mutate: deleteLlanta } = useDeleteLlanta();
+    deleteProduct = deleteLlanta;
+  }
+
   const deleteItem = (id: number) => {
     Swal.fire({
       title: `¿Estás seguro que desea eliminar el ${variant} de marca ${marca}?`,
@@ -50,8 +55,8 @@ export const Card = ({marca, imagen, precio, stock, id, variant, descripcion} : 
     });
   }
 
-  const editProduct = (id: number) => {
-    navigate(`/motorepuestos/${id}`)
+  const editProduct = (id: number, variant: string) => {
+    navigate(`/motorepuestos/${variant}/${id}`)
   }
 
   return (
@@ -123,7 +128,7 @@ export const Card = ({marca, imagen, precio, stock, id, variant, descripcion} : 
           Eliminar 
         </Button>
         <Button
-          onClick={() => editProduct(id)}
+          onClick={() => editProduct(id, variant)}
           flex={1}
           fontSize={'sm'}
           rounded={'full'}
