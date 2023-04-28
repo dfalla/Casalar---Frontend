@@ -67,6 +67,19 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
   
   let mutationUpdateFn;
 
+  let ruta: string;
+
+  switch(variant){
+    case PRODUCT.aceite: 
+      ruta = 'aceites';
+      break;
+    case PRODUCT.llanta:
+      ruta = 'llantas';
+      break;
+    default:
+      break;
+  }
+
   switch (variant) {
     case PRODUCT.aceite:
       if(params.id && edit === true) mutationUpdateFn = updateAceite;
@@ -83,7 +96,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
 
   const closeModal = () => {
     onClose();
-    navigate(`/motorepuestos`)
+    navigate(`/motorepuestos/${ruta}`)
   }
 
   useEffect(() => {
@@ -93,26 +106,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
 
   useEffect(() => {
     if(edit && params.id) onOpen();
-  }, [params.id]);
-
-  // useEffect(() => {
-    
-  //   if(variant === PRODUCT.aceite && params.id && edit === true){
-
-  //    console.log("aceite", {variant, aceiteId: params.id, edit})
-  //   }
-  // }, [variant, params.id, edit]);
-
-
-  // useEffect(() => {
-
-  //   if(variant === PRODUCT.llanta && params.id){
-
-  //    console.log("llanta",{variant, llantaId: params.id, edit})
-     
-  //   }
-  // }, [variant, params.id, edit]);
-
+  }, [params.id, edit]);
 
   const addProduct = useMutation({
     mutationFn: mutationCreateFn,
@@ -135,7 +129,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
           break;
       }
       onClose()
-      navigate('/motorepuestos')
+      navigate(`/motorepuestos/${ruta}`)
     }
   })
 
@@ -161,7 +155,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
             <Formik
               initialValues={ initialValues }
               onSubmit={ (values) => {
-
+                console.log(values)
                 if(!params.id && !edit) addProduct.mutate(values);
 
               }}

@@ -8,12 +8,12 @@ import theme from './theme'
 import { AppRouter } from './router'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <StrictMode>
+  // <StrictMode>
     <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
         <AppRouter />
         <ReactQueryDevtools initialIsOpen={false}/>
       </QueryClientProvider>
     </ChakraProvider>
-  </StrictMode>,
+  // </StrictMode>,
 )

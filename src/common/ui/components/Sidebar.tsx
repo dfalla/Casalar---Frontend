@@ -59,11 +59,11 @@ const LinkItems: Array<LinkItemProps> = [
     subContent: [
       {
         title: 'aceites',
-        path: '/aceites'
+        path: '/motorepuestos/aceites'
       },
       {
         title: 'llantas',
-        path: '/llantas'
+        path: '/motorepuestos/llantas'
       }
     ] 
   },
@@ -127,8 +127,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <Accordion allowMultiple borderColor={'white'}>
-          <AccordionItem key={link.name}>
+        <Accordion allowMultiple borderColor={'white'} key={link.name}> 
+          <AccordionItem >
             <h2>
               <AccordionButton>
                 <Box as={Button}  flex='1' textAlign='left' color={'black'} leftIcon={link.icon}>
@@ -140,7 +140,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
             <AccordionPanel pb={4}>
               { link.subContent.map((item)=>(
-                <VStack>
+                <VStack key={item.title}>
                   <Button
                     as={Box}
                     width={'100%'}
@@ -149,11 +149,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                       backgroundColor: 'grey'
                     }}
                   >
-                    <NavLink
+                    <NavItem key={item.title} path={item.path}>
+                      {item.title}
+                    </NavItem>
+                    {/* <NavLink
                       to={item.path}
                     >
                       { item.title }
-                    </NavLink>
+                    </NavLink> */}
                   </Button>
                 </VStack>
                 
@@ -161,16 +164,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-        // <NavItem key={link.name} icon={link.icon} path={link.path}>
-        //   {link.name}
-        // </NavItem>
+        
       ))}
     </Box>
   );
 };
 
 interface NavItemProps extends FlexProps {
-  icon: IconType;
+  icon?: IconType;
   path: string;
   children: ReactText;
 }
@@ -184,10 +185,6 @@ const NavItem = ({ icon, path, children, ...rest }: NavItemProps) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
-        _hover={{
-          bg: 'cyan.400',
-          color: 'white',
-        }}
         {...rest}>
         {icon && (
           <Icon

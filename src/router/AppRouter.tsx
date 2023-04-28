@@ -21,8 +21,8 @@ export const AppRouter = () => {
                   <Route path="/motorepuestos/aceites" element={<Aceites/>}/>
                   <Route path="/motorepuestos/llantas" element={<Llantas/>}/>
                   
-                  {/* <Route path="/motorepuestos/aceite/:id" element={<MotorcycleParts edit={true}/>}/>
-                  <Route path="/motorepuestos/llanta/:id" element={<MotorcycleParts edit={true}/>}/> */}
+                  <Route path="/motorepuestos/aceite/:id" element={<Aceites edit={true}/>}/>
+                  <Route path="/motorepuestos/llanta/:id" element={<Llantas edit={true}/>}/>
 
                   <Route path="/mochilas" element={<Backpacks/>}/>
                 </Route>
