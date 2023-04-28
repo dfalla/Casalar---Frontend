@@ -49,6 +49,7 @@ interface FormProductoArgs {
 }
 
 export const FormProducto = ({variant, edit}: FormProductoArgs) => {
+  console.log({variant, edit})
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 

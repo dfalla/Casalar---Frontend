@@ -1,17 +1,17 @@
-import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon  } from "@chakra-ui/react";
-import { Card } from "../../../common"
-import { useGetLlantas } from "../hooks";
-import { PRODUCT } from "../../../constants";
-import { FormProducto } from "../domain";
-import { ElementArgs } from "../../../interfaces";
+import { Box, SimpleGrid, Heading, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon  } from "@chakra-ui/react";
+import { Card } from "../../../../common"
+import { FormProducto } from "../../domain";
+import { useGetAceites } from "../../hooks";
+import { ElementArgs } from "../../../../interfaces";
+import { PRODUCT } from "../../../../constants";
 
-interface LlantasProps {
+interface AceitesProps {
   edit?: boolean;
 }
 
-export const Llantas = ({edit}: LlantasProps) => {
-  const {data, isError, isLoading} = useGetLlantas();
-  
+export const Aceites = ({ edit }: AceitesProps) => {
+  const {data, isError, isLoading} = useGetAceites();
+
   if(isLoading){
     
     // COLOCAR UN SPINNER
@@ -20,16 +20,15 @@ export const Llantas = ({edit}: LlantasProps) => {
 
   return (
     <>
-      
       <Box bg={'brand.clonika.blue.800'} marginTop={20} padding={4}>
-        <FormProducto variant={PRODUCT.llanta} />
+        <FormProducto variant={PRODUCT.aceite} edit={edit}/>
         <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))' >
           {
             data.map((element: ElementArgs)=>(
               <Card 
                 key={element.id} 
                 id={ element.id }
-                variant={PRODUCT.llanta}
+                variant={PRODUCT.aceite}
                 descripcion={element.descripcion}
                 marca={element.marca} 
                 imagen={element.imagen} 

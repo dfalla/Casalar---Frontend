@@ -34,6 +34,8 @@ import {
 } from 'react-icons/fi';
 import { FaMotorcycle } from "react-icons/fa";
 import { GiBackpack } from "react-icons/gi";
+import { TbCircuitMotor } from "react-icons/tb";
+import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import { useAuthStore } from '../../../store';
@@ -48,10 +50,15 @@ interface LinkItemProps {
   name: string;
   icon: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
   path: string;
-  subContent: SubContent[];
+  subContent?: SubContent[];
 }
 
 const LinkItems: Array<LinkItemProps> = [
+  { 
+    name: 'Dashboard', 
+    icon: <MdOutlineDashboardCustomize/>, 
+    path: '/dashboard', 
+  },
   { 
     name: 'Motorepuestos', 
     icon: <FaMotorcycle/>, 
@@ -67,9 +74,23 @@ const LinkItems: Array<LinkItemProps> = [
       }
     ] 
   },
-  // { name: 'Motorepuestos', icon: FaMotorcycle, path: '/motorepuestos', subContent: ['aceites', 'llantas'] },
 
-  // { name: 'Mochilas', icon: GiBackpack, path: '/mochilas' },
+  { 
+    name: 'Mochilas', 
+    icon: <GiBackpack/>, 
+    path: '/mochilas',
+    subContent: [
+      {
+        title: 'fumigadoras',
+        path: '/mochilas/fumigadoras'
+      }
+    ]
+  },
+  { 
+    name: 'Motores', 
+    icon: <TbCircuitMotor/>, 
+    path: '/motores',
+  },
 ];
 
 export const Sidebar = ({
@@ -127,43 +148,91 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <Accordion allowMultiple borderColor={'white'} key={link.name}> 
-          <AccordionItem >
-            <h2>
-              <AccordionButton>
-                <Box as={Button}  flex='1' textAlign='left' color={'black'} leftIcon={link.icon}>
-                  {link.name}
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-
-            <AccordionPanel pb={4}>
-              { link.subContent.map((item)=>(
-                <VStack key={item.title}>
-                  <Button
-                    as={Box}
-                    width={'100%'}
-                    color='black' 
-                    _hover={{
-                      backgroundColor: 'grey'
-                    }}
-                  >
-                    <NavItem key={item.title} path={item.path}>
-                      {item.title}
-                    </NavItem>
-                    {/* <NavLink
-                      to={item.path}
+        link.hasOwnProperty('subContent') 
+           ? (
+              <Accordion borderColor={'white'} key={link.name} allowToggle> 
+                <AccordionItem >
+                  <h2>
+                    <AccordionButton 
+                      // as={Button}
+                      // _hover={{
+                      //   backgroundColor: 'brand.clonika.blue.700',
+                      //   color: 'white'
+                      // }}
                     >
-                      { item.title }
-                    </NavLink> */}
-                  </Button>
-                </VStack>
-                
-              ))}
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
+                          {/* <HStack justifyContent={'space-between'}> */}
+                            <Button 
+                              flex='1'
+                              width={'100%'} 
+                              textAlign='left' 
+                              color={'black'} 
+                              leftIcon={link.icon}
+                              _hover={{
+                                color: 'white'
+                              }}
+                            >
+
+                              <Box as="span" flex='1' textAlign='left'>
+                                {link.name}
+                              </Box>
+
+                            </Button>
+                            <AccordionIcon/>
+
+                          {/* </HStack> */}
+                        
+
+                    </AccordionButton>
+                  </h2>
+
+                  <AccordionPanel pb={4}>
+                    { link.subContent!.map((item)=>(
+                      <VStack key={item.title}>
+                        
+                          <Button
+                            as={NavLink}
+                            to={item.path}
+                            width={'100%'}
+                            color='black' 
+                            _hover={{
+                              backgroundColor: 'brand.clonika.blue.700',
+                              color: 'white'
+                            }}
+                          >
+                            {/* <NavItem key={item.title} path={item.path}> */}
+                              {item.title}
+                            {/* </NavItem> */}
+                          
+                          </Button>
+                      </VStack>
+                      
+                    ))}
+                  </AccordionPanel>
+                </AccordionItem>
+             </Accordion>
+            )
+           : (
+              <Box>
+                <Button 
+                  flex='1'
+                  color={'black'} 
+                  leftIcon={link.icon}
+                  textAlign={'left'} 
+                  width={'100%'}
+                  key={link.name} 
+                  as={NavLink}
+                  to={link.path}
+                  _hover={{
+                    backgroundColor: 'brand.clonika.blue.700',
+                    color: 'white'
+                  }}
+                >
+                  {link.name}
+                </Button>
+              </Box>
+           )
+            
+
         
       ))}
     </Box>
