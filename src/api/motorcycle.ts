@@ -1,5 +1,5 @@
 import Http from "../libs"
-import { ProductArgs } from "../interfaces";
+import { ProductArgs, UpdateProductArgs } from "../interfaces";
 import { SafeAny } from "../common";
 import { modalNotificationsSuccess } from "../helpers";
 
@@ -44,12 +44,16 @@ export const createAceite = async( values: ProductArgs) => {
     }
 }
 
-export const updateAceite = async( values: ProductArgs, id: string) => {
+export const updateAceite = async( values: UpdateProductArgs) => {
+    const {  id, descripcion, imagen, marca, precio } = values;
+
+    const VALUES = {descripcion, imagen, marca, precio}
+
     console.log('values dese updateAceite', values);
     
     const formData = new FormData();
 
-    for(let key in values){
+    for(let key in VALUES){
         formData.append(key, (values as SafeAny)[key]);
     }
 
@@ -100,6 +104,30 @@ export const createLlanta = async( values: ProductArgs) => {
         setTimeout(() => {
             modalNotificationsSuccess(data.msg)
         }, 0);
+    } catch (error) {
+        console.log('error', error)
+    }
+}
+
+export const updateLlanta = async( values: UpdateProductArgs) => {
+    console.log('values dese updateAceite', values);
+    const {  id, descripcion, imagen, marca, precio } = values;
+
+    const VALUES = {descripcion, imagen, marca, precio}
+
+    console.log('values dese updateAceite', values);
+    
+    const formData = new FormData();
+
+    for(let key in VALUES){
+        formData.append(key, (values as SafeAny)[key]);
+    }
+
+    try {
+        const { data } = await Http.post(`/llantas/${id}`, formData)
+        setTimeout(() => {
+            modalNotificationsSuccess(data.msg)
+        }, 1500);
     } catch (error) {
         console.log('error', error)
     }

@@ -33,7 +33,8 @@ import {
   FiBell,
 } from 'react-icons/fi';
 import { FaMotorcycle } from "react-icons/fa";
-import { GiBackpack } from "react-icons/gi";
+import { GiBackpack, GiFlatTire, GiDelicatePerfume } from "react-icons/gi";
+import { RiOilFill } from "react-icons/ri";
 import { TbCircuitMotor } from "react-icons/tb";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { IconType } from 'react-icons';
@@ -44,6 +45,7 @@ import { NavLink } from "react-router-dom";
 interface SubContent {
   title: string;
   path: string;
+  icon?: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 }
 
 interface LinkItemProps {
@@ -59,6 +61,13 @@ const LinkItems: Array<LinkItemProps> = [
     icon: <MdOutlineDashboardCustomize/>, 
     path: '/dashboard', 
   },
+
+  { 
+    name: 'Motores', 
+    icon: <TbCircuitMotor/>, 
+    path: '/motores',
+  },
+
   { 
     name: 'Motorepuestos', 
     icon: <FaMotorcycle/>, 
@@ -66,11 +75,13 @@ const LinkItems: Array<LinkItemProps> = [
     subContent: [
       {
         title: 'aceites',
-        path: '/motorepuestos/aceites'
+        path: '/motorepuestos/aceites',
+        icon: <RiOilFill/>
       },
       {
         title: 'llantas',
-        path: '/motorepuestos/llantas'
+        path: '/motorepuestos/llantas',
+        icon: <GiFlatTire/>
       }
     ] 
   },
@@ -82,14 +93,10 @@ const LinkItems: Array<LinkItemProps> = [
     subContent: [
       {
         title: 'fumigadoras',
-        path: '/mochilas/fumigadoras'
+        path: '/mochilas/fumigadoras',
+        icon: <GiDelicatePerfume/>
       }
     ]
-  },
-  { 
-    name: 'Motores', 
-    icon: <TbCircuitMotor/>, 
-    path: '/motores',
   },
 ];
 
@@ -152,88 +159,83 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
            ? (
               <Accordion borderColor={'white'} key={link.name} allowToggle> 
                 <AccordionItem >
-                  <h2>
                     <AccordionButton 
-                      // as={Button}
-                      // _hover={{
-                      //   backgroundColor: 'brand.clonika.blue.700',
-                      //   color: 'white'
-                      // }}
+                      // borderRadius={10}
+                      width={'100%'}
+                      _hover={{
+                        backgroundColor: 'brand.clonika.blue.700',
+                        color: 'white'
+                      }}
+                      padding='0px'
+                      paddingRight={'5px'}
                     >
-                          {/* <HStack justifyContent={'space-between'}> */}
-                            <Button 
-                              flex='1'
-                              width={'100%'} 
-                              textAlign='left' 
-                              color={'black'} 
-                              leftIcon={link.icon}
-                              _hover={{
-                                color: 'white'
-                              }}
-                            >
+                      <Button 
+                        as={Box}
+                        flex='1'
+                        textAlign='left' 
+                        color={'black'} 
+                        leftIcon={link.icon}
+                        _hover={{
+                          color: 'white'
+                        }}
+                      >
 
-                              <Box as="span" flex='1' textAlign='left'>
-                                {link.name}
-                              </Box>
+                        <Box as="span" flex='1' textAlign='left'>
+                          {link.name}
+                        </Box>
 
-                            </Button>
-                            <AccordionIcon/>
+                        <AccordionIcon/>
 
-                          {/* </HStack> */}
-                        
-
+                      </Button>
                     </AccordionButton>
-                  </h2>
 
                   <AccordionPanel pb={4}>
                     { link.subContent!.map((item)=>(
-                      <VStack key={item.title}>
                         
-                          <Button
-                            as={NavLink}
-                            to={item.path}
-                            width={'100%'}
-                            color='black' 
-                            _hover={{
-                              backgroundColor: 'brand.clonika.blue.700',
-                              color: 'white'
-                            }}
-                          >
-                            {/* <NavItem key={item.title} path={item.path}> */}
-                              {item.title}
-                            {/* </NavItem> */}
-                          
-                          </Button>
-                      </VStack>
+                      <Button
+                        as={NavLink}
+                        to={item.path}
+                        key={item.title}
+                        leftIcon={item.icon}
+                        width={'100%'}
+                        color='black' 
+                        _hover={{
+                          backgroundColor: 'brand.clonika.blue.700',
+                          color: 'white'
+                        }}
+                      >
+                        <Box as="span" flex='1' textAlign='left'>
+                          {/* {link.name} */}
+                          {item.title}
+                        </Box>
                       
+                      </Button>
                     ))}
                   </AccordionPanel>
                 </AccordionItem>
              </Accordion>
             )
            : (
-              <Box>
-                <Button 
-                  flex='1'
-                  color={'black'} 
-                  leftIcon={link.icon}
-                  textAlign={'left'} 
-                  width={'100%'}
-                  key={link.name} 
-                  as={NavLink}
-                  to={link.path}
-                  _hover={{
-                    backgroundColor: 'brand.clonika.blue.700',
-                    color: 'white'
-                  }}
-                >
+              <Button 
+                flex='1'
+                borderRadius={0}
+                color={'black'} 
+                leftIcon={link.icon}
+                textAlign={'left'} 
+                width={'100%'}
+                key={link.name} 
+                as={NavLink}
+                to={link.path}
+                _hover={{
+                  backgroundColor: 'brand.clonika.blue.700',
+                  color: 'white'
+                }}
+              >
+                <Box as="span" flex='1' textAlign='left'>
                   {link.name}
-                </Button>
-              </Box>
-           )
-            
-
-        
+                </Box>
+              </Button>
+            )
       ))}
     </Box>
   );

@@ -25,6 +25,7 @@ import { InputField, SafeAny } from '../../../common';
 import { createAceite, createLlanta, getAceite, updateAceite } from '../../../api';
 import { PRODUCT } from '../../../constants';
 import { useGetAceiteById } from '../hooks/useGetAceiteById';
+import { useAddProduct } from '../hooks';
 
   
 const INITIALVALUES: ProductArgs = {
@@ -48,27 +49,8 @@ interface FormProductoArgs {
   edit?: boolean;
 }
 
-export const FormProducto = ({variant, edit}: FormProductoArgs) => {
-  console.log({variant, edit})
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const initialRef = useRef(null)
-  const finalRef = useRef(null)
-
-  const [initialValues, setInitialValues] = useState<ProductArgs>(INITIALVALUES);
-
-  const params = useParams();
-
-  const queryClient = useQueryClient();  
-
-  const navigate = useNavigate();
-
-  let mutationCreateFn;
-  
-  let mutationUpdateFn;
-
-  let ruta: string;
+function Ruta(variant: string | undefined){
+  let ruta: string= '';
 
   switch(variant){
     case PRODUCT.aceite: 
@@ -81,19 +63,29 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
       break;
   }
 
-  switch (variant) {
-    case PRODUCT.aceite:
-      if(params.id && edit === true) mutationUpdateFn = updateAceite;
-      mutationCreateFn = createAceite;
-      break;
-    case PRODUCT.llanta:
-      if(params.id && edit === true) mutationUpdateFn = updateAceite;
-      mutationCreateFn = createLlanta;
-      break;
+  return ruta;
+}
+
+export const FormProducto = ({variant, edit}: FormProductoArgs) => {
+console.log({variant, edit})
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const initialRef = useRef(null)
+  const finalRef = useRef(null)
+
+  const [initialValues, setInitialValues] = useState<ProductArgs>(INITIALVALUES);
+
+  const params = useParams();
+
+  // const queryClient = useQueryClient();  
+
+  const navigate = useNavigate();
+
+  // let mutationCreateFn;
   
-    default:
-      break;
-  }
+  // let mutationUpdateFn;
+
+  const ruta = Ruta(variant);
 
   const closeModal = () => {
     onClose();
@@ -109,30 +101,46 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
     if(edit && params.id) onOpen();
   }, [params.id, edit]);
 
-  const addProduct = useMutation({
-    mutationFn: mutationCreateFn,
-    onSuccess: async() =>{
-      switch (variant) {
-        case PRODUCT.aceite:
-          await queryClient.invalidateQueries({
-            queryKey: ['aceites'], 
-            refetchType: 'active',
-          })
-          break;
-        case PRODUCT.llanta:
-          await queryClient.invalidateQueries({
-            queryKey: ['llantas'], 
-            refetchType: 'active',
-          })
-          break;
+  const { addProduct } = useAddProduct({variant, onClose, ruta});
+  // switch (variant) {
+  //   case PRODUCT.aceite:
+  //     if(params.id && edit === true) mutationUpdateFn = updateAceite;
+  //     mutationCreateFn = createAceite;
+  //     break;
+  //   case PRODUCT.llanta:
+  //     if(params.id && edit === true) mutationUpdateFn = updateAceite;
+  //     mutationCreateFn = createLlanta;
+  //     break;
+  
+  //   default:
+  //     break;
+  // }
 
-          default:
-          break;
-      }
-      onClose()
-      navigate(`/motorepuestos/${ruta}`)
-    }
-  })
+
+  // const addProduct = useMutation({
+  //   mutationFn: mutationCreateFn,
+  //   onSuccess: async() =>{
+  //     switch (variant) {
+  //       case PRODUCT.aceite:
+  //         await queryClient.invalidateQueries({
+  //           queryKey: ['aceites'], 
+  //           refetchType: 'active',
+  //         })
+  //         break;
+  //       case PRODUCT.llanta:
+  //         await queryClient.invalidateQueries({
+  //           queryKey: ['llantas'], 
+  //           refetchType: 'active',
+  //         })
+  //         break;
+
+  //         default:
+  //         break;
+  //     }
+  //     onClose()
+  //     navigate(`/motorepuestos/${ruta}`)
+  //   }
+  // })
 
   return (
     <>

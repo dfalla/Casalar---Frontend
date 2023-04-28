@@ -15,7 +15,7 @@ export interface ProductArgs{
     imagen: File | null;
 }
 
-export interface UpdateAceitesArgs{
+export interface UpdateProductArgs{
     id: string;
     marca: string;
     precio: string;
