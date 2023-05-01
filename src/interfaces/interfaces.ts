@@ -8,6 +8,7 @@ export interface ElementArgs{
 }
 
 export interface ProductArgs{
+    id?: string;
     marca: string;
     precio: string;
     stock: string;
@@ -21,7 +22,7 @@ export interface UpdateProductArgs{
     precio: string;
     stock: string;
     descripcion: string;
-    imagen: File | null;
+    imagen?: File | null;
 }
 
 export interface createUser {

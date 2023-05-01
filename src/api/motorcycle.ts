@@ -16,10 +16,11 @@ export const getAceites = async() => {
     }
 }
 
-export const getAceite = async(id: string) =>{
+export const getAceiteById = async(id: string) =>{
     try {
         const { data } = await Http.get(`/aceites/${id}`)
-        return data;
+        return data!.aceite;
+        
     } catch (error) {
         console.log("error",error)
     }
@@ -86,6 +87,16 @@ export const getLlantas = async() => {
 
     } catch (error) {
         console.log('error', error)
+    }
+}
+
+export const getLlantaById = async(id: string) =>{
+    try {
+        const { data } = await Http.get(`/llantas/${id}`)
+        return data!.llanta;
+        
+    } catch (error) {
+        console.log("error",error)
     }
 }
 

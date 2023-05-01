@@ -20,12 +20,12 @@ import {
   FormLabel,
   Text
 } from '@chakra-ui/react';
-import { ProductArgs } from '../../../interfaces';
+import { ProductArgs, UpdateProductArgs } from '../../../interfaces';
 import { InputField, SafeAny } from '../../../common';
-import { createAceite, createLlanta, getAceite, updateAceite } from '../../../api';
+import { createAceite, createLlanta, updateAceite } from '../../../api';
 import { PRODUCT } from '../../../constants';
 import { useGetAceiteById } from '../hooks/useGetAceiteById';
-import { useAddProduct } from '../hooks';
+import { useAddOrProduct } from '../hooks';
 
   
 const INITIALVALUES: ProductArgs = {
@@ -54,10 +54,10 @@ function Ruta(variant: string | undefined){
 
   switch(variant){
     case PRODUCT.aceite: 
-      ruta = 'aceites';
+      ruta = PRODUCT.aceite;
       break;
     case PRODUCT.llanta:
-      ruta = 'llantas';
+      ruta = PRODUCT.llanta;
       break;
     default:
       break;
@@ -67,7 +67,6 @@ function Ruta(variant: string | undefined){
 }
 
 export const FormProducto = ({variant, edit}: FormProductoArgs) => {
-console.log({variant, edit})
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const initialRef = useRef(null)
@@ -76,16 +75,12 @@ console.log({variant, edit})
   const [initialValues, setInitialValues] = useState<ProductArgs>(INITIALVALUES);
 
   const params = useParams();
+  const ruta = Ruta(variant);
 
-  // const queryClient = useQueryClient();  
+
+  const { addProduct, editProduct, data } = useAddOrProduct({variant, ruta, parameter: params.id, edit});
 
   const navigate = useNavigate();
-
-  // let mutationCreateFn;
-  
-  // let mutationUpdateFn;
-
-  const ruta = Ruta(variant);
 
   const closeModal = () => {
     onClose();
@@ -101,46 +96,19 @@ console.log({variant, edit})
     if(edit && params.id) onOpen();
   }, [params.id, edit]);
 
-  const { addProduct } = useAddProduct({variant, onClose, ruta});
-  // switch (variant) {
-  //   case PRODUCT.aceite:
-  //     if(params.id && edit === true) mutationUpdateFn = updateAceite;
-  //     mutationCreateFn = createAceite;
-  //     break;
-  //   case PRODUCT.llanta:
-  //     if(params.id && edit === true) mutationUpdateFn = updateAceite;
-  //     mutationCreateFn = createLlanta;
-  //     break;
-  
-  //   default:
-  //     break;
-  // }
-
-
-  // const addProduct = useMutation({
-  //   mutationFn: mutationCreateFn,
-  //   onSuccess: async() =>{
-  //     switch (variant) {
-  //       case PRODUCT.aceite:
-  //         await queryClient.invalidateQueries({
-  //           queryKey: ['aceites'], 
-  //           refetchType: 'active',
-  //         })
-  //         break;
-  //       case PRODUCT.llanta:
-  //         await queryClient.invalidateQueries({
-  //           queryKey: ['llantas'], 
-  //           refetchType: 'active',
-  //         })
-  //         break;
-
-  //         default:
-  //         break;
-  //     }
-  //     onClose()
-  //     navigate(`/motorepuestos/${ruta}`)
-  //   }
-  // })
+  useEffect(() => {
+    if(data !== undefined){
+      setInitialValues({
+            descripcion: data.descripcion,
+            marca: data.marca, 
+            precio: data.precio, 
+            stock: data.stock,
+            imagen: data.imagen
+          })
+    } else {
+      setInitialValues(INITIALVALUES)
+    }
+  }, [data]);
 
   return (
     <>
@@ -164,18 +132,33 @@ console.log({variant, edit})
             <Formik
               initialValues={ initialValues }
               onSubmit={ (values) => {
-                console.log(values)
+                // console.log(`data ${data}`, values)
                 if(!params.id && !edit) addProduct.mutate(values);
+                else{
+                  const VALUES: UpdateProductArgs = {
+                   id: params.id!,
+                   descripcion: values.descripcion,
+                   marca: values.marca,
+                   precio: values.precio,
+                   stock: values.stock
+                  }
+                  console.log('VALUES para editar', VALUES)
+                  // editProduct.mutate(VALUES)
+                }
+                closeModal();
 
               }}
               validationSchema={validationSchema}
+              enableReinitialize={true}
             >
                 {
-                  ({setFieldValue})=>(
+                  ({ setFieldValue, getFieldProps })=>(
                       <Form>
                         <VStack alignItems={'flex-start'} marginBottom={4}>
                           <InputField
-                            name='marca'
+                            // name='marca'
+                            {...getFieldProps('marca')}
+                            // value={data && initialValues.marca}
                             label='Marca'
                             type='text'
                             variant={'filled'}
@@ -183,6 +166,7 @@ console.log({variant, edit})
 
                           <InputField
                             name='descripcion'
+                            // value={ data && initialValues.descripcion}
                             label='Descripcion del producto'
                             type='text'
                             variant={'filled'}
@@ -190,6 +174,7 @@ console.log({variant, edit})
 
                           <InputField
                             name='precio'
+                            // value={data && initialValues.precio}
                             label='Precio del producto'
                             type='number'
                             variant={'filled'}
@@ -197,6 +182,7 @@ console.log({variant, edit})
 
                           <InputField
                             name='stock'
+                            // value={data && initialValues.stock}
                             label='¿Cuántos productos hay en Stock?'
                             type='number'
                             variant={'filled'}
@@ -210,6 +196,7 @@ console.log({variant, edit})
                             onChange={(e: SafeAny)=>setFieldValue('imagen', e.target.files[0])}
                             type='file'
                           /> 
+
                         </VStack>
 
                         <HStack justifyContent={'space-between'}>
