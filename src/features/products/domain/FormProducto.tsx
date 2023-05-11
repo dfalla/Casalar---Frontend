@@ -20,11 +20,9 @@ import {
   FormLabel,
   Text
 } from '@chakra-ui/react';
-import { ProductArgs, UpdateProductArgs } from '../../../interfaces';
+import { FormProductoArgs, ProductArgs } from '../../../interfaces';
 import { InputField, SafeAny } from '../../../common';
-import { createAceite, createLlanta, updateAceite } from '../../../api';
 import { PRODUCT } from '../../../constants';
-import { useGetAceiteById } from '../hooks/useGetAceiteById';
 import { useAddProduct, useEditProduct } from '../hooks';
 
   
@@ -44,10 +42,6 @@ const validationSchema = Yup.object({
     imagen: Yup.string().required('Este campo es requerido')
 })
 
-interface FormProductoArgs {
-  variant?: string;
-  edit?: boolean;
-}
 
 function Ruta(variant: string | undefined){
   let ruta: string= '';
@@ -59,6 +53,9 @@ function Ruta(variant: string | undefined){
     case PRODUCT.llanta:
       ruta = PRODUCT.llanta;
       break;
+    case PRODUCT.motor:
+      ruta = PRODUCT.motor;
+      break;
     default:
       break;
   }
@@ -67,6 +64,7 @@ function Ruta(variant: string | undefined){
 }
 
 export const FormProducto = ({variant, edit}: FormProductoArgs) => {
+  console.log('variant', variant)
   const { isOpen, onOpen, onClose,  } = useDisclosure()
 
   const initialRef = useRef(null)
@@ -78,13 +76,20 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
   const ruta = Ruta(variant);
 
 
-  const { addProduct } = useAddProduct({variant, ruta, parameter: params.id, edit});
+  const { addProduct } = useAddProduct({ variant });
   const { editProduct, data } = useEditProduct({variant, ruta, parameter: params.id, edit})
   const navigate = useNavigate();
 
   const closeModal = () => {
+    let rutaFinal: string  = '';
+    if(variant === PRODUCT.motor){
+      rutaFinal = `/${variant}`
+    } else {
+      rutaFinal = `/motorepuestos/${ruta}`
+    }
+    
     onClose();
-    navigate(`/motorepuestos/${ruta}`)
+    navigate(rutaFinal)
   }
 
   useEffect(() => { 
@@ -141,7 +146,6 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
                     stock: values.stock,
                     imagen: values.imagen
                   }
-                  // console.log('VALUES para editar', VALUES)
                    editProduct.mutate({id: params.id, values: VALUES})
                 }
                 closeModal();
@@ -187,7 +191,6 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
                           </Text>
                           <Input
                             name='imagen'
-                            // disabled={ params.id ? true : false }
                             onChange={(e: SafeAny)=>setFieldValue('imagen', e.target.files[0])}
                             type='file'
                           /> 

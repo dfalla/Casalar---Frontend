@@ -1,4 +1,5 @@
 export const PRODUCT = {
     aceite: 'aceites',
-    llanta: 'llantas'
+    llanta: 'llantas',
+    motor : 'motores'
 }

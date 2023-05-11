@@ -1,23 +1,11 @@
 import { MutationFunction, QueryFunction, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ProductArgs, UpdateProductArgs } from "../../../interfaces";
+import { UpdateProductArgs, usEditProductArgs } from "../../../interfaces";
 import { PRODUCT } from "../../../constants";
 import { getAceiteById, getLlantaById, updateAceite, updateLlanta } from "../../../api";
 
 
-interface Args {
-  parameter?: string;
-  edit?: boolean;
-  variant: string | undefined;
-  ruta: string;
-}
-
-interface Args2 {
-  id: any;
-  values: ProductArgs;
-}
-
 function functionUpdateProductAccordingVariant(variant: string | undefined){
-  let mutationUpdateFn:  MutationFunction<void, Args2> | undefined; 
+  let mutationUpdateFn:  MutationFunction<void, UpdateProductArgs> | undefined; 
 
   switch(variant){
     case PRODUCT.aceite: 
@@ -33,15 +21,11 @@ function functionUpdateProductAccordingVariant(variant: string | undefined){
   return mutationUpdateFn;
 }
 
-export const useEditProduct = ({edit, parameter, variant, ruta}: Args) => {
+export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductArgs) => {
 
-  // console.log("id y variante",{parameter, variant})
   const updateFnMutation = functionUpdateProductAccordingVariant(variant);
- 
   
   const queryClient = useQueryClient();  
-
-
   
   let getProductById:  QueryFunction<any, (string | undefined)[]> | undefined = undefined;
 
@@ -61,7 +45,6 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: Args) => {
       break;
   }
 
-
   const { status, data, error } = useQuery({
     queryKey: [variant, parameter],
     queryFn: getProductById,
@@ -69,15 +52,29 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: Args) => {
 
   const editProduct = useMutation({
     mutationFn: updateFnMutation,
-    // onSuccess: (data) =>{
-    //   queryClient.setQueryData([variant, { id: parameter }], data)
-    // },
+    onSuccess: async() =>{
+      switch (variant) {
+        case PRODUCT.aceite:
+          await queryClient.invalidateQueries({
+            queryKey: [PRODUCT.aceite], 
+            refetchType: 'active',
+          })
+          break;
+        case PRODUCT.llanta:
+          await queryClient.invalidateQueries({
+            queryKey: [PRODUCT.llanta], 
+            refetchType: 'active',
+          })
+          break;
+
+          default:
+          break;
+      }
+    },
     onError: (error) =>{
       console.log(error)
     }
   })
-
-
 
   return {
     data,

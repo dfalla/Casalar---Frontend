@@ -13,6 +13,7 @@ import { useDeleteAceite, useDeleteLlanta } from '../../../features/products/hoo
 import { UseMutateFunction } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { useDeleteMotor } from '../../../features/products/hooks/useDeleteMotor';
 export interface CardArgs{
   id: number;
   variant: string;
@@ -37,6 +38,11 @@ export const Card = ({marca, imagen, precio, stock, id, variant, descripcion} : 
   if(variant === PRODUCT.llanta){
     const { mutate: deleteLlanta } = useDeleteLlanta();
     deleteProduct = deleteLlanta;
+  }
+
+  if(variant === PRODUCT.motor){
+    const { mutate: deleteMotor } = useDeleteMotor();
+    deleteProduct = deleteMotor;
   }
 
   const deleteItem = (id: number) => {
@@ -102,11 +108,11 @@ export const Card = ({marca, imagen, precio, stock, id, variant, descripcion} : 
         />
       </Box>
       <Stack pt={10} align={'center'}>
-        <Text color={'gray.500'} fontSize={'sm'} textTransform={'uppercase'}>
+        <Text color={'brand.clonika.blue.800'} fontSize={'sm'} textTransform={'uppercase'}>
           { marca }
         </Text>
-        <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
-          { descripcion }
+        <Heading fontSize={'md'} fontFamily={'body'} fontWeight={500}>
+          { descripcion.slice(0,17).padEnd(20, '.') }
         </Heading>
         <Stack direction={'row'} align={'center'}>
           <Text fontWeight={800} >
