@@ -3,6 +3,14 @@ import { ProductArgs, UpdateProductArgs } from "../interfaces";
 import { SafeAny } from "../common";
 import { modalNotificationsSuccess } from "../helpers";
 
+
+
+interface Args {
+    id: any;
+    values: ProductArgs;
+}
+
+
 //ACEITES
 
 export const getAceites = async() => {
@@ -45,26 +53,28 @@ export const createAceite = async( values: ProductArgs) => {
     }
 }
 
-export const updateAceite = async( values: UpdateProductArgs) => {
-    const {  id, descripcion, imagen, marca, precio } = values;
+export const updateAceite = async({id, values} : Args) => {
+    // const {  id, descripcion, imagen, marca, precio } = values;
 
-    const VALUES = {descripcion, imagen, marca, precio}
+    console.log('id y values values desde updateAceite',{id ,values});
 
-    console.log('values dese updateAceite', values);
+    const {descripcion, marca, precio, imagen} = values
     
     const formData = new FormData();
 
-    for(let key in VALUES){
+    for(let key in values){
         formData.append(key, (values as SafeAny)[key]);
     }
 
+    console.log('formData', formData);
+
     try {
-        const { data } = await Http.post(`/aceites/${id}`, formData)
+        const { data } = await Http.put(`/aceites/${id}`, formData)
         setTimeout(() => {
             modalNotificationsSuccess(data.msg)
         }, 1500);
     } catch (error) {
-        console.log('error', error)
+        console.log('error capturado 😤', error)
     }
 }
 
@@ -120,22 +130,21 @@ export const createLlanta = async( values: ProductArgs) => {
     }
 }
 
-export const updateLlanta = async( values: UpdateProductArgs) => {
-    console.log('values dese updateAceite', values);
-    const {  id, descripcion, imagen, marca, precio } = values;
+export const updateLlanta = async({id, values} : Args) => {
+    console.log('id y values desde updateLlanta', {id, values});
+    // const { id, descripcion, imagen, marca, precio } = values;
 
-    const VALUES = {descripcion, imagen, marca, precio}
+    // const VALUES = {descripcion, imagen, marca, precio}
 
-    console.log('values dese updateAceite', values);
     
     const formData = new FormData();
 
-    for(let key in VALUES){
+    for(let key in values){
         formData.append(key, (values as SafeAny)[key]);
     }
 
     try {
-        const { data } = await Http.post(`/llantas/${id}`, formData)
+        const { data } = await Http.put(`/llantas/${id}`, formData)
         setTimeout(() => {
             modalNotificationsSuccess(data.msg)
         }, 1500);

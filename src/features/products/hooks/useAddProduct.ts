@@ -11,26 +11,30 @@ interface Args {
     ruta: string;
 }
 
-export const useAddOrProduct = ({ edit, parameter, variant, ruta }:Args ) => {
+export const useAddProduct = ({ edit, parameter, variant, ruta }:Args ) => {
 
   const queryClient = useQueryClient();  
 
   let mutationCreateFn:  MutationFunction<void, ProductArgs> | undefined;
-  let mutationUpdateFn: MutationFunction<void, UpdateProductArgs> | undefined;
-  let getProductById:  QueryFunction<any, (string | undefined)[]> | undefined = undefined;
+  // let mutationUpdateFn: MutationFunction<void, UpdateProductArgs> | undefined;
+  // let getProductById:  QueryFunction<any, (string | undefined)[]> | undefined = undefined;
 
   switch (variant!) {
     case PRODUCT.aceite:
-      if(parameter !== undefined && edit === true) {
-        getProductById = () => getAceiteById!(parameter)
-        mutationUpdateFn = updateAceite;
-      }
+      // if(parameter && edit === true) {
+      //   getProductById = () => getAceiteById!(parameter)
+      //   mutationUpdateFn = updateAceite;
+
+      //   console.log("mutationUpdateFn desde switch PRODUCT.aceite", mutationUpdateFn)
+      // }
       mutationCreateFn = createAceite;
       break;
     case PRODUCT.llanta:
-      if(parameter && edit === true){
-        getProductById = () => getLlantaById!(parameter)
-      };
+      // if(parameter && edit === true){
+      //   getProductById = () => getLlantaById!(parameter)
+      //   mutationUpdateFn = updateLlanta;
+
+      // };
       mutationCreateFn = createLlanta;
       break;
   
@@ -38,10 +42,22 @@ export const useAddOrProduct = ({ edit, parameter, variant, ruta }:Args ) => {
       break;
   }
 
-  const { status, data, error } = useQuery({
-    queryKey: [variant, parameter],
-    queryFn: getProductById,
-  })
+  // console.log("mutationUpdateFn FUERA DEL SWITCH", mutationUpdateFn)
+
+  // const { status, data, error } = useQuery({
+  //   queryKey: [variant, parameter],
+  //   queryFn: getProductById,
+  // })
+
+  // const editProduct = useMutation({
+  //   mutationFn: mutationUpdateFn,
+  //   onSuccess: async () =>{
+  //     console.log("Editado correctamente")
+  //   },
+  //   onError: (error) =>{
+  //     console.log(error)
+  //   }
+  // }) 
 
   const addProduct = useMutation({
     mutationFn: mutationCreateFn,
@@ -66,14 +82,12 @@ export const useAddOrProduct = ({ edit, parameter, variant, ruta }:Args ) => {
     }
   })
 
-  const editProduct = useMutation({
-    mutationFn: mutationUpdateFn
-  }) 
+  
 
 
   return {
     addProduct,
-    editProduct,
-    data
+    // editProduct,
+    // data
   }
 }

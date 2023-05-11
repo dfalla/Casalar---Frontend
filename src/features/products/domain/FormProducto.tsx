@@ -25,7 +25,7 @@ import { InputField, SafeAny } from '../../../common';
 import { createAceite, createLlanta, updateAceite } from '../../../api';
 import { PRODUCT } from '../../../constants';
 import { useGetAceiteById } from '../hooks/useGetAceiteById';
-import { useAddOrProduct } from '../hooks';
+import { useAddProduct, useEditProduct } from '../hooks';
 
   
 const INITIALVALUES: ProductArgs = {
@@ -67,7 +67,7 @@ function Ruta(variant: string | undefined){
 }
 
 export const FormProducto = ({variant, edit}: FormProductoArgs) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose,  } = useDisclosure()
 
   const initialRef = useRef(null)
   const finalRef = useRef(null)
@@ -78,8 +78,8 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
   const ruta = Ruta(variant);
 
 
-  const { addProduct, editProduct, data } = useAddOrProduct({variant, ruta, parameter: params.id, edit});
-
+  const { addProduct } = useAddProduct({variant, ruta, parameter: params.id, edit});
+  const { editProduct, data } = useEditProduct({variant, ruta, parameter: params.id, edit})
   const navigate = useNavigate();
 
   const closeModal = () => {
@@ -87,7 +87,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
     navigate(`/motorepuestos/${ruta}`)
   }
 
-  useEffect(() => {
+  useEffect(() => { 
     if(isOpen === false) closeModal();
   }, [isOpen]);
 
@@ -132,18 +132,17 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
             <Formik
               initialValues={ initialValues }
               onSubmit={ (values) => {
-                // console.log(`data ${data}`, values)
                 if(!params.id && !edit) addProduct.mutate(values);
-                else{
-                  const VALUES: UpdateProductArgs = {
-                   id: params.id!,
-                   descripcion: values.descripcion,
-                   marca: values.marca,
-                   precio: values.precio,
-                   stock: values.stock
+                if(params.id !== undefined && edit === true) {
+                  const VALUES: ProductArgs = {
+                    descripcion: values.descripcion,
+                    marca: values.marca,
+                    precio: values.precio,
+                    stock: values.stock,
+                    imagen: values.imagen
                   }
-                  console.log('VALUES para editar', VALUES)
-                  // editProduct.mutate(VALUES)
+                  // console.log('VALUES para editar', VALUES)
+                   editProduct.mutate({id: params.id, values: VALUES})
                 }
                 closeModal();
 
@@ -152,13 +151,11 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
               enableReinitialize={true}
             >
                 {
-                  ({ setFieldValue, getFieldProps })=>(
+                  ({ setFieldValue })=>(
                       <Form>
                         <VStack alignItems={'flex-start'} marginBottom={4}>
                           <InputField
-                            // name='marca'
-                            {...getFieldProps('marca')}
-                            // value={data && initialValues.marca}
+                            name='marca'
                             label='Marca'
                             type='text'
                             variant={'filled'}
@@ -166,7 +163,6 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
 
                           <InputField
                             name='descripcion'
-                            // value={ data && initialValues.descripcion}
                             label='Descripcion del producto'
                             type='text'
                             variant={'filled'}
@@ -174,7 +170,6 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
 
                           <InputField
                             name='precio'
-                            // value={data && initialValues.precio}
                             label='Precio del producto'
                             type='number'
                             variant={'filled'}
@@ -182,7 +177,6 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
 
                           <InputField
                             name='stock'
-                            // value={data && initialValues.stock}
                             label='¿Cuántos productos hay en Stock?'
                             type='number'
                             variant={'filled'}
@@ -193,6 +187,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
                           </Text>
                           <Input
                             name='imagen'
+                            // disabled={ params.id ? true : false }
                             onChange={(e: SafeAny)=>setFieldValue('imagen', e.target.files[0])}
                             type='file'
                           /> 
