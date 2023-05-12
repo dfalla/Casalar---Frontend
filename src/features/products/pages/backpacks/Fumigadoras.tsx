@@ -1,12 +1,12 @@
 import { PRODUCT } from "../../../../constants";
 import { UiGetAllProducts } from "../../../components"
-import { useGetMochilasFumigadoras } from "../../hooks";
+import { useGetAllProducts } from "../../hooks";
 interface FumigadorasProps {
   edit?: boolean;
 }
 
 export const Fumigadoras = ({edit}: FumigadorasProps) => {
-  const {data, isError, isLoading} = useGetMochilasFumigadoras();
+  const {data, isError, isLoading} = useGetAllProducts(PRODUCT.fumigadora);
   console.log(data)
   if(isLoading){
     

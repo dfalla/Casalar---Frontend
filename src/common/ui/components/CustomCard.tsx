@@ -9,11 +9,9 @@ import {
     Button
 } from '@chakra-ui/react';
 import { PRODUCT } from '../../../constants';
-import { useDeleteAceite, useDeleteLlanta } from '../../../features/products/hooks';
-import { UseMutateFunction } from '@tanstack/react-query';
+import { useDeleteProduct } from '../../../features';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import { useDeleteMotor } from '../../../features/products/hooks/useDeleteMotor';
 export interface CardArgs{
   id: number;
   variant: string;
@@ -27,23 +25,8 @@ export interface CardArgs{
 
 export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripcion} : CardArgs) => {
   const navigate = useNavigate();
-
-  let deleteProduct: UseMutateFunction<void, unknown, number, unknown>;
-
-  if(variant === PRODUCT.aceite){
-    const { mutate: deleteAceite } = useDeleteAceite();
-    deleteProduct = deleteAceite;
-  }
-
-  if(variant === PRODUCT.llanta){
-    const { mutate: deleteLlanta } = useDeleteLlanta();
-    deleteProduct = deleteLlanta;
-  }
-
-  if(variant === PRODUCT.motor){
-    const { mutate: deleteMotor } = useDeleteMotor();
-    deleteProduct = deleteMotor;
-  }
+  
+  const { mutate } = useDeleteProduct(variant);
 
   const deleteItem = (id: number) => {
     Swal.fire({
@@ -56,7 +39,7 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
       cancelButtonText: 'Cancelar',
     }).then(( result )=>{
       if(result.isConfirmed) {
-        deleteProduct(id)
+        mutate(id)
       }
     });
   }

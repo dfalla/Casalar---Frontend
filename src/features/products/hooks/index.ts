@@ -1,11 +1,5 @@
-export * from './useGetAceites'
-export * from './useDeleteAceite'
-export * from './useGetLlantas'
-export * from './useDeleteLlanta'
-export * from './useGetMotores'
-export * from './useDeleteMotor'
-export * from './useGetMochilasFumigadoras'
-
+export * from './useGetAllProducts'
 export * from './useAddProduct'
 export * from './useEditProduct'
+export * from './useDeleteProduct'
 

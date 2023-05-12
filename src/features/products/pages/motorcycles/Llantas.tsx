@@ -1,4 +1,4 @@
-import { useGetLlantas } from "../../hooks";
+import { useGetAllProducts } from "../../hooks";
 import { PRODUCT } from "../../../../constants";
 import { UiGetAllProducts } from "../../../components";
 
@@ -7,7 +7,7 @@ interface LlantasProps {
 }
 
 export const Llantas = ({edit}: LlantasProps) => {
-  const {data, isError, isLoading} = useGetLlantas();
+  const {data, isError, isLoading} = useGetAllProducts(PRODUCT.llanta);
   
   if(isLoading){
     

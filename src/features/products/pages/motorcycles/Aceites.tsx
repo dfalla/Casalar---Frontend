@@ -1,4 +1,4 @@
-import { useGetAceites } from "../../hooks";
+import { useGetAllProducts } from "../../hooks";
 import { PRODUCT } from "../../../../constants";
 import { UiGetAllProducts } from "../../../components";
 
@@ -7,7 +7,7 @@ interface AceitesProps {
 }
 
 export const Aceites = ({ edit }: AceitesProps) => {
-  const {data, isError, isLoading} = useGetAceites();
+  const {data, isError, isLoading} = useGetAllProducts(PRODUCT.aceite);
 
   if(isLoading){
     

@@ -1,4 +1,4 @@
-import { useGetMotores } from "../../hooks";
+import { useGetAllProducts } from "../../hooks";
 import { PRODUCT } from "../../../../constants";
 import { UiGetAllProducts } from "../../../components";
 
@@ -8,7 +8,7 @@ interface MotoresProps {
 }
 
 export const Motores = ({ edit }: MotoresProps) => {
-  const {data, isError, isLoading} = useGetMotores();
+  const {data, isError, isLoading} = useGetAllProducts(PRODUCT.motor);
   console.log('data', data)
 
   if(isLoading){
