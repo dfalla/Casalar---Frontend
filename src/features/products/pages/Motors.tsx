@@ -1,13 +1,10 @@
-import { Box, Card, SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import { useGetMotores } from "../hooks";
 import { PRODUCT } from "../../../constants";
 import { FormProducto } from "../domain";
 import { ElementArgs } from "../../../interfaces";
-// import { Card } from "../../../../common"
-// import { FormProducto } from "../../domain";
-// import { useGetAceites } from "../../hooks";
-// import { ElementArgs } from "../../../../interfaces";
-// import { PRODUCT } from "../../../../constants";
+import { Card } from "../../../common";
+
 
 interface MotoresProps {
   edit?: boolean;
@@ -33,7 +30,7 @@ export const Motores = ({ edit }: MotoresProps) => {
               <Card 
                 key={element.id} 
                 id={ element.id }
-                variant={PRODUCT.aceite}
+                variant={PRODUCT.motor}
                 descripcion={element.descripcion}
                 marca={element.marca} 
                 imagen={element.imagen} 
