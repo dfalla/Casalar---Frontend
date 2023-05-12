@@ -1,7 +1,7 @@
 import { MutationFunction, QueryFunction, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UpdateProductArgs, usEditProductArgs } from "../../../interfaces";
 import { PRODUCT } from "../../../constants";
-import { getAceiteById, getLlantaById, getMotorById, updateAceite, updateLlanta, updateMotor } from "../../../api";
+import { getAceiteById, getLlantaById, getMochilaById, getMotorById, updateAceite, updateLlanta, updateMochila, updateMotor } from "../../../api";
 
 
 function functionUpdateProductAccordingVariant(variant: string | undefined){
@@ -16,6 +16,9 @@ function functionUpdateProductAccordingVariant(variant: string | undefined){
       break;
     case PRODUCT.motor:
       mutationUpdateFn = updateMotor;
+      break;
+    case PRODUCT.fumigadora:
+      mutationUpdateFn = updateMochila;
       break;
     default:
       break;
@@ -48,6 +51,11 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
         getProductById = () => getMotorById!(parameter)
       };
       break;
+    case PRODUCT.fumigadora:
+      if(parameter && edit === true){
+        getProductById = () => getMochilaById!(parameter)
+      };
+      break;
   
     default:
       break;
@@ -77,6 +85,13 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
         case PRODUCT.motor:
           await queryClient.invalidateQueries({
             queryKey: [PRODUCT.motor], 
+            refetchType: 'active',
+          })
+          break;
+
+        case PRODUCT.fumigadora:
+          await queryClient.invalidateQueries({
+            queryKey: [PRODUCT.fumigadora], 
             refetchType: 'active',
           })
           break;

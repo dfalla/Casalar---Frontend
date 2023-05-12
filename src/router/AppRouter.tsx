@@ -15,18 +15,18 @@ export const AppRouter = () => {
                 <Route path="/auth/register" element={<RegisterPage/>} />
 
                 <Route path="/" element={<ProtectedRoutes isAllowed={isAuth} />}>
+                  
                   <Route index element={<Dashboard/>}/>
                   <Route path="/dashboard" element={<Dashboard/>}/>
                   <Route path="/motores" element={<Motores/>}/>
+                  <Route path="/mochilas/fumigadoras" element={<Fumigadoras/>}/>
                   <Route path="/motorepuestos/aceites" element={<Aceites/>}/>
                   <Route path="/motorepuestos/llantas" element={<Llantas/>}/>
                   
                   <Route path="/motorepuestos/aceites/:id" element={<Aceites edit={true}/>}/>
                   <Route path="/motorepuestos/llantas/:id" element={<Llantas edit={true}/>}/>
                   <Route path="/motores/:id" element={<Motores edit={true}/>}/>
-
-
-                  <Route path="/mochilas/fumigadoras" element={<Fumigadoras/>}/>
+                  <Route path="/mochilas/fumigadoras/:id" element={<Fumigadoras edit={true}/>}/>
 
                 </Route>
 

@@ -67,6 +67,8 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
     let rutaFinal: string  = '';
     if(variant === PRODUCT.motor){
       rutaFinal = `/${variant}`
+    } else if(variant === PRODUCT.fumigadora) {
+      rutaFinal = `/mochilas/${variant}`
     } else {
       rutaFinal = `/motorepuestos/${ruta}`
     }

@@ -4,6 +4,7 @@ export * from './useGetLlantas'
 export * from './useDeleteLlanta'
 export * from './useGetMotores'
 export * from './useDeleteMotor'
+export * from './useGetMochilasFumigadoras'
 
 export * from './useAddProduct'
 export * from './useEditProduct'

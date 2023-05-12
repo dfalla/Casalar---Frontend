@@ -1,5 +1,5 @@
 import { MutationFunction, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createAceite, createLlanta, createMotor } from "../../../api";
+import { createAceite, createLlanta, createMochila, createMotor } from "../../../api";
 import { PRODUCT } from "../../../constants";
 import { ProductArgs, useAddProductArgs } from "../../../interfaces";
 
@@ -19,7 +19,10 @@ export const useAddProduct = ({  variant }: useAddProductArgs ) => {
       break;
     case PRODUCT.motor:
       mutationCreateFn = createMotor;
-  
+      break;
+    case PRODUCT.fumigadora:
+      mutationCreateFn = createMochila;
+      break;
     default:
       break;
   }
@@ -46,7 +49,12 @@ export const useAddProduct = ({  variant }: useAddProductArgs ) => {
             refetchType: 'active',
           })
           break;
-
+        case PRODUCT.fumigadora:
+          await queryClient.invalidateQueries({
+            queryKey: [PRODUCT.fumigadora], 
+            refetchType: 'active',
+          })
+          break;
           default:
           break;
       }
