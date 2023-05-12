@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "../store";
 import { LoginPage, RegisterPage } from "../features";
 import { Container, ProtectedRoutes } from "../common";
@@ -24,13 +24,14 @@ export const AppRouter = () => {
                   
                   <Route path="/motorepuestos/aceites/:id" element={<Aceites edit={true}/>}/>
                   <Route path="/motorepuestos/llantas/:id" element={<Llantas edit={true}/>}/>
+                  <Route path="/motores/:id" element={<Motores edit={true}/>}/>
+
 
                   <Route path="/mochilas/fumigadoras" element={<Fumigadoras/>}/>
 
-
-
-                  {/* <Route path="/mochilas" element={<Backpacks/>}/> */}
                 </Route>
+
+                <Route path="/*" element={<Navigate to="/"/>}/>
             </Routes>
         </Container>
     </BrowserRouter>

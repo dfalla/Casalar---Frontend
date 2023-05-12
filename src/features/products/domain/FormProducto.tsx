@@ -24,6 +24,7 @@ import { FormProductoArgs, ProductArgs } from '../../../interfaces';
 import { InputField, SafeAny } from '../../../common';
 import { PRODUCT } from '../../../constants';
 import { useAddProduct, useEditProduct } from '../hooks';
+import { finalRoute } from '../../../helpers';
 
   
 const INITIALVALUES: ProductArgs = {
@@ -81,13 +82,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
   const navigate = useNavigate();
 
   const closeModal = () => {
-    let rutaFinal: string  = '';
-    if(variant === PRODUCT.motor){
-      rutaFinal = `/${variant}`
-    } else {
-      rutaFinal = `/motorepuestos/${ruta}`
-    }
-    
+    const rutaFinal = finalRoute({ruta, variant: variant});
     onClose();
     navigate(rutaFinal)
   }

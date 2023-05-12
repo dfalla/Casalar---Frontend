@@ -14,6 +14,7 @@ import { UseMutateFunction } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteMotor } from '../../../features/products/hooks/useDeleteMotor';
+import { finalRoute } from '../../../helpers';
 export interface CardArgs{
   id: number;
   variant: string;
@@ -25,7 +26,7 @@ export interface CardArgs{
 }
 
 
-export const Card = ({marca, imagen, precio, stock, id, variant, descripcion} : CardArgs) => {
+export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripcion} : CardArgs) => {
   const navigate = useNavigate();
 
   let deleteProduct: UseMutateFunction<void, unknown, number, unknown>;
@@ -62,7 +63,8 @@ export const Card = ({marca, imagen, precio, stock, id, variant, descripcion} : 
   }
 
   const editProduct = (id: number, variant: string) => {
-    navigate(`/motorepuestos/${variant}/${id}`)
+    const rutaFinal = finalRoute({ variant, id})
+    navigate(rutaFinal)
   }
 
   return (

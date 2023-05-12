@@ -1,5 +1,5 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import { Card } from "../../../../common"
+import { CustomCard } from "../../../../common"
 import { FormProducto } from "../../domain";
 import { useGetAceites } from "../../hooks";
 import { ElementArgs } from "../../../../interfaces";
@@ -25,7 +25,7 @@ export const Aceites = ({ edit }: AceitesProps) => {
         <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))' >
           {
             data.map((element: ElementArgs)=>(
-              <Card 
+              <CustomCard 
                 key={element.id} 
                 id={ element.id }
                 variant={PRODUCT.aceite}

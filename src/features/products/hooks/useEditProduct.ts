@@ -1,7 +1,7 @@
 import { MutationFunction, QueryFunction, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UpdateProductArgs, usEditProductArgs } from "../../../interfaces";
 import { PRODUCT } from "../../../constants";
-import { getAceiteById, getLlantaById, updateAceite, updateLlanta } from "../../../api";
+import { getAceiteById, getLlantaById, getMotorById, updateAceite, updateLlanta, updateMotor } from "../../../api";
 
 
 function functionUpdateProductAccordingVariant(variant: string | undefined){
@@ -13,6 +13,9 @@ function functionUpdateProductAccordingVariant(variant: string | undefined){
       break;
     case PRODUCT.llanta:
         mutationUpdateFn = updateLlanta;
+      break;
+    case PRODUCT.motor:
+      mutationUpdateFn = updateMotor;
       break;
     default:
       break;
@@ -40,6 +43,11 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
         getProductById = () => getLlantaById!(parameter)
       };
       break;
+    case PRODUCT.motor:
+      if(parameter && edit === true){
+        getProductById = () => getMotorById!(parameter)
+      };
+      break;
   
     default:
       break;
@@ -63,6 +71,12 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
         case PRODUCT.llanta:
           await queryClient.invalidateQueries({
             queryKey: [PRODUCT.llanta], 
+            refetchType: 'active',
+          })
+          break;
+        case PRODUCT.motor:
+          await queryClient.invalidateQueries({
+            queryKey: [PRODUCT.motor], 
             refetchType: 'active',
           })
           break;

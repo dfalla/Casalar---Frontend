@@ -1,5 +1,5 @@
 import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon  } from "@chakra-ui/react";
-import { Card } from "../../../../common"
+import { CustomCard } from "../../../../common"
 import { useGetLlantas } from "../../hooks";
 import { PRODUCT } from "../../../../constants";
 import { FormProducto } from "../../domain";
@@ -26,7 +26,7 @@ export const Llantas = ({edit}: LlantasProps) => {
         <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))' >
           {
             data.map((element: ElementArgs)=>(
-              <Card 
+              <CustomCard 
                 key={element.id} 
                 id={ element.id }
                 variant={PRODUCT.llanta}

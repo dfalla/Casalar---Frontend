@@ -3,7 +3,7 @@ import { useGetMotores } from "../hooks";
 import { PRODUCT } from "../../../constants";
 import { FormProducto } from "../domain";
 import { ElementArgs } from "../../../interfaces";
-import { Card } from "../../../common";
+import { CustomCard } from "../../../common";
 
 
 interface MotoresProps {
@@ -27,7 +27,7 @@ export const Motores = ({ edit }: MotoresProps) => {
         <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))' >
           {
             data.map((element: ElementArgs)=>(
-              <Card 
+              <CustomCard 
                 key={element.id} 
                 id={ element.id }
                 variant={PRODUCT.motor}
