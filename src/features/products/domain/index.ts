@@ -1,1 +1,1 @@
-export * from './FormProducto'
+export * from './domain'

@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "../store";
-import { LoginPage, RegisterPage } from "../features";
 import { Container, ProtectedRoutes } from "../common";
-import { Aceites, Dashboard, Llantas, Motores, Fumigadoras } from "../features/products";
+import { Aceites, Dashboard, Llantas, Motores, Fumigadoras, LoginPage, RegisterPage } from "../features";
 
 export const AppRouter = () => {
 

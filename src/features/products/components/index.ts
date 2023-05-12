@@ -1,2 +1,1 @@
-export * from './Motorcycles'
-export * from './Backpacks'
+export * from './FormProducto'

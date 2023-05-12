@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
-import { getAceites, getLlantas } from "../../../api/motorcycle";
+import { getAceites, getLlantas } from "../../../../api/motorcycle";
 import { Box, SimpleGrid, Heading, Accordion, AccordionItem, AccordionPanel, AccordionButton, AccordionIcon, Text  } from "@chakra-ui/react";
-import { Aceites, Llantas } from "../components/Motorcycles";
+import { Aceites, Llantas } from "../motorcycles";
 
 interface MotorcyclePartsProps {
   edit?: boolean;
