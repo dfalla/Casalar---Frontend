@@ -7,7 +7,7 @@ export const getLlantas = async() => {
     try {
 
         const { data } = await Http.get('/llantas')
-        return data.llantas!;
+        return data.productos!;
 
     } catch (error) {
         console.log('error', error)
@@ -17,7 +17,7 @@ export const getLlantas = async() => {
 export const getLlantaById = async(id: string) =>{
     try {
         const { data } = await Http.get(`/llantas/${id}`)
-        return data!.llanta;
+        return data!.producto;
         
     } catch (error) {
         console.log("error",error)

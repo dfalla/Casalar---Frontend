@@ -7,7 +7,7 @@ export const getAceites = async() => {
     try {
 
         const { data } = await Http.get('/aceites')
-        return data.aceites!;
+        return data.productos!;
 
     } catch (error) {
         console.log('error', error)
@@ -17,7 +17,7 @@ export const getAceites = async() => {
 export const getAceiteById = async(id: string) =>{
     try {
         const { data } = await Http.get(`/aceites/${id}`)
-        return data!.aceite;
+        return data!.producto;
         
     } catch (error) {
         console.log("error",error)
