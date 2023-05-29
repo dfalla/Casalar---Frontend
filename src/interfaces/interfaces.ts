@@ -59,3 +59,13 @@ export interface FormProductoArgs {
     variant?: string;
     edit?: boolean;
 }
+
+export interface UiGetAllProductsArgs {
+    variant: string;
+    edit: boolean | undefined;
+    data: ElementArgs[];
+}
+
+export interface ProductProps {
+    edit?: boolean;
+}

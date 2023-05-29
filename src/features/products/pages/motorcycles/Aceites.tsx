@@ -1,12 +1,11 @@
 import { useGetAllProducts } from "../../hooks";
 import { PRODUCT } from "../../../../constants";
 import { UiGetAllProducts } from "../../../components";
+import { ProductProps } from "../../../../interfaces";
 
-interface AceitesProps {
-  edit?: boolean;
-}
 
-export const Aceites = ({ edit }: AceitesProps) => {
+
+export const Aceites = ({ edit }: ProductProps) => {
   const {data, isError, isLoading} = useGetAllProducts(PRODUCT.aceite);
 
   if(isLoading){

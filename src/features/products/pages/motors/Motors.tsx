@@ -1,15 +1,10 @@
 import { useGetAllProducts } from "../../hooks";
 import { PRODUCT } from "../../../../constants";
 import { UiGetAllProducts } from "../../../components";
+import { ProductProps } from "../../../../interfaces";
 
-
-interface MotoresProps {
-  edit?: boolean;
-}
-
-export const Motores = ({ edit }: MotoresProps) => {
+export const Motores = ({ edit }: ProductProps) => {
   const {data, isError, isLoading} = useGetAllProducts(PRODUCT.motor);
-  console.log('data', data)
 
   if(isLoading){
     

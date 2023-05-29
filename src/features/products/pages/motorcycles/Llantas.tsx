@@ -1,12 +1,9 @@
 import { useGetAllProducts } from "../../hooks";
 import { PRODUCT } from "../../../../constants";
 import { UiGetAllProducts } from "../../../components";
+import { ProductProps } from "../../../../interfaces";
 
-interface LlantasProps {
-  edit?: boolean;
-}
-
-export const Llantas = ({edit}: LlantasProps) => {
+export const Llantas = ({edit}: ProductProps) => {
   const {data, isError, isLoading} = useGetAllProducts(PRODUCT.llanta);
   
   if(isLoading){

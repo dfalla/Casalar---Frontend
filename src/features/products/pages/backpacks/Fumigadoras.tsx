@@ -1,13 +1,11 @@
 import { PRODUCT } from "../../../../constants";
+import { ProductProps } from "../../../../interfaces";
 import { UiGetAllProducts } from "../../../components"
 import { useGetAllProducts } from "../../hooks";
-interface FumigadorasProps {
-  edit?: boolean;
-}
 
-export const Fumigadoras = ({edit}: FumigadorasProps) => {
+export const Fumigadoras = ({edit}: ProductProps) => {
   const {data, isError, isLoading} = useGetAllProducts(PRODUCT.fumigadora);
-  console.log(data)
+
   if(isLoading){
     
     // COLOCAR UN SPINNER
