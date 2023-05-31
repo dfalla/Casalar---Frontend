@@ -34,7 +34,7 @@ import {
 } from 'react-icons/fi';
 import { NavLink } from "react-router-dom";
 import { FaMotorcycle } from "react-icons/fa";
-import { GiBackpack, GiFlatTire, GiDelicatePerfume } from "react-icons/gi";
+import { GiBackpack, GiFlatTire, GiDelicatePerfume, GiChainsaw } from "react-icons/gi";
 import { RiOilFill } from "react-icons/ri";
 import { TbCircuitMotor } from "react-icons/tb";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
@@ -67,7 +67,16 @@ const LinkItems: Array<LinkItemProps> = [
     icon: <TbCircuitMotor/>, 
     path: '/motores',
   },
-
+  { 
+    name: 'Motosierras', 
+    icon: <GiChainsaw/>, 
+    path: '/motosierras',
+  },
+  { 
+    name: 'Mochilas', 
+    icon: <GiBackpack/>, 
+    path: '/mochilas-fumigadoras',
+  },
   { 
     name: 'Motorepuestos', 
     icon: <FaMotorcycle/>, 
@@ -85,19 +94,20 @@ const LinkItems: Array<LinkItemProps> = [
       }
     ] 
   },
+  // { 
+  //   name: 'Mochilas', 
+  //   icon: <GiBackpack/>, 
+  //   path: '/mochilas',
+  //   subContent: [
+  //     {
+  //       title: 'fumigadoras',
+  //       path: '/mochilas/fumigadoras',
+  //       icon: <GiDelicatePerfume/>
+  //     }
+  //   ]
+  // },
 
-  { 
-    name: 'Mochilas', 
-    icon: <GiBackpack/>, 
-    path: '/mochilas',
-    subContent: [
-      {
-        title: 'fumigadoras',
-        path: '/mochilas/fumigadoras',
-        icon: <GiDelicatePerfume/>
-      }
-    ]
-  },
+  
 ];
 
 export const Sidebar = ({

@@ -37,6 +37,9 @@ function Ruta(variant: string | undefined){
     case PRODUCT.motor:
       ruta = PRODUCT.motor;
       break;
+    case PRODUCT.motosierra:
+        ruta = PRODUCT.motosierra;
+        break;
     default:
       break;
   }
@@ -68,7 +71,9 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
     if(variant === PRODUCT.motor){
       rutaFinal = `/${variant}`
     } else if(variant === PRODUCT.fumigadora) {
-      rutaFinal = `/mochilas/${variant}`
+      rutaFinal = `/mochilas-${variant}`
+    } else if(variant === PRODUCT.motosierra) {
+      rutaFinal = `/${variant}`
     } else {
       rutaFinal = `/motorepuestos/${ruta}`
     }

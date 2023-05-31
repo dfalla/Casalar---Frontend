@@ -1,7 +1,7 @@
 import { MutationFunction, QueryFunction, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UpdateProductArgs, usEditProductArgs } from "../../../interfaces";
 import { PRODUCT } from "../../../constants";
-import { getAceiteById, getLlantaById, getMochilaById, getMotorById, updateAceite, updateLlanta, updateMochila, updateMotor } from "../../../api";
+import { getAceiteById, getLlantaById, getMochilaById, getMotorById, getMotosierraById, updateAceite, updateLlanta, updateMochila, updateMotor, updateMotosierra } from "../../../api";
 
 
 function functionUpdateProductAccordingVariant(variant: string | undefined){
@@ -16,6 +16,9 @@ function functionUpdateProductAccordingVariant(variant: string | undefined){
       break;
     case PRODUCT.motor:
       mutationUpdateFn = updateMotor;
+      break;
+    case PRODUCT.motosierra:
+      mutationUpdateFn = updateMotosierra;
       break;
     case PRODUCT.fumigadora:
       mutationUpdateFn = updateMochila;
@@ -51,9 +54,14 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
         getProductById = () => getMotorById!(parameter)
       };
       break;
+    case PRODUCT.motosierra:
+      if(parameter && edit === true){
+        getProductById = () => getMotosierraById!(parameter)
+      };
+      break;
     case PRODUCT.fumigadora:
       if(parameter && edit === true){
-        getProductById = () => getMochilaById!(parameter)
+        getProductById = () => getMotosierraById!(parameter)
       };
       break;
   

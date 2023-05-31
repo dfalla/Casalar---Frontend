@@ -50,8 +50,10 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
     let rutaFinal: string = '';
     if(variant === PRODUCT.motor){
       rutaFinal = `/${variant}/${id}`
+    }if(variant === PRODUCT.motosierra){
+      rutaFinal = `/${variant}/${id}`
     } else if(variant === PRODUCT.fumigadora) {
-      rutaFinal = `/mochilas/${variant}/${id}`
+      rutaFinal = `/mochilas-${variant}/${id}`
     } else {
       rutaFinal = `/motorepuestos/${variant}/${id}`
     }

@@ -1,5 +1,5 @@
 import { QueryFunction, useQuery} from "@tanstack/react-query"
-import { getAceites, getMochilas, getMotores, getLlantas } from "../../../api";
+import { getAceites, getMochilas, getMotores, getLlantas, getMotosierras } from "../../../api";
 import { PRODUCT } from "../../../constants";
 
 function getFunctionProducts(variant: string){
@@ -13,6 +13,9 @@ function getFunctionProducts(variant: string){
             break;
         case PRODUCT.motor:
             getAllProducts = getMotores;
+            break;
+        case PRODUCT.motosierra:
+            getAllProducts = getMotosierras;
             break;
         case PRODUCT.fumigadora:
             getAllProducts = getMochilas;
