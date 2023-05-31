@@ -5,9 +5,9 @@ import { Button,  VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup'
-import { InputField } from '../../../common';
-import { useAuthStore } from '../../../store';
-import { loginRequest } from '../../../api';
+import { InputField } from '@/common';
+import { useAuthStore } from '@/store';
+import { loginRequest } from '@/api';
 import { AuthLayout } from '../layout';
   
   export interface InitialValues{

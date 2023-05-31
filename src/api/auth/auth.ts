@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import Http from "../../libs";
-import { modalNotificationWarning } from "../../helpers";
-import { SafeAny } from "../../common";
-import { LoginArgs, RegisterArgs } from "../../interfaces";
+import Http from "@/libs";
+import { modalNotificationWarning } from "@/helpers";
+import { SafeAny } from "@/common";
+import { LoginArgs, RegisterArgs } from "@/interfaces";
 
 export const loginRequest = async ({ password, username }: LoginArgs) =>{
 

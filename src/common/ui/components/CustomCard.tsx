@@ -8,8 +8,8 @@ import {
     Image,
     Button
 } from '@chakra-ui/react';
-import { PRODUCT } from '../../../constants';
-import { useDeleteProduct } from '../../../features';
+import { PRODUCT } from '@/constants';
+import { useDeleteProduct } from '@/features';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 export interface CardArgs{

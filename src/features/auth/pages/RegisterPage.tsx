@@ -3,9 +3,9 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { Button,  VStack } from '@chakra-ui/react';
 import { AuthLayout } from "../layout"
-import { InputField } from '../../../common';
-import { registerRequest } from '../../../api';
-import { useAuthStore } from '../../../store';
+import { InputField } from '@/common';
+import { registerRequest } from '@/api';
+import { useAuthStore } from '@/store';
 
 export interface InitialValues{
     nombre: string;

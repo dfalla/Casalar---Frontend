@@ -1,6 +1,6 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import { CustomCard } from "../../common";
-import { ElementArgs, UiGetAllProductsArgs } from "../../interfaces";
+import { CustomCard } from "@/common";
+import { ElementArgs, UiGetAllProductsArgs } from "@/interfaces";
 import { FormProducto } from "../products";
 
 export const UiGetAllProducts = ({variant, edit, data}: UiGetAllProductsArgs ) => {

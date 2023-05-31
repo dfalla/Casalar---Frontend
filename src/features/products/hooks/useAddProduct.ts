@@ -1,7 +1,7 @@
 import { MutationFunction, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createAceite, createLlanta, createMochila, createMotor } from "../../../api";
-import { PRODUCT } from "../../../constants";
-import { ProductArgs, useAddProductArgs } from "../../../interfaces";
+import { createAceite, createLlanta, createMochila, createMotor } from "@/api";
+import { PRODUCT } from "@/constants";
+import { ProductArgs, useAddProductArgs } from "@/interfaces";
 
 
 export const useAddProduct = ({  variant }: useAddProductArgs ) => {

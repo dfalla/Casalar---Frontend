@@ -32,6 +32,7 @@ import {
   FiChevronDown,
   FiBell,
 } from 'react-icons/fi';
+import { NavLink } from "react-router-dom";
 import { FaMotorcycle } from "react-icons/fa";
 import { GiBackpack, GiFlatTire, GiDelicatePerfume } from "react-icons/gi";
 import { RiOilFill } from "react-icons/ri";
@@ -39,8 +40,7 @@ import { TbCircuitMotor } from "react-icons/tb";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
-import { useAuthStore } from '../../../store';
-import { NavLink } from "react-router-dom";
+import { useAuthStore } from '@/store';
 
 interface SubContent {
   title: string;

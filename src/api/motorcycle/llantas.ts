@@ -1,7 +1,7 @@
-import { SafeAny } from "../../common";
-import { modalNotificationsSuccess } from "../../helpers";
-import { ProductArgs, UpdateProductArgs } from "../../interfaces";
-import Http from "../../libs";
+import { SafeAny } from "@/common";
+import { modalNotificationsSuccess } from "@/helpers";
+import { ProductArgs, UpdateProductArgs } from "@/interfaces";
+import Http from "@/libs";
 
 export const getLlantas = async() => {
     try {

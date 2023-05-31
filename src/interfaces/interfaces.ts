@@ -60,6 +60,13 @@ export interface FormProductoArgs {
     edit?: boolean;
 }
 
+export interface ComponentContainerProductArgs {
+    variant: string;
+    edit: boolean | undefined;
+    data: ElementArgs[];
+    isLoading: boolean;
+}
+
 export interface UiGetAllProductsArgs {
     variant: string;
     edit: boolean | undefined;
