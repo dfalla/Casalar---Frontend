@@ -2,6 +2,7 @@ import { MutationFunction, QueryFunction, useMutation, useQuery, useQueryClient 
 import { UpdateProductArgs, usEditProductArgs } from "../../../interfaces";
 import { PRODUCT } from "../../../constants";
 import { getAceiteById, getLlantaById, getMochilaById, getMotorById, getMotosierraById, updateAceite, updateLlanta, updateMochila, updateMotor, updateMotosierra } from "../../../api";
+import { getMotoguadanaById, updateMotoguadana } from "@/api/brush-cutter";
 
 
 function functionUpdateProductAccordingVariant(variant: string | undefined){
@@ -19,6 +20,9 @@ function functionUpdateProductAccordingVariant(variant: string | undefined){
       break;
     case PRODUCT.motosierra:
       mutationUpdateFn = updateMotosierra;
+      break;
+    case PRODUCT.motoguadana:
+      mutationUpdateFn = updateMotoguadana;
       break;
     case PRODUCT.fumigadora:
       mutationUpdateFn = updateMochila;
@@ -59,9 +63,14 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
         getProductById = () => getMotosierraById!(parameter)
       };
       break;
+    case PRODUCT.motoguadana:
+      if(parameter && edit === true){
+        getProductById = () => getMotoguadanaById!(parameter)
+      };
+      break;
     case PRODUCT.fumigadora:
       if(parameter && edit === true){
-        getProductById = () => getMotosierraById!(parameter)
+        getProductById = () => getMochilaById!(parameter)
       };
       break;
   
@@ -96,7 +105,18 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
             refetchType: 'active',
           })
           break;
-
+        case PRODUCT.motosierra:
+          await queryClient.invalidateQueries({
+            queryKey: [PRODUCT.motosierra], 
+            refetchType: 'active',
+          })
+          break;
+        case PRODUCT.motoguadana:
+          await queryClient.invalidateQueries({
+            queryKey: [PRODUCT.motoguadana], 
+            refetchType: 'active',
+          })
+          break;
         case PRODUCT.fumigadora:
           await queryClient.invalidateQueries({
             queryKey: [PRODUCT.fumigadora], 

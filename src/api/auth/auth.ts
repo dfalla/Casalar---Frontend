@@ -3,11 +3,12 @@ import Http from "@/libs";
 import { modalNotificationWarning } from "@/helpers";
 import { SafeAny } from "@/common";
 import { LoginArgs, RegisterArgs } from "@/interfaces";
+import { AUTH } from "@/constants";
 
 export const loginRequest = async ({ password, username }: LoginArgs) =>{
 
   try {
-    const {data} = await Http.post("/auth/login", {
+    const {data} = await Http.post(AUTH.login, {
       username,
       password
     });
@@ -21,7 +22,7 @@ export const loginRequest = async ({ password, username }: LoginArgs) =>{
 
 export const registerRequest = async ({apellido, nombre, password, username}:RegisterArgs) => {
   try {
-    const {data} = await Http.post("/auth/register", {
+    const {data} = await Http.post(AUTH.register, {
       apellido, 
       nombre,
       username,

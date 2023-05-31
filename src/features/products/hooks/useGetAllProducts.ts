@@ -1,6 +1,7 @@
 import { QueryFunction, useQuery} from "@tanstack/react-query"
 import { getAceites, getMochilas, getMotores, getLlantas, getMotosierras } from "../../../api";
 import { PRODUCT } from "../../../constants";
+import { getMotoguadanas } from "@/api/brush-cutter";
 
 function getFunctionProducts(variant: string){
     let getAllProducts: QueryFunction<any, string[]> | undefined;
@@ -16,6 +17,10 @@ function getFunctionProducts(variant: string){
             break;
         case PRODUCT.motosierra:
             getAllProducts = getMotosierras;
+            break;
+
+        case PRODUCT.motoguadana:
+            getAllProducts = getMotoguadanas;
             break;
         case PRODUCT.fumigadora:
             getAllProducts = getMochilas;

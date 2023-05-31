@@ -4,12 +4,12 @@ import { modalNotificationsSuccess } from "@/helpers";
 import { ProductArgs, UpdateProductArgs } from "@/interfaces";
 import Http from "@/libs";
 
-const url = PRODUCT.fumigadora;
+const variant = PRODUCT.motoguadana;
 
-export const getMochilas = async() => {
+export const getMotoguadanas = async() => {
     try {
 
-        const { data } = await Http.get(`/${url}`)
+        const { data } = await Http.get(`/${variant}`)
         return data.productos!;
 
     } catch (error) {
@@ -17,9 +17,9 @@ export const getMochilas = async() => {
     }
 }
 
-export const getMochilaById = async(id: string) =>{
+export const getMotoguadanaById = async(id: string) =>{
     try {
-        const { data } = await Http.get(`/${url}/${id}`)
+        const { data } = await Http.get(`/${variant}/${id}`)
         return data!.producto;
         
     } catch (error) {
@@ -27,7 +27,7 @@ export const getMochilaById = async(id: string) =>{
     }
 }
 
-export const createMochila = async( values: ProductArgs) => {
+export const createMotoguadana = async( values: ProductArgs) => {
     
     const formData = new FormData();
 
@@ -36,14 +36,14 @@ export const createMochila = async( values: ProductArgs) => {
     }
 
     try {
-        const { data } = await Http.post(`/${url}`, formData)
+        const { data } = await Http.post(`/${variant}`, formData)
         modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
     }
 }
 
-export const updateMochila = async({id, values} : UpdateProductArgs) => {
+export const updateMotoguadana = async({id, values} : UpdateProductArgs) => {
 
     const {descripcion, marca, precio, imagen} = values
     
@@ -54,16 +54,16 @@ export const updateMochila = async({id, values} : UpdateProductArgs) => {
     }
 
     try {
-        const { data } = await Http.put(`/${url}/${id}`, formData)
+        const { data } = await Http.put(`/${variant}/${id}`, formData)
         modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error capturado 😤', error)
     }
 }
 
-export const deleteMochila = async(id: number) => {
+export const deleteMotoguadana = async(id: number) => {
     try {
-        const { data } = await Http.delete(`/${url}/${id}`);
+        const { data } = await Http.delete(`/${variant}/${id}`);
         modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)

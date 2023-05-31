@@ -3,7 +3,7 @@ import { PRODUCT } from "@/constants";
 import { ComponentContainerProduct, useGetAllProducts } from "@/features";
 import { ProductProps } from "@/interfaces";
 
-export const Chainsaw = ({ edit }: ProductProps) => {
+export const Motosierras = ({ edit }: ProductProps) => {
   
   const {data, isError, isLoading} = useGetAllProducts(PRODUCT.motosierra);
 

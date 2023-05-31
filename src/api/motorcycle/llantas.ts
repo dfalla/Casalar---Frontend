@@ -1,12 +1,15 @@
 import { SafeAny } from "@/common";
+import { PRODUCT } from "@/constants";
 import { modalNotificationsSuccess } from "@/helpers";
 import { ProductArgs, UpdateProductArgs } from "@/interfaces";
 import Http from "@/libs";
 
+const url = PRODUCT.llanta;
+
 export const getLlantas = async() => {
     try {
 
-        const { data } = await Http.get('/llantas')
+        const { data } = await Http.get(`/${url}`)
         return data.productos!;
 
     } catch (error) {
@@ -16,7 +19,7 @@ export const getLlantas = async() => {
 
 export const getLlantaById = async(id: string) =>{
     try {
-        const { data } = await Http.get(`/llantas/${id}`)
+        const { data } = await Http.get(`/${url}/${id}`)
         return data!.producto;
         
     } catch (error) {
@@ -33,7 +36,7 @@ export const createLlanta = async( values: ProductArgs) => {
     }
 
     try {
-        const { data } = await Http.post('/llantas', formData)
+        const { data } = await Http.post(`/${url}`, formData)
         modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
@@ -49,7 +52,7 @@ export const updateLlanta = async({id, values} : UpdateProductArgs) => {
     }
 
     try {
-        const { data } = await Http.put(`/llantas/${id}`, formData)
+        const { data } = await Http.put(`/${url}/${id}`, formData)
         modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
@@ -59,7 +62,7 @@ export const updateLlanta = async({id, values} : UpdateProductArgs) => {
 
 export const deleteLlanta = async(id: number) => {
     try {
-        const { data } = await Http.delete(`/llantas/${id}`);
+        const { data } = await Http.delete(`/${url}/${id}`);
         modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)

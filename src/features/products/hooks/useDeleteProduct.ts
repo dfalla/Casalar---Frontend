@@ -1,6 +1,7 @@
 import { MutationFunction, UseMutateFunction, useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteAceite, deleteMochila, deleteLlanta, deleteMotor, deleteMotosierra } from "../../../api";
 import { PRODUCT } from "../../../constants";
+import { deleteMotoguadana } from "@/api/brush-cutter";
 
 function deleteFunctionProduct(variant: string){
     let deleteProduct: MutationFunction<unknown, number> | undefined;
@@ -16,6 +17,9 @@ function deleteFunctionProduct(variant: string){
             break;
         case PRODUCT.motosierra:
           deleteProduct = deleteMotosierra;
+          break;
+        case PRODUCT.motoguadana:
+          deleteProduct = deleteMotoguadana;
           break;
         case PRODUCT.fumigadora:
             deleteProduct = deleteMochila;
@@ -56,6 +60,12 @@ export const useDeleteProduct = (variant: string) => {
             case PRODUCT.motosierra:
               await queryClient.invalidateQueries({
                 queryKey: [PRODUCT.motosierra], 
+                refetchType: 'active',
+              })
+              break;
+            case PRODUCT.motoguadana:
+              await queryClient.invalidateQueries({
+                queryKey: [PRODUCT.motoguadana], 
                 refetchType: 'active',
               })
               break;
