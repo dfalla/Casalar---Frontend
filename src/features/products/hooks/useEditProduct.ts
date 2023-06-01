@@ -1,14 +1,29 @@
 import { MutationFunction, QueryFunction, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { UpdateProductArgs, usEditProductArgs } from "../../../interfaces";
-import { PRODUCT } from "../../../constants";
-import { getAceiteById, getLlantaById, getMochilaById, getMotorById, getMotosierraById, updateAceite, updateLlanta, updateMochila, updateMotor, updateMotosierra } from "../../../api";
+import { 
+  getAceiteById, 
+  getLlantaById, 
+  getMochilaById, 
+  getMotorById, 
+  getMotosierraById, 
+  updateAceite, 
+  updateLlanta, 
+  updateMochila, 
+  updateMotor, 
+  updateMotosierra } from "@/api";
+
+import { UpdateProductArgs, usEditProductArgs } from "@/interfaces";
+import { PRODUCT } from "@/constants";
 import { getMotoguadanaById, updateMotoguadana } from "@/api/brush-cutter";
+import { getAccesorioElectricoById, updateAccesorioElectrico } from "@/api";
 
 
 function functionUpdateProductAccordingVariant(variant: string | undefined){
   let mutationUpdateFn:  MutationFunction<void, UpdateProductArgs> | undefined; 
 
   switch(variant){
+    case PRODUCT.accesoriosElectricos: 
+        mutationUpdateFn = updateAccesorioElectrico;
+      break;
     case PRODUCT.aceite: 
         mutationUpdateFn = updateAceite;
       break;
@@ -43,6 +58,11 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
   let getProductById:  QueryFunction<any, (string | undefined)[]> | undefined = undefined;
 
   switch (variant!) {
+    case PRODUCT.accesoriosElectricos:
+      if(parameter && edit === true) {
+        getProductById = () => getAccesorioElectricoById!(parameter)
+      }
+      break;
     case PRODUCT.aceite:
       if(parameter && edit === true) {
         getProductById = () => getAceiteById!(parameter)
@@ -87,6 +107,12 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
     mutationFn: updateFnMutation,
     onSuccess: async() =>{
       switch (variant) {
+        case PRODUCT.accesoriosElectricos:
+          await queryClient.invalidateQueries({
+            queryKey: [PRODUCT.accesoriosElectricos], 
+            refetchType: 'active',
+          })
+          break;
         case PRODUCT.aceite:
           await queryClient.invalidateQueries({
             queryKey: [PRODUCT.aceite], 

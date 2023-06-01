@@ -2,10 +2,14 @@ import { MutationFunction, UseMutateFunction, useMutation, useQueryClient } from
 import { deleteAceite, deleteMochila, deleteLlanta, deleteMotor, deleteMotosierra } from "../../../api";
 import { PRODUCT } from "../../../constants";
 import { deleteMotoguadana } from "@/api/brush-cutter";
+import { deleteAccesorioElectrico } from "@/api/electricalAccesories";
 
 function deleteFunctionProduct(variant: string){
     let deleteProduct: MutationFunction<unknown, number> | undefined;
     switch (variant) {
+        case PRODUCT.accesoriosElectricos:
+            deleteProduct = deleteAccesorioElectrico;
+            break;
         case PRODUCT.aceite:
             deleteProduct = deleteAceite;
             break;
@@ -39,6 +43,12 @@ export const useDeleteProduct = (variant: string) => {
     mutationFn: productToDelete,
     onSuccess: async()=>{
         switch (variant) {
+            case PRODUCT.accesoriosElectricos:
+            await queryClient.invalidateQueries({
+              queryKey: [PRODUCT.accesoriosElectricos], 
+              refetchType: 'active',
+            })
+            break;
             case PRODUCT.aceite:
               await queryClient.invalidateQueries({
                 queryKey: [PRODUCT.aceite], 

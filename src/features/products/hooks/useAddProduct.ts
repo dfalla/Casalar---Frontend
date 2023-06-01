@@ -3,6 +3,7 @@ import { createAceite, createLlanta, createMochila, createMotor, createMotosierr
 import { PRODUCT } from "@/constants";
 import { ProductArgs, useAddProductArgs } from "@/interfaces";
 import { createMotoguadana } from "@/api/brush-cutter";
+import { createAccesorioElectrico } from "@/api/electricalAccesories";
 
 
 export const useAddProduct = ({  variant }: useAddProductArgs ) => {
@@ -12,6 +13,9 @@ export const useAddProduct = ({  variant }: useAddProductArgs ) => {
   let mutationCreateFn:  MutationFunction<void, ProductArgs> | undefined;
 
   switch (variant!) {
+    case PRODUCT.accesoriosElectricos:
+      mutationCreateFn = createAccesorioElectrico;
+      break;
     case PRODUCT.aceite:
       mutationCreateFn = createAceite;
       break;
@@ -38,6 +42,12 @@ export const useAddProduct = ({  variant }: useAddProductArgs ) => {
     mutationFn: mutationCreateFn,
     onSuccess: async() =>{
       switch (variant) {
+        case PRODUCT.accesoriosElectricos:
+          await queryClient.invalidateQueries({
+            queryKey: [PRODUCT.accesoriosElectricos], 
+            refetchType: 'active',
+          })
+          break;
         case PRODUCT.aceite:
           await queryClient.invalidateQueries({
             queryKey: [PRODUCT.aceite], 

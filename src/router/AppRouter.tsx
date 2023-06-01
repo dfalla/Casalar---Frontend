@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useAuthStore } from "../store";
-import { Container, ProtectedRoutes } from "../common";
-import { Aceites, Dashboard, Llantas, Motores, Fumigadoras, LoginPage, RegisterPage, Motoguadanas, Motosierras } from "../features";
+import { useAuthStore } from "@/store";
+import { Container, ProtectedRoutes } from "@/common";
+import { Aceites, Llantas, Motores, Fumigadoras, LoginPage, RegisterPage, Motoguadanas, Motosierras, ElectricalAccesories } from "@/features";
 
 export const AppRouter = () => {
 
@@ -16,8 +16,8 @@ export const AppRouter = () => {
 
                 <Route path="/" element={<ProtectedRoutes isAllowed={isAuth} />}>
                   
-                  <Route index element={<Dashboard/>}/>
-                  <Route path="/dashboard" element={<Dashboard/>}/>
+                  <Route index element={<ElectricalAccesories/>}/>
+                  <Route path="/accesorios-electricos" element={<ElectricalAccesories/>}/>
                   <Route path="/motores" element={<Motores/>}/>
                   <Route path="/motosierras" element={<Motosierras/>}/>
                   <Route path="/motoguadanas" element={<Motoguadanas/>}/>
@@ -26,6 +26,7 @@ export const AppRouter = () => {
                   <Route path="/motorepuestos/aceites" element={<Aceites/>}/>
                   <Route path="/motorepuestos/llantas" element={<Llantas/>}/>
                   
+                  <Route path="/accesorios-electricos/:id" element={<ElectricalAccesories edit={true}/>}/>
                   <Route path="/motorepuestos/aceites/:id" element={<Aceites edit={true}/>}/>
                   <Route path="/motorepuestos/llantas/:id" element={<Llantas edit={true}/>}/>
                   <Route path="/motores/:id" element={<Motores edit={true}/>}/>

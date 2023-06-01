@@ -2,10 +2,14 @@ import { QueryFunction, useQuery} from "@tanstack/react-query"
 import { getAceites, getMochilas, getMotores, getLlantas, getMotosierras } from "../../../api";
 import { PRODUCT } from "../../../constants";
 import { getMotoguadanas } from "@/api/brush-cutter";
+import { getAccesoriosElectricos } from "@/api/electricalAccesories";
 
 function getFunctionProducts(variant: string){
     let getAllProducts: QueryFunction<any, string[]> | undefined;
     switch (variant) {
+        case PRODUCT.accesoriosElectricos:
+            getAllProducts = getAccesoriosElectricos;
+            break;
         case PRODUCT.aceite:
             getAllProducts = getAceites;
             break;

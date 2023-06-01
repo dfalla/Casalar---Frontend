@@ -16,9 +16,9 @@ import {
   Input,
   Text
 } from '@chakra-ui/react';
-import { FormProductoArgs, ProductArgs } from '../../../interfaces';
-import { InputField, SafeAny } from '../../../common';
-import { PRODUCT } from '../../../constants';
+import { FormProductoArgs, ProductArgs } from '@/interfaces';
+import { InputField, SafeAny } from '@/common';
+import { PRODUCT } from '@/constants';
 import { useAddProduct, useEditProduct } from '../hooks';
 import { INITIALVALUES, validationSchema } from '../domain';
 
@@ -28,6 +28,9 @@ function Ruta(variant: string | undefined){
   let ruta: string= '';
 
   switch(variant){
+    case PRODUCT.accesoriosElectricos: 
+      ruta = PRODUCT.accesoriosElectricos;
+      break;
     case PRODUCT.aceite: 
       ruta = PRODUCT.aceite;
       break;
@@ -75,6 +78,8 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
 
     let rutaFinal: string  = '';
     if(variant === PRODUCT.motor){
+      rutaFinal = `/${variant}`
+    }else if(variant === PRODUCT.accesoriosElectricos){
       rutaFinal = `/${variant}`
     } else if(variant === PRODUCT.motoguadana){
       rutaFinal = `/${variant}`

@@ -4,9 +4,9 @@ import { modalNotificationsSuccess } from "@/helpers";
 import { ProductArgs, UpdateProductArgs } from "@/interfaces";
 import Http from "@/libs";
 
-const variant = PRODUCT.motoguadana;
+const variant = PRODUCT.accesoriosElectricos;
 
-export const getMotoguadanas = async() => {
+export const getAccesoriosElectricos = async() => {
     try {
 
         const { data } = await Http.get(`/${variant}`)
@@ -17,7 +17,7 @@ export const getMotoguadanas = async() => {
     }
 }
 
-export const getMotoguadanaById = async(id: string) =>{
+export const getAccesorioElectricoById = async(id: string) =>{
     try {
         const { data } = await Http.get(`/${variant}/${id}`)
         return data!.producto;
@@ -27,7 +27,7 @@ export const getMotoguadanaById = async(id: string) =>{
     }
 }
 
-export const createMotoguadana = async( values: ProductArgs) => {
+export const createAccesorioElectrico = async( values: ProductArgs) => {
     
     const formData = new FormData();
 
@@ -43,7 +43,7 @@ export const createMotoguadana = async( values: ProductArgs) => {
     }
 }
 
-export const updateMotoguadana = async({id, values} : UpdateProductArgs) => {
+export const updateAccesorioElectrico = async({id, values} : UpdateProductArgs) => {
 
     const {descripcion, marca, precio, imagen} = values
     
@@ -61,7 +61,7 @@ export const updateMotoguadana = async({id, values} : UpdateProductArgs) => {
     }
 }
 
-export const deleteMotoguadana = async(id: number) => {
+export const deleteAccesorioElectrico = async(id: number) => {
     try {
         const { data } = await Http.delete(`/${variant}/${id}`);
         modalNotificationsSuccess(data.msg)

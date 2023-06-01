@@ -34,7 +34,7 @@ import {
 } from 'react-icons/fi';
 import { NavLink } from "react-router-dom";
 import { FaMotorcycle } from "react-icons/fa";
-import { GiBackpack, GiFlatTire, GiDelicatePerfume, GiChainsaw, GiGrass } from "react-icons/gi";
+import { GiBackpack, GiFlatTire, GiDelicatePerfume, GiChainsaw, GiGrass, GiElectric } from "react-icons/gi";
 import { RiOilFill } from "react-icons/ri";
 import { TbCircuitMotor } from "react-icons/tb";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
@@ -57,9 +57,9 @@ interface LinkItemProps {
 
 const LinkItems: Array<LinkItemProps> = [
   { 
-    name: 'Dashboard', 
-    icon: <MdOutlineDashboardCustomize/>, 
-    path: '/dashboard', 
+    name: 'Accesorios Electricos', 
+    icon: <GiElectric/>, 
+    path: '/accesorios-electricos', 
   },
 
   { 
