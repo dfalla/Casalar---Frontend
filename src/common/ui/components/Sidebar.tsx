@@ -32,7 +32,7 @@ import {
   FiChevronDown,
   FiBell,
 } from 'react-icons/fi';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaMotorcycle } from "react-icons/fa";
 import { GiBackpack, GiFlatTire, GiDelicatePerfume, GiChainsaw, GiGrass, GiElectric } from "react-icons/gi";
 import { RiOilFill } from "react-icons/ri";
@@ -296,6 +296,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const profile = useAuthStore((state) => state.profile);
 
   const { apellido, nombre } = profile;
+
+  const navigate = useNavigate();
   
   const logoutSesion = () => {
     Swal.fire({
@@ -344,6 +346,21 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
+        <Button 
+          color={'white'} 
+          variant={'outline'} 
+          borderColor={'brand.clonika.blue.800'}
+          backgroundColor= 'brand.clonika.blue.800'
+          _hover={{
+            backgroundColor: 'white',
+            color: 'brand.clonika.blue.800'
+          }}
+          onClick={()=>{
+            navigate('/venta')
+          }}
+        >
+          Generar Venta
+        </Button>
         <IconButton
           size="lg"
           variant="ghost"

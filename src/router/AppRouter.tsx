@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "@/store";
 import { Container, ProtectedRoutes } from "@/common";
-import { Aceites, Llantas, Motores, Fumigadoras, LoginPage, RegisterPage, Motoguadanas, Motosierras, ElectricalAccesories } from "@/features";
+import { Aceites, Llantas, Motores, Fumigadoras, LoginPage, RegisterPage, Motoguadanas, Motosierras, ElectricalAccesories, Sale } from "@/features";
 
 export const AppRouter = () => {
 
@@ -32,6 +32,8 @@ export const AppRouter = () => {
                   <Route path="/motores/:id" element={<Motores edit={true}/>}/>
                   <Route path="/motosierras/:id" element={<Motosierras edit={true}/>}/>
                   <Route path="/motoguadanas/:id" element={<Motoguadanas edit={true}/>}/>
+                  <Route path="/venta" element={<Sale/>}/>
+
 
                   <Route path="/fumigadoras/:id" element={<Fumigadoras edit={true}/>}/>
 
