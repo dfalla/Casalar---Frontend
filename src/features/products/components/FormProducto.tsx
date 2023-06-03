@@ -120,7 +120,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
 
   return (
     <>
-      <Button variant={'outline'} color='white' onClick={onOpen}>
+      <Button variant={'outline'} color='white' onClick={onOpen} width={200} alignSelf={"center"}>
         Registrar nuevo producto
       </Button>
       <Modal
