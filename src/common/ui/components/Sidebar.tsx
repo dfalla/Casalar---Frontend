@@ -41,6 +41,7 @@ import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import { useAuthStore } from '@/store';
+import { activeButtonSale } from '@/helpers';
 
 interface SubContent {
   title: string;
@@ -114,6 +115,8 @@ const LinkItems: Array<LinkItemProps> = [
 
   
 ];
+
+
 
 export const Sidebar = ({
   children,
@@ -294,7 +297,8 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const logout = useAuthStore((state) => state.logout);
   const profile = useAuthStore((state) => state.profile);
-
+  const { isButtonDisabled} = activeButtonSale();
+  
   const { apellido, nombre } = profile;
 
   const navigate = useNavigate();
@@ -349,6 +353,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         <Button 
           color={'white'} 
           variant={'outline'} 
+          disabled={true}
           borderColor={'brand.clonika.blue.800'}
           backgroundColor= 'brand.clonika.blue.800'
           _hover={{
@@ -358,6 +363,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           onClick={()=>{
             navigate('/venta')
           }}
+          isDisabled={ isButtonDisabled() }
         >
           Generar Venta
         </Button>
@@ -400,10 +406,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             <MenuList
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}>
-              <MenuItem>Profile</MenuItem>
+              {/* <MenuItem>Profile</MenuItem>
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem>Sign out</MenuItem> */}
               <MenuItem
                 onClick={ ()=>{
                   logoutSesion();

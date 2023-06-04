@@ -57,7 +57,7 @@ function Ruta(variant: string | undefined){
 }
 
 export const FormProducto = ({variant, edit}: FormProductoArgs) => {
-  console.log('variant', variant)
+  // console.log('variant', variant)
   const { isOpen, onOpen, onClose,  } = useDisclosure()
 
   const initialRef = useRef(null)
@@ -79,7 +79,7 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
     let rutaFinal: string  = '';
     if(variant === PRODUCT.motor){
       rutaFinal = `/${variant}`
-    }else if(variant === PRODUCT.accesoriosElectricos){
+    } else if(variant === PRODUCT.accesoriosElectricos){
       rutaFinal = `/${variant}`
     } else if(variant === PRODUCT.motoguadana){
       rutaFinal = `/${variant}`
@@ -103,6 +103,10 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
   useEffect(() => {
     if(edit && params.id) onOpen();
   }, [params.id, edit]);
+
+  useEffect(() => {
+    if(!params.id) closeModal();
+  }, [params.id]);
 
   useEffect(() => {
     if(data !== undefined){
