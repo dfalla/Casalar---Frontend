@@ -17,11 +17,7 @@ export const Filter = ({ data, setFilteredData }: FilterProps) => {
         setFilterValue(event.target.value);
         handleFilter(event.target.value);
     };
-
-    useEffect(() => {
-        setFilteredData(data);
-    }, [data]);
-      
+    
     const handleFilter = (filter: string) => {
     
         let filterValue: string = '';
@@ -31,6 +27,10 @@ export const Filter = ({ data, setFilteredData }: FilterProps) => {
         
         setFilteredData(filteredItems);
     };
+
+    useEffect(() => {
+        setFilteredData(data);
+    }, [data]);
     
     return (
     <Box alignSelf={"center"}>
