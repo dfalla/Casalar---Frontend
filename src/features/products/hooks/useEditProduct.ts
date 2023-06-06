@@ -106,53 +106,11 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
   const editProduct = useMutation({
     mutationFn: updateFnMutation,
     onSuccess: async() =>{
-      switch (variant) {
-        case PRODUCT.accesoriosElectricos:
-          await queryClient.invalidateQueries({
-            queryKey: [PRODUCT.accesoriosElectricos], 
-            refetchType: 'active',
-          })
-          break;
-        case PRODUCT.aceite:
-          await queryClient.invalidateQueries({
-            queryKey: [PRODUCT.aceite], 
-            refetchType: 'active',
-          })
-          break;
-        case PRODUCT.llanta:
-          await queryClient.invalidateQueries({
-            queryKey: [PRODUCT.llanta], 
-            refetchType: 'active',
-          })
-          break;
-        case PRODUCT.motor:
-          await queryClient.invalidateQueries({
-            queryKey: [PRODUCT.motor], 
-            refetchType: 'active',
-          })
-          break;
-        case PRODUCT.motosierra:
-          await queryClient.invalidateQueries({
-            queryKey: [PRODUCT.motosierra], 
-            refetchType: 'active',
-          })
-          break;
-        case PRODUCT.motoguadana:
-          await queryClient.invalidateQueries({
-            queryKey: [PRODUCT.motoguadana], 
-            refetchType: 'active',
-          })
-          break;
-        case PRODUCT.fumigadora:
-          await queryClient.invalidateQueries({
-            queryKey: [PRODUCT.fumigadora], 
-            refetchType: 'active',
-          })
-          break;
-
-          default:
-          break;
-      }
+      await queryClient.invalidateQueries({
+        queryKey: [variant], 
+        refetchType: 'active',
+      })
+      
     },
     onError: (error) =>{
       console.log(error)

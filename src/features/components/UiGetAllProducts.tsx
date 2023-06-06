@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, HStack, SimpleGrid } from "@chakra-ui/react";
 import { CustomCard, InputField, SafeAny } from "@/common";
 import { ElementArgs, UiGetAllProductsArgs } from "@/interfaces";
@@ -8,17 +8,6 @@ import { Filter } from "./Filter";
 export const UiGetAllProducts = ({variant, edit, data}: UiGetAllProductsArgs ) => {
   
   const [filteredData, setFilteredData] = useState<ElementArgs[]>(data);
-  
-  const handleFilter = (filter: string) => {
-
-    let filterValue: string = '';
-    if(filter.length > 0) filterValue = filter.split('')[0].toUpperCase() + filter.slice(1)
-
-    const filteredItems = data.filter((item) => item.marca.includes(filterValue));
-    
-    setFilteredData(filteredItems);
-  };
-
 
   return (
     <>
@@ -35,7 +24,7 @@ export const UiGetAllProducts = ({variant, edit, data}: UiGetAllProductsArgs ) =
           alignItems={["center", "center", "center", "center"]}
           
         >
-          <Filter data={data} onFilter={handleFilter}/>
+          <Filter data={data} setFilteredData={setFilteredData}/>
 
           <FormProducto variant={variant} edit={edit} />
 
