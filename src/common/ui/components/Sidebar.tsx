@@ -365,7 +365,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           }}
           isDisabled={ isButtonDisabled() }
         >
-          Generar Venta
+          Registrar Venta
         </Button>
         <IconButton
           size="lg"

@@ -124,15 +124,6 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
         </Stack>
       </Stack>
       <Stack mt={8} direction={'row'} spacing={4}>
-        <Button 
-          onClick={()=>deleteItem(id)}
-          colorScheme='red'
-          flex={1}
-          fontSize={'sm'}
-          rounded={'full'}
-        >
-          Eliminar 
-        </Button>
         <Button
           onClick={() => editProduct(id, variant)}
           flex={1}
@@ -148,6 +139,15 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
           }}
         >
           Editar
+        </Button>
+        <Button 
+          onClick={()=>deleteItem(id)}
+          colorScheme='red'
+          flex={1}
+          fontSize={'sm'}
+          rounded={'full'}
+        >
+          Eliminar 
         </Button>
       </Stack>
     </Box>
