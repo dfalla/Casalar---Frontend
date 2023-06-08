@@ -5,3 +5,4 @@ export * from './chainsaws';
 export * from './electricalAccesories';
 export * from './motorcycle';
 export * from './motors';
+export * from './name_products';

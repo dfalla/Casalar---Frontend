@@ -1,5 +1,5 @@
 import { useField, ErrorMessage } from "formik"
-import { Select } from '@chakra-ui/react'
+import { Box, FormControl, FormLabel, Select, Text } from '@chakra-ui/react'
 
 interface Props { 
     label: string;
@@ -10,14 +10,22 @@ interface Props {
 
 export const SelectField = ({ label, ...props }: Props) => {
 
-    const [ field] = useField(props);
+    const [ field ] = useField(props);
 
   return (
-    <>
-      <label htmlFor={props.id || props.name}>{label}</label>
+    <FormControl>
+      <FormLabel htmlFor={props.id || props.name} marginBottom={3} marginTop={5}>
+        <Text fontWeight={'bold'}>
+          {label}
+        </Text>
+      </FormLabel>
       <Select {...field} {...props} />
-      <ErrorMessage name={ props.name } component="span"/>
+      <Box
+        color={'red'}
+      >
+        <ErrorMessage name={ props.name }/>
+      </Box>
         
-    </>
+    </FormControl>
   )
 }

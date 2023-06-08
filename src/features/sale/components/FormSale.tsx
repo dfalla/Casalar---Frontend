@@ -1,8 +1,10 @@
-import { Box, HStack, Select } from "@chakra-ui/react"
+import { SelectField } from "@/common";
+import { Box, HStack } from "@chakra-ui/react"
 import { Form, Formik } from 'formik'
+import { useGetAllNameOfProducts } from "../hooks";
 
 export interface Sale {
-    product: string;
+    producto: string;
     marca: string;
     precio: number | null;
     cantidad: string;
@@ -10,13 +12,15 @@ export interface Sale {
 }
 
 const INITIALVALUES: Sale = {
-    product: '',
+    producto: '',
     marca: '',
     precio: null,
     cantidad: ''
 }
 
 export const FormSale = () => {
+    const { data, isError, isLoading } = useGetAllNameOfProducts();
+    console.log('nombres de productos: ', data)
   return (
     <Box>
         <Formik
@@ -28,18 +32,21 @@ export const FormSale = () => {
             {
                 ()=>(
                     <Form>
-                        <HStack>
-                            <Select placeholder='Seleccionar Producto'>
-                                <option value='option1'>Option 1</option>
-                                <option value='option2'>Option 2</option>
-                                <option value='option3'>Option 3</option>
-                            </Select>
+                        <HStack gap={20}>
+                         <SelectField label="Productos" name="producto" >
+                            {
+                                data.map(({id, nombre}: {id: number, nombre: string}) => (
+                                <option key={id} value={`${nombre}`}>{ nombre }</option>
+                                    
+                                ))
+                            }
+                         </SelectField>
 
-                            <Select placeholder='Seleccionar Marca'>
-                                <option value='option1'>Option 1</option>
-                                <option value='option2'>Option 2</option>
-                                <option value='option3'>Option 3</option>
-                            </Select>
+                         <SelectField label="Marca" name="marca" >
+                            <option value='option1'>Option 1</option>
+                            <option value='option2'>Option 2</option>
+                            <option value='option3'>Option 3</option>
+                         </SelectField>
                         </HStack>
                     </Form>
                 )
