@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getCurrentTime } from './getCurrentTime';
 
-export const activeButtonSale = () => {
+export const activeSale = () => {
 
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
 
@@ -13,7 +13,7 @@ export const activeButtonSale = () => {
       return () => clearInterval(interval);
     }, []);
   
-    const isButtonDisabled = () => {
+    const isDisabled = () => {
 
         const currentHour = getCurrentTime(currentTime);
 
@@ -23,6 +23,6 @@ export const activeButtonSale = () => {
 
 
   return {
-    isButtonDisabled
+    isDisabled
   }
 }

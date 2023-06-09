@@ -41,7 +41,7 @@ import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import { useAuthStore } from '@/store';
-import { activeButtonSale } from '@/helpers';
+import { activeSale } from '@/helpers';
 
 interface SubContent {
   title: string;
@@ -297,7 +297,7 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const logout = useAuthStore((state) => state.logout);
   const profile = useAuthStore((state) => state.profile);
-  const { isButtonDisabled} = activeButtonSale();
+  const { isDisabled} = activeSale();
   
   const { apellido, nombre } = profile;
 
@@ -363,7 +363,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           onClick={()=>{
             navigate('/venta')
           }}
-          isDisabled={ isButtonDisabled() }
+          isDisabled={ isDisabled() }
         >
           Registrar Venta
         </Button>

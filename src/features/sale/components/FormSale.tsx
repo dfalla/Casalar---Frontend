@@ -33,20 +33,22 @@ export const FormSale = () => {
                 ()=>(
                     <Form>
                         <HStack gap={20}>
-                         <SelectField label="Productos" name="producto" >
-                            {
-                                data.map(({id, nombre}: {id: number, nombre: string}) => (
-                                <option key={id} value={`${nombre}`}>{ nombre }</option>
-                                    
-                                ))
-                            }
-                         </SelectField>
+                            <SelectField label="Productos" name="producto">
+                                {
+                                    data != undefined &&
+                                        data.map(({id, nombre}: {id: number, nombre: string}) => (
+                                            <option key={id} value={`${nombre}`}>{ nombre }</option>
+                                        ))
+                                }
+                            </SelectField>
 
-                         <SelectField label="Marca" name="marca" >
-                            <option value='option1'>Option 1</option>
-                            <option value='option2'>Option 2</option>
-                            <option value='option3'>Option 3</option>
-                         </SelectField>
+                            <SelectField label="Marca" name="marca" >
+                                <option value='option1'>Option 1</option>
+                                <option value='option2'>Option 2</option>
+                                <option value='option3'>Option 3</option>
+                            </SelectField> 
+
+                        
                         </HStack>
                     </Form>
                 )
