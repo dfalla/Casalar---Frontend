@@ -37,7 +37,6 @@ export const createMotoguadana = async( values: ProductArgs) => {
 
     try {
         const { data } = await Http.post(`/${variant}`, formData)
-        modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
     }
@@ -55,7 +54,6 @@ export const updateMotoguadana = async({id, values} : UpdateProductArgs) => {
 
     try {
         const { data } = await Http.put(`/${variant}/${id}`, formData)
-        modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error capturado 😤', error)
     }
@@ -64,7 +62,6 @@ export const updateMotoguadana = async({id, values} : UpdateProductArgs) => {
 export const deleteMotoguadana = async(id: number) => {
     try {
         const { data } = await Http.delete(`/${variant}/${id}`);
-        modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
     }

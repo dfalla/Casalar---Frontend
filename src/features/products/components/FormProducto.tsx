@@ -6,7 +6,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -14,11 +13,12 @@ import {
   VStack,
   HStack,
   Input,
-  Text
+  Text,
+  useToast
 } from '@chakra-ui/react';
 import { FormProductoArgs, ProductArgs } from '@/interfaces';
 import { InputField, SafeAny } from '@/common';
-import { PRODUCT } from '@/constants';
+import { MESSAGES_NOTIFICATIONS, PRODUCT } from '@/constants';
 import { useAddProduct, useEditProduct } from '../hooks';
 import { INITIALVALUES, validationSchema } from '../domain';
 
@@ -58,6 +58,8 @@ function Ruta(variant: string | undefined){
 
 export const FormProducto = ({variant, edit}: FormProductoArgs) => {
   // console.log('variant', variant)
+  const toast = useToast();
+
   const { isOpen, onOpen, onClose,  } = useDisclosure()
 
   const initialRef = useRef(null)
@@ -144,7 +146,17 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
             <Formik
               initialValues={ initialValues }
               onSubmit={ (values) => {
-                if(!params.id && !edit) addProduct.mutate(values);
+                if(!params.id && !edit){
+                  toast({
+                    title: `${MESSAGES_NOTIFICATIONS.registred}`,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top'
+                  })
+                  
+                  addProduct.mutate(values)
+                } ;
                 if(params.id !== undefined && edit === true) {
                   const VALUES: ProductArgs = {
                     descripcion: values.descripcion,
@@ -153,6 +165,14 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
                     stock: values.stock,
                     imagen: values.imagen
                   }
+
+                  toast({
+                    title: `${MESSAGES_NOTIFICATIONS.edited}`,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top'
+                  })
                    editProduct.mutate({id: params.id, values: VALUES})
                 }
                 closeModal();

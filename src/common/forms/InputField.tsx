@@ -20,9 +20,10 @@ export const InputField = ({ label, ...props }: Props) => {
           {label}
         </Text>
       </FormLabel>
-      <Input className="input-text" type="text" {...field} {...props} />
+      <Input className="input-text" type="text" {...field} {...props} width={"220px"}/>
       <Box
         color={'red'}
+        marginTop={3}
       >
         <ErrorMessage name={ props.name }/>
       </Box>

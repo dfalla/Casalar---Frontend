@@ -37,7 +37,6 @@ export const createAceite = async( values: ProductArgs) => {
 
     try {
         const { data } = await Http.post(`/${url}`, formData)
-        modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
     }
@@ -55,7 +54,6 @@ export const updateAceite = async({id, values} : UpdateProductArgs) => {
 
     try {
         const { data } = await Http.put(`/${url}/${id}`, formData)
-        modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error capturado 😤', error)
     }
@@ -64,7 +62,6 @@ export const updateAceite = async({id, values} : UpdateProductArgs) => {
 export const deleteAceite = async(id: number) => {
     try {
         const { data } = await Http.delete(`/${url}/${id}`);
-        modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
     }

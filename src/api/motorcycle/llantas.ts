@@ -37,7 +37,6 @@ export const createLlanta = async( values: ProductArgs) => {
 
     try {
         const { data } = await Http.post(`/${url}`, formData)
-        modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
     }
@@ -53,7 +52,6 @@ export const updateLlanta = async({id, values} : UpdateProductArgs) => {
 
     try {
         const { data } = await Http.put(`/${url}/${id}`, formData)
-        modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
     }
@@ -63,7 +61,6 @@ export const updateLlanta = async({id, values} : UpdateProductArgs) => {
 export const deleteLlanta = async(id: number) => {
     try {
         const { data } = await Http.delete(`/${url}/${id}`);
-        modalNotificationsSuccess(data.msg)
     } catch (error) {
         console.log('error', error)
     }

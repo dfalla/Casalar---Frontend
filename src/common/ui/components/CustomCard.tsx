@@ -6,12 +6,14 @@ import {
     Text,
     Stack,
     Image,
-    Button
+    Button,
+    useToast
 } from '@chakra-ui/react';
-import { PRODUCT } from '@/constants';
+import { MESSAGES_NOTIFICATIONS, PRODUCT } from '@/constants';
 import { useDeleteProduct } from '@/features';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+
 export interface CardArgs{
   id: number;
   variant: string;
@@ -25,10 +27,11 @@ export interface CardArgs{
 
 export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripcion} : CardArgs) => {
   const navigate = useNavigate();
-  
+  const toast = useToast();
   const { mutate } = useDeleteProduct(variant);
-
+  
   const deleteItem = (id: number) => {
+
     Swal.fire({
       title: `¿Estás seguro que desea eliminar el ${variant} de marca ${marca}?`,
       icon: 'warning',
@@ -40,6 +43,13 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
     }).then(( result )=>{
       if(result.isConfirmed) {
         mutate(id)
+        toast({
+          title: `${MESSAGES_NOTIFICATIONS.deleted}`,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top'
+        })
       }
     });
   }
@@ -141,7 +151,9 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
           Editar
         </Button>
         <Button 
-          onClick={()=>deleteItem(id)}
+          onClick={()=>{
+            deleteItem(id)
+          }}
           colorScheme='red'
           flex={1}
           fontSize={'sm'}

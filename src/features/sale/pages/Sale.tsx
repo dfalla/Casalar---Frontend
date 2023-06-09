@@ -5,7 +5,6 @@ export const Sale = () => {
   return (
     <Box
       marginTop={"100px"}
-      marginLeft={"50px"}
       backgroundColor={'white'}
       padding={4}
     >

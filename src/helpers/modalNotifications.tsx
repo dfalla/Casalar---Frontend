@@ -1,5 +1,4 @@
 import Swal from "sweetalert2";
-import { Alert, AlertIcon } from '@chakra-ui/react'
 
 export const modalNotificationWarning = (title: string) => {
     setTimeout(() => {
@@ -12,7 +11,6 @@ export const modalNotificationWarning = (title: string) => {
         })
     }, 20);
 };
-
 
 export const modalNotificationsSuccess = (title: string) =>{
     setTimeout(() => {

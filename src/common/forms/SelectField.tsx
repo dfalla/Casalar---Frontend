@@ -13,15 +13,16 @@ export const SelectField = ({ label, ...props }: Props) => {
     const [ field ] = useField(props);
 
   return (
-    <FormControl>
+    <FormControl >
       <FormLabel htmlFor={props.id || props.name} marginBottom={3} marginTop={5}>
         <Text fontWeight={'bold'}>
           {label}
         </Text>
       </FormLabel>
-      <Select {...field} {...props} />
+      <Select {...field} {...props} width={"220px"}/>
       <Box
         color={'red'}
+        marginTop={3}
       >
         <ErrorMessage name={ props.name }/>
       </Box>
