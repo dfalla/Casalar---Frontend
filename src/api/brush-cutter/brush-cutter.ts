@@ -59,7 +59,7 @@ export const updateMotoguadana = async({id, values} : UpdateProductArgs) => {
     }
 }
 
-export const deleteMotoguadana = async(id: number) => {
+export const deleteMotoguadana = async(id: string) => {
     try {
         const { data } = await Http.delete(`/${variant}/${id}`);
     } catch (error) {

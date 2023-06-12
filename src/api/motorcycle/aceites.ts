@@ -59,7 +59,7 @@ export const updateAceite = async({id, values} : UpdateProductArgs) => {
     }
 }
 
-export const deleteAceite = async(id: number) => {
+export const deleteAceite = async(id: string) => {
     try {
         const { data } = await Http.delete(`/${url}/${id}`);
     } catch (error) {

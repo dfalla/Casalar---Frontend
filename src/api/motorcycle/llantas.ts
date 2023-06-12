@@ -58,7 +58,7 @@ export const updateLlanta = async({id, values} : UpdateProductArgs) => {
 }
 
 
-export const deleteLlanta = async(id: number) => {
+export const deleteLlanta = async(id: string) => {
     try {
         const { data } = await Http.delete(`/${url}/${id}`);
     } catch (error) {

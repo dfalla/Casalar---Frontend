@@ -3,7 +3,6 @@ import { Box, Button, HStack } from "@chakra-ui/react"
 import { Form, Formik } from 'formik'
 import { useGetAllNameOfProducts } from "../hooks";
 import { INITIALVALUES, validationSchema } from "../domain";
-
 export interface Data {
     id     : number;
     nombre : string;
@@ -12,6 +11,8 @@ export interface Data {
 export const FormSale = () => {
     const { data, isError, isLoading } = useGetAllNameOfProducts();
 
+ 
+    
     let newData: Data[] = [];
 
     if(data != undefined){
@@ -35,7 +36,7 @@ export const FormSale = () => {
                             alignItems={["center", "center"]} 
                             gap={[5,5,20,20]}
                         >
-                            <SelectField label="Productos" name="producto" placeholder="Selecciona un producto">
+                            <SelectField label="Productos" name="producto" placeholder="Selecciona">
                                 {
                                     newData != undefined &&
                                     newData.map(({id, nombre}: {id: number, nombre: string}) => (

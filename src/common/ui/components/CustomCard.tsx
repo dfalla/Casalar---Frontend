@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 export interface CardArgs{
-  id: number;
+  id_producto: string;
   variant: string;
   descripcion: string;
   marca: string;
@@ -25,12 +25,12 @@ export interface CardArgs{
 }
 
 
-export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripcion} : CardArgs) => {
+export const CustomCard = ({marca, imagen, precio, stock, id_producto, variant, descripcion} : CardArgs) => {
   const navigate = useNavigate();
   const toast = useToast();
   const { mutate } = useDeleteProduct(variant);
   
-  const deleteItem = (id: number) => {
+  const deleteItem = (id_producto: string) => {
 
     Swal.fire({
       title: `¿Estás seguro que desea eliminar el ${variant} de marca ${marca}?`,
@@ -42,7 +42,7 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
       cancelButtonText: 'Cancelar',
     }).then(( result )=>{
       if(result.isConfirmed) {
-        mutate(id)
+        mutate(id_producto)
         toast({
           title: `${MESSAGES_NOTIFICATIONS.deleted}`,
           status: 'success',
@@ -54,22 +54,22 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
     });
   }
 
-  const editProduct = (id: number, variant: string) => {
+  const editProduct = (id_producto: string, variant: string) => {
     // const rutaFinal = finalRoute({ variant, id})
 
     let rutaFinal: string = '';
     if(variant === PRODUCT.motor){
-      rutaFinal = `/${variant}/${id}`
+      rutaFinal = `/${variant}/${id_producto}`
     } else if(variant === PRODUCT.accesoriosElectricos){
-      rutaFinal = `/${variant}/${id}`
+      rutaFinal = `/${variant}/${id_producto}`
     } else if(variant === PRODUCT.motosierra){
-      rutaFinal = `/${variant}/${id}`
+      rutaFinal = `/${variant}/${id_producto}`
     } else if(variant === PRODUCT.motoguadana){
-      rutaFinal = `/${variant}/${id}`
+      rutaFinal = `/${variant}/${id_producto}`
     } else if(variant === PRODUCT.fumigadora) {
-      rutaFinal = `/${variant}/${id}`
+      rutaFinal = `/${variant}/${id_producto}`
     } else {
-      rutaFinal = `/motorepuestos/${variant}/${id}`
+      rutaFinal = `/motorepuestos/${variant}/${id_producto}`
     }
 
     navigate(rutaFinal)
@@ -135,7 +135,7 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
       </Stack>
       <Stack mt={8} direction={'row'} spacing={4}>
         <Button
-          onClick={() => editProduct(id, variant)}
+          onClick={() => editProduct(id_producto, variant)}
           flex={1}
           fontSize={'sm'}
           rounded={'full'}
@@ -152,7 +152,7 @@ export const CustomCard = ({marca, imagen, precio, stock, id, variant, descripci
         </Button>
         <Button 
           onClick={()=>{
-            deleteItem(id)
+            deleteItem(id_producto)
           }}
           colorScheme='red'
           flex={1}

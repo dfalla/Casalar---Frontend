@@ -16,6 +16,7 @@ import {
   Text,
   useToast
 } from '@chakra-ui/react';
+import { v4 as uuidv4 } from 'uuid';
 import { FormProductoArgs, ProductArgs } from '@/interfaces';
 import { InputField, SafeAny } from '@/common';
 import { MESSAGES_NOTIFICATIONS, PRODUCT } from '@/constants';
@@ -58,6 +59,8 @@ function Ruta(variant: string | undefined){
 
 export const FormProducto = ({variant, edit}: FormProductoArgs) => {
   // console.log('variant', variant)
+    const id_producto = uuidv4();
+
   const toast = useToast();
 
   const { isOpen, onOpen, onClose,  } = useDisclosure()
@@ -147,15 +150,18 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
               initialValues={ initialValues }
               onSubmit={ (values) => {
                 if(!params.id && !edit){
-                  toast({
-                    title: `${MESSAGES_NOTIFICATIONS.registred}`,
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                    position: 'top'
-                  })
-                  
+                  values.id_producto =  id_producto;
+
                   addProduct.mutate(values)
+                
+                 
+                    toast({
+                      title: `${MESSAGES_NOTIFICATIONS.registred}`,
+                      status: 'success',
+                      duration: 3000,
+                      isClosable: true,
+                      position: 'top'
+                    })
                 } ;
                 if(params.id !== undefined && edit === true) {
                   const VALUES: ProductArgs = {
@@ -166,14 +172,14 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
                     imagen: values.imagen
                   }
 
-                  toast({
-                    title: `${MESSAGES_NOTIFICATIONS.edited}`,
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                    position: 'top'
-                  })
-                   editProduct.mutate({id: params.id, values: VALUES})
+                  editProduct.mutate({id: params.id, values: VALUES})
+                    toast({
+                      title: `${MESSAGES_NOTIFICATIONS.edited}`,
+                      status: 'success',
+                      duration: 3000,
+                      isClosable: true,
+                      position: 'top'
+                    })
                 }
                 closeModal();
 

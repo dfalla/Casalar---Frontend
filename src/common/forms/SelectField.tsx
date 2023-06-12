@@ -19,7 +19,7 @@ export const SelectField = ({ label, ...props }: Props) => {
           {label}
         </Text>
       </FormLabel>
-      <Select {...field} {...props} width={"220px"}/>
+      <Select {...field} {...props}/>
       <Box
         color={'red'}
         marginTop={3}

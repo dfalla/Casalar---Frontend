@@ -5,7 +5,7 @@ import { deleteMotoguadana } from "@/api/brush-cutter";
 import { deleteAccesorioElectrico } from "@/api/electricalAccesories";
 
 function deleteFunctionProduct(variant: string){
-    let deleteProduct: MutationFunction<unknown, number> | undefined;
+    let deleteProduct: MutationFunction<unknown, string> | undefined;
     switch (variant) {
         case PRODUCT.accesoriosElectricos:
             deleteProduct = deleteAccesorioElectrico;

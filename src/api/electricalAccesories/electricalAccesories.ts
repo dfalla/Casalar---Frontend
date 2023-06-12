@@ -1,15 +1,24 @@
 import { SafeAny } from "@/common";
-import { PRODUCT } from "@/constants";
+import { IDS_PRODUCTS, PRODUCT } from "@/constants";
 import { modalNotificationsSuccess } from "@/helpers";
 import { ProductArgs, UpdateProductArgs } from "@/interfaces";
 import Http from "@/libs";
 
 const variant = PRODUCT.accesoriosElectricos;
+const ID_PRODUCT = IDS_PRODUCTS.id_accesorios_electricos; 
 
 export const getAccesoriosElectricos = async() => {
     try {
 
         const { data } = await Http.get(`/${variant}`)
+
+        for (const key in data) {
+            if (key === ID_PRODUCT) {
+                data.id_producto = data[key];
+                delete data.Key;
+            }
+        }
+        console.log("data desde getAccesoriosElectricos", data)
         return data.productos!;
 
     } catch (error) {
@@ -59,7 +68,7 @@ export const updateAccesorioElectrico = async({id, values} : UpdateProductArgs) 
     }
 }
 
-export const deleteAccesorioElectrico = async(id: number) => {
+export const deleteAccesorioElectrico = async(id: string) => {
     try {
         const { data } = await Http.delete(`/${variant}/${id}`);
     } catch (error) {

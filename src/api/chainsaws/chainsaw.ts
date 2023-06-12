@@ -59,7 +59,7 @@ export const updateMotosierra = async({id, values} : UpdateProductArgs) => {
     }
 }
 
-export const deleteMotosierra = async(id: number) => {
+export const deleteMotosierra = async(id: string) => {
     try {
         const { data } = await Http.delete(`/${variant}/${id}`);
     } catch (error) {

@@ -12,7 +12,7 @@ export interface LoginArgs {
 
 
 export interface ElementArgs{
-    id: number;
+    id_producto: string;
     descripcion: string;
     marca: string;
     imagen: string;
@@ -21,7 +21,7 @@ export interface ElementArgs{
 }
 
 export interface ProductArgs{
-    id?: string;
+    id_producto?: string;
     marca: string;
     precio: string;
     stock: string;

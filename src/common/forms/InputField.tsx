@@ -20,7 +20,7 @@ export const InputField = ({ label, ...props }: Props) => {
           {label}
         </Text>
       </FormLabel>
-      <Input className="input-text" type="text" {...field} {...props} width={"220px"}/>
+      <Input className="input-text" type="text" {...field} {...props}/>
       <Box
         color={'red'}
         marginTop={3}

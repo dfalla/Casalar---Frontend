@@ -8,6 +8,7 @@ import { Filter } from "./Filter";
 export const UiGetAllProducts = ({variant, edit, data}: UiGetAllProductsArgs ) => {
   
   const [filteredData, setFilteredData] = useState<ElementArgs[]>(data);
+  console.log("filteredData", data)
 
   return (
     <>
@@ -34,8 +35,8 @@ export const UiGetAllProducts = ({variant, edit, data}: UiGetAllProductsArgs ) =
           {
             filteredData.map((element: ElementArgs)=>(
               <CustomCard 
-                key={element.id} 
-                id={ element.id }
+                key={element.id_producto} 
+                id_producto={ element.id_producto}
                 variant={variant}
                 descripcion={element.descripcion}
                 marca={element.marca} 

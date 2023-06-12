@@ -59,7 +59,7 @@ export const updateMotor = async({id, values} : UpdateProductArgs) => {
     }
 }
 
-export const deleteMotor = async(id: number) => {
+export const deleteMotor = async(id: string) => {
     try {
         const { data } = await Http.delete(`/${url}/${id}`);
     } catch (error) {
