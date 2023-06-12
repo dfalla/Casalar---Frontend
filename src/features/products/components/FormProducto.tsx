@@ -150,19 +150,21 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
               initialValues={ initialValues }
               onSubmit={ (values) => {
                 if(!params.id && !edit){
+
                   values.id_producto =  id_producto;
 
                   addProduct.mutate(values)
-                
                  
-                    toast({
-                      title: `${MESSAGES_NOTIFICATIONS.registred}`,
-                      status: 'success',
-                      duration: 3000,
-                      isClosable: true,
-                      position: 'top'
-                    })
-                } ;
+                  toast({
+                    title: `${MESSAGES_NOTIFICATIONS.registred}`,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top'
+                  })
+
+                }
+
                 if(params.id !== undefined && edit === true) {
                   const VALUES: ProductArgs = {
                     descripcion: values.descripcion,
@@ -173,13 +175,14 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
                   }
 
                   editProduct.mutate({id: params.id, values: VALUES})
-                    toast({
-                      title: `${MESSAGES_NOTIFICATIONS.edited}`,
-                      status: 'success',
-                      duration: 3000,
-                      isClosable: true,
-                      position: 'top'
-                    })
+                  
+                  toast({
+                    title: `${MESSAGES_NOTIFICATIONS.edited}`,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top'
+                  })
                 }
                 closeModal();
 

@@ -8,7 +8,6 @@ import { Filter } from "./Filter";
 export const UiGetAllProducts = ({variant, edit, data}: UiGetAllProductsArgs ) => {
   
   const [filteredData, setFilteredData] = useState<ElementArgs[]>(data);
-  console.log("filteredData", data)
 
   return (
     <>

@@ -18,6 +18,7 @@ export interface ElementArgs{
     imagen: string;
     precio: string;
     stock: string;
+    created_at: string;
 }
 
 export interface ProductArgs{
