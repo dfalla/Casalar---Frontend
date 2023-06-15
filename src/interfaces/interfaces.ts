@@ -18,7 +18,8 @@ export interface ElementArgs{
     imagen: string;
     precio: string;
     stock: string;
-    created_at: string;
+    created_at?: string;
+    times_created?: number
 }
 
 export interface ProductArgs{

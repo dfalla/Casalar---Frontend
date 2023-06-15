@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, HStack, SimpleGrid } from "@chakra-ui/react";
-import { CustomCard, InputField, SafeAny } from "@/common";
+import { CustomCard } from "@/common";
 import { ElementArgs, UiGetAllProductsArgs } from "@/interfaces";
 import { FormProducto } from "../products";
 import { Filter } from "./Filter";
+import { orderDate } from '@/helpers';
 
 export const UiGetAllProducts = ({variant, edit, data}: UiGetAllProductsArgs ) => {
   
   const [filteredData, setFilteredData] = useState<ElementArgs[]>(data);
+
+  const filteredDataOrdered = orderDate(filteredData)
 
   return (
     <>
@@ -32,7 +35,7 @@ export const UiGetAllProducts = ({variant, edit, data}: UiGetAllProductsArgs ) =
 
         <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))' >
           {
-            filteredData.map((element: ElementArgs)=>(
+            filteredDataOrdered.map((element: ElementArgs)=>(
               <CustomCard 
                 key={element.id_producto} 
                 id_producto={ element.id_producto}
@@ -47,7 +50,6 @@ export const UiGetAllProducts = ({variant, edit, data}: UiGetAllProductsArgs ) =
           }
         </SimpleGrid>
       </Box>
-    
     </>
   )
 }
