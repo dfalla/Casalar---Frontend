@@ -9,6 +9,6 @@ export default defineConfig({
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
   server:{
-    host: '192.168.101.2'
+    host: '192.168.101.3'
   }
 })

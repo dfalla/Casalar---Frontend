@@ -1,16 +1,36 @@
-import { InputField, SelectField } from "@/common";
+import { InputField, SelectField, SelectFieldAsynchronous } from "@/common";
 import { Box, Button, HStack } from "@chakra-ui/react"
 import { Form, Formik } from 'formik'
 import { useGetAllNameOfProducts } from "../hooks";
 import { INITIALVALUES, validationSchema } from "../domain";
+import Http from "@/libs";
+import { useState } from "react";
 export interface Data {
     id     : number;
     nombre : string;
 }
 
+export interface Option {
+    id: number;
+    value: string;
+    nombre: string;
+}
+
 export const FormSale = () => {
     const { data, isError, isLoading } = useGetAllNameOfProducts();
+    const [bandera, setbandera] = useState<boolean>(false);
 
+    const fetchChildOptions = async (parentValue: string): Promise<Option[]> => {
+        // Lógica para obtener las opciones del select hijo en función del valor del select padre
+        // console.log("parentValue", parentValue)
+        const { data } = await Http.get(`/${parentValue}`)
+
+        // Retorna una promesa con las opciones del select hijo
+        if(data.productos!.length === 0){
+            setbandera(true)
+        }
+        return data.productos!
+    };
  
     
     let newData: Data[] = [];
@@ -29,39 +49,27 @@ export const FormSale = () => {
             }}
         >
             {
-                ({ values }) => (
+                ({ values, resetForm }) => (
                     <Form>
                         <HStack
                             flexDirection={["column","column","row","row"]}
                             alignItems={["center", "center"]} 
                             gap={[5,5,20,20]}
                         >
-                            <SelectField label="Productos" name="producto" placeholder="Selecciona">
-                                {
-                                    newData != undefined &&
-                                    newData.map(({id, nombre}: {id: number, nombre: string}) => (
-                                            <option key={id} value={`${nombre}`}>{ nombre }</option>
-                                        ))
-                                }
-                            </SelectField>
+                            <SelectFieldAsynchronous
+                                name="producto"
+                                label="Producto"
+                                parentValue="productos"
+                                fetchOptions={fetchChildOptions}
+                            />
 
-                            <SelectField 
-                                label="Marca" 
-                                name="marca" 
-                                isDisabled={ 
-                                    values.producto  ? false : true
-                                }
-                            >
-                                <option value='option1'>Option 1</option>
-                                <option value='option2'>Option 2</option>
-                                <option value='option3'>Option 3</option>
-                            </SelectField>
-
-                            <InputField
-                                name='precio'
-                                label='Precio'
-                                type='number'
-                            /> 
+                            <SelectFieldAsynchronous
+                                name="marca"
+                                label="Marca"
+                                parentValue={values.producto}
+                                fetchOptions={fetchChildOptions}
+                                isDisabled={values.producto ? false : true}
+                            />
 
                             <InputField
                                 name='cantidad'
