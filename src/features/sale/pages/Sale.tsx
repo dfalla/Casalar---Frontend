@@ -1,5 +1,7 @@
+import React from 'react';
 import { Box, Text, VStack } from "@chakra-ui/react"
 import { FormSale, TableOfSales } from "../components"
+import { SalesProvider } from "../context/SalesContext"
 
 export const Sale = () => {
   return (
@@ -12,8 +14,10 @@ export const Sale = () => {
         alignItems={'flex-start'}
         gap={20}
       >
-        <FormSale/>
-        <TableOfSales/>
+        <SalesProvider>
+          <FormSale/>
+          <TableOfSales/>
+        </SalesProvider>
       </VStack>
     </Box>
   )

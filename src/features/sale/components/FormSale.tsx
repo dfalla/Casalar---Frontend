@@ -5,6 +5,7 @@ import { useGetAllNameOfProducts } from "../hooks";
 import { INITIALVALUES, validationSchema } from "../domain";
 import Http from "@/libs";
 import { useState } from "react";
+import { useSales } from "../context/SalesContext";
 export interface Data {
     id     : number;
     nombre : string;
@@ -19,11 +20,15 @@ export interface Option {
 export const FormSale = () => {
     const { data, isError, isLoading } = useGetAllNameOfProducts();
     const [bandera, setbandera] = useState<boolean>(false);
+    const { addSale } = useSales()
+
 
     const fetchChildOptions = async (parentValue: string): Promise<Option[]> => {
         // Lógica para obtener las opciones del select hijo en función del valor del select padre
         // console.log("parentValue", parentValue)
         const { data } = await Http.get(`/${parentValue}`)
+
+        console.log("data de los selects", data);
 
         // Retorna una promesa con las opciones del select hijo
         if(data.productos!.length === 0){
@@ -44,12 +49,30 @@ export const FormSale = () => {
         <Formik
             initialValues={ INITIALVALUES }
             validationSchema={ validationSchema }
-            onSubmit={(values)=>{
-                console.log("venta: ", values)
+            onSubmit={async (values, { resetForm })=>{
+                
+                const { data: productToAddToCart } = await Http.get(`/${values.producto}/${values.marca}`);
+                console.log("producto ", productToAddToCart);
+                const productToCart = {
+                    cantidad: values.cantidad,
+                    producto: values.producto,
+                    marca: productToAddToCart.producto.marca,
+                    subTotal: productToAddToCart.producto.precio * values.cantidad
+                }
+
+
+                console.log("productToCart", productToCart);
+
+                //agregar al estado el productToCart, creo que se hace con el contexto
+                 addSale(productToCart);
+                //resetear el formulario
+                resetForm();
+                
             }}
+            enableReinitialize
         >
             {
-                ({ values, resetForm }) => (
+                ({ values }) => (
                     <Form>
                         <HStack
                             flexDirection={["column","column","row","row"]}
@@ -82,13 +105,12 @@ export const FormSale = () => {
                                     bg='brand.clonika.blue.800' 
                                     marginTop={10} 
                                     type='submit'
+                                    // onClick={ () => resetForm() }
                                 >
                                     Añadir
                                 </Button>    
                             </Box> 
                         </HStack>
-
-                        
                     </Form>
                 )
             }

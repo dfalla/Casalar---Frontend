@@ -50,7 +50,6 @@ export const SelectFieldAsynchronous: FC<SelectFieldAsynchronousProps> = ({
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = event.target.value;
-        console.log("selectedValue", selectedValue)
         helpers.setValue(selectedValue);
     };
 
@@ -65,8 +64,8 @@ export const SelectFieldAsynchronous: FC<SelectFieldAsynchronousProps> = ({
       </FormLabel> 
       <Select id={name} {...field} onChange={handleChange} value={field.value} {...props}>
         <option value="">Seleccione</option>
-        {options.map((option) => (
-          <option key={option.id || option.id_producto} value={option.value || option.marca}>
+        {options.length > 0 && options.map((option) => (
+          <option key={option.id || option.id_producto} value={option.value || option.id_producto}>
             {option.nombre || option.marca}
           </option>
         ))}
