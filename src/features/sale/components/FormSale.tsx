@@ -49,11 +49,12 @@ export const FormSale = () => {
         <Formik
             initialValues={ INITIALVALUES }
             validationSchema={ validationSchema }
-            onSubmit={async (values, { resetForm })=>{
+            onSubmit={async (values, { resetForm,  })=>{
                 
                 const { data: productToAddToCart } = await Http.get(`/${values.producto}/${values.marca}`);
                 console.log("producto ", productToAddToCart);
                 const productToCart = {
+                    id_producto: productToAddToCart.producto.id_producto,
                     cantidad: values.cantidad,
                     producto: values.producto,
                     marca: productToAddToCart.producto.marca,
