@@ -15,5 +15,5 @@ export const validationSchema = Yup.object({
     precio: Yup.string().required('Este campo es requerido'),
     marca: Yup.string().required('Este campo es requerido'),
     stock: Yup.string().required('Este campo es requerido'),
-    imagen: Yup.string().required('Este campo es requerido')
+    // imagen: Yup.string().required('Este campo es requerido')
 })

@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react"
 import { useSales } from "../context/SalesContext";
+import { useEffect } from "react";
 
 interface Sale{
   id_producto: string;
@@ -12,8 +13,30 @@ interface Sale{
 export const TableOfSales = () => {
   const { totalSale } = useSales();
   const sales = localStorage.getItem("sales")
-  const newSales = JSON.parse(sales);
+  const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
+
+  useEffect(() => {
+    return () => {
+      // Código a ejecutar cuando el componente se desmonte
+      localStorage.removeItem('sales');
+      console.log('El componente se ha dejado de renderizar');
+    };
+  }, []);
+
+  useEffect(() => {
+    const handlePageReload = () => {
+      // Lógica para manejar la recarga de la página
+      localStorage.removeItem('sales');
+      console.log('La página se ha recargado');
+    };
+
+    window.addEventListener('load', handlePageReload);
+
+    return () => {
+      window.removeEventListener('load', handlePageReload);
+    };
+}, []);
 
   console.log("newSales", newSales);
 
