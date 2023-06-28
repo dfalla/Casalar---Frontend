@@ -48,22 +48,69 @@ export const TableOfSales = () => {
     }
   }, [newSales]);
 
-  const registredSale = async(venta: any) =>{
+  const registredSale = async(venta: Sale[]) => {
     // lógica para registrar la venta
 
-    console.log("data a disminuir", venta)
+
+    for (let i = 0; i < venta.length; i++){
+      const { data } = await Http.get(`/${venta[i].producto}/${venta[i].id_producto}`)
+      // console.log("data", data.producto);
+
+      const { marca, precio, stock, descripcion, imagen } = data.producto;
+      // console.log("datos del producto", { marca, precio, stock, descripcion, imagen })
+
+      const newStock = stock - venta[i].cantidad;
+
+      // console.log("newStock", newStock);
+
+      const dataProductToUpdate = {
+        marca,
+        precio,
+        stock: newStock,
+        imagen,
+        descripcion
+      }
+
+      const formData = new FormData();
+
+      for(let key in dataProductToUpdate){
+        formData.append(key, (dataProductToUpdate as SafeAny)[key]);
+      }
+
+      const { data: resp } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, dataProductToUpdate)
+
+      console.log("resp", resp)
+      // console.log("datos del producto", { precio, stock, descripcion })  
+      // const formData = new FormData();
+
+      //   for(let key in data){
+      //       formData.append(key, (data as SafeAny)[key]);
+      //   }
+
+      // console.log("formData", formData);  
+    }
+
+
+    // for (let i = 0; i < venta.length; i++) {
+    //   for (let j = 0; j < venta.length; j++) {
+
+    //   }      
+    // }
+
     // lógica para disminuir los productos vendidos
 
     
     //recorremos el array de la data a dismiuir y por cada iteración tomamos el id_producto y el producto para editar
     // for (let i = 0; i < venta.length; i++) {
-    //     const formData = new FormData();
+        // const formData = new FormData();
 
-    //     for(let key in venta[i]){
-    //         formData.append(key, (venta[i].ca as SafeAny)[key]);
-    //     }
+        // for(let key in venta[i]){
+        //     formData.append(key, (venta[i].ca as SafeAny)[key]);
+        // }
     //   const { data } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, formData)
     // }
+
+    localStorage.removeItem('sales');
 }
 
 
