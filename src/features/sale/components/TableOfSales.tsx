@@ -1,6 +1,8 @@
-import { Box } from "@chakra-ui/react"
+import { Box, Button } from "@chakra-ui/react"
 import { useSales } from "../context/SalesContext";
 import { useEffect } from "react";
+import Http from "@/libs";
+import { SafeAny } from "@/common";
 
 interface Sale{
   id_producto: string;
@@ -38,8 +40,31 @@ export const TableOfSales = () => {
     };
 }, []);
 
-  console.log("newSales", newSales);
+  // console.log("newSales", newSales);
 
+  useEffect(() => {
+    if(newSales !== null){
+      console.log("hola mundo")
+    }
+  }, [newSales]);
+
+  const registredSale = async(venta: any) =>{
+    // lógica para registrar la venta
+
+    console.log("data a disminuir", venta)
+    // lógica para disminuir los productos vendidos
+
+    
+    //recorremos el array de la data a dismiuir y por cada iteración tomamos el id_producto y el producto para editar
+    // for (let i = 0; i < venta.length; i++) {
+    //     const formData = new FormData();
+
+    //     for(let key in venta[i]){
+    //         formData.append(key, (venta[i].ca as SafeAny)[key]);
+    //     }
+    //   const { data } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, formData)
+    // }
+}
 
 
   return (
@@ -53,6 +78,15 @@ export const TableOfSales = () => {
         </ul>
 
         <h1>Total a Pagar: { totalAPagar }</h1>
+
+        <Button
+          onClick={() => registredSale(newSales)}
+          backgroundColor={'red'}
+          mt={10}
+          isDisabled={ newSales === null ? true : false }
+        >
+          Registrar venta
+        </Button>
     </Box>
   )
 }

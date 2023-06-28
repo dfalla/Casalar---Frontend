@@ -27,6 +27,8 @@ export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
         return sales.reduce((acumulator, element) => acumulator + element.subTotal, 0);
     }
 
+    
+
 
     return ( 
         <SalesContext.Provider

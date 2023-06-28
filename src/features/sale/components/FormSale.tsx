@@ -49,10 +49,10 @@ export const FormSale = () => {
         <Formik
             initialValues={ INITIALVALUES }
             validationSchema={ validationSchema }
-            onSubmit={async (values, { resetForm,  })=>{
+            onSubmit={async (values, { resetForm,  })=> {
                 
                 const { data: productToAddToCart } = await Http.get(`/${values.producto}/${values.marca}`);
-                console.log("producto ", productToAddToCart);
+                // console.log("producto ", productToAddToCart);
                 const productToCart = {
                     id_producto: productToAddToCart.producto.id_producto,
                     cantidad: values.cantidad,
@@ -62,7 +62,7 @@ export const FormSale = () => {
                 }
 
 
-                console.log("productToCart", productToCart);
+                // console.log("productToCart", productToCart);
 
                 //agregar al estado el productToCart, creo que se hace con el contexto
                  addSale(productToCart);
