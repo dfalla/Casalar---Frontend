@@ -1,4 +1,5 @@
 import { Box, Button } from "@chakra-ui/react"
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSales } from "../context/SalesContext";
 import { useEffect } from "react";
 import Http from "@/libs";
@@ -17,6 +18,7 @@ export const TableOfSales = () => {
   const sales = localStorage.getItem("sales")
   const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     return () => {
@@ -49,69 +51,45 @@ export const TableOfSales = () => {
   }, [newSales]);
 
   const registredSale = async(venta: Sale[]) => {
-    // lógica para registrar la venta
-
-
+    
     for (let i = 0; i < venta.length; i++){
-      const { data } = await Http.get(`/${venta[i].producto}/${venta[i].id_producto}`)
-      // console.log("data", data.producto);
+      try {
+        const { data } = await Http.get(`/${venta[i].producto}/${venta[i].id_producto}`)
 
-      const { marca, precio, stock, descripcion, imagen } = data.producto;
-      // console.log("datos del producto", { marca, precio, stock, descripcion, imagen })
+        const { marca, precio, stock, descripcion, imagen } = data.producto;
 
-      const newStock = stock - venta[i].cantidad;
+        const newStock = stock - venta[i].cantidad;
 
-      // console.log("newStock", newStock);
 
-      const dataProductToUpdate = {
-        marca,
-        precio,
-        stock: newStock,
-        imagen,
-        descripcion
+        const dataProductToUpdate = {
+          marca,
+          precio,
+          stock: newStock,
+          imagen,
+          descripcion
+        }
+
+        const formData = new FormData();
+
+        for(let key in dataProductToUpdate){
+          formData.append(key, (dataProductToUpdate as SafeAny)[key]);
+        }
+
+        try {
+          const { data: resp } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, dataProductToUpdate)
+          queryClient.invalidateQueries({ queryKey: [venta[i].producto] })
+          console.log("resp", resp)
+          
+        } catch (error) {
+          console.log("error")
+        }
+      } catch (error) {
+        console.log("error")
       }
-
-      const formData = new FormData();
-
-      for(let key in dataProductToUpdate){
-        formData.append(key, (dataProductToUpdate as SafeAny)[key]);
-      }
-
-      const { data: resp } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, dataProductToUpdate)
-
-      console.log("resp", resp)
-      // console.log("datos del producto", { precio, stock, descripcion })  
-      // const formData = new FormData();
-
-      //   for(let key in data){
-      //       formData.append(key, (data as SafeAny)[key]);
-      //   }
-
-      // console.log("formData", formData);  
     }
 
-
-    // for (let i = 0; i < venta.length; i++) {
-    //   for (let j = 0; j < venta.length; j++) {
-
-    //   }      
-    // }
-
-    // lógica para disminuir los productos vendidos
-
-    
-    //recorremos el array de la data a dismiuir y por cada iteración tomamos el id_producto y el producto para editar
-    // for (let i = 0; i < venta.length; i++) {
-        // const formData = new FormData();
-
-        // for(let key in venta[i]){
-        //     formData.append(key, (venta[i].ca as SafeAny)[key]);
-        // }
-    //   const { data } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, formData)
-    // }
-
     localStorage.removeItem('sales');
-}
+  }
 
 
   return (
