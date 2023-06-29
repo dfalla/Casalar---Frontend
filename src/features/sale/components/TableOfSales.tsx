@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react"
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useSales } from "../context/SalesContext";
+import { useSales } from "../../../context/SalesContext";
 import { useEffect } from "react";
 import Http from "@/libs";
 import { SafeAny } from "@/common";
@@ -53,6 +53,7 @@ export const TableOfSales = () => {
   const registredSale = async(venta: Sale[]) => {
     
     for (let i = 0; i < venta.length; i++){
+
       try {
         const { data } = await Http.get(`/${venta[i].producto}/${venta[i].id_producto}`)
 
@@ -83,9 +84,13 @@ export const TableOfSales = () => {
         } catch (error) {
           console.log("error")
         }
+
       } catch (error) {
+
         console.log("error")
+
       }
+
     }
 
     localStorage.removeItem('sales');

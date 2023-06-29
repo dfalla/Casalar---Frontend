@@ -9,7 +9,13 @@ export interface Sale {
 
 export interface SalesContextProps {
     sales: Sale[];
+    cantidad: number;
+    nameProduct: string;
+    idMarcaProduct: string;
     addSale: (sale: Sale) => void;
+    calculateCantidad: (cantidad: number) => void;
+    saveIdMarcaProduct: (id_product: string) => void
+    saveNameProducto: (nameProduct: string) => void
     totalSale: () => number;
 }
 
@@ -17,6 +23,9 @@ const SalesContext = createContext<SalesContextProps | undefined>(undefined);
 
 export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
     const [sales, setSales] = useState<Sale[]>([]);
+    const [cantidad, setCantidad] = useState<number>(0);
+    const [nameProduct, setNameProduct] = useState<string>('');
+    const [idMarcaProduct, setIdMarcaProduct] = useState<string>('');
 
     const addSale = (sale: Sale) => {
         setSales([...sales, sale])
@@ -27,12 +36,32 @@ export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
         return sales.reduce((acumulator, element) => acumulator + element.subTotal, 0);
     }
 
-    
+    const saveNameProducto = (nameProduct: string) => {
+        setNameProduct(nameProduct)
+    }
 
+    const saveIdMarcaProduct = (idMarcaProduct: string) => {
+        setIdMarcaProduct(idMarcaProduct)
+    }
+
+
+    const calculateCantidad = (cantidad: number) => {
+        setCantidad(cantidad)
+    }
 
     return ( 
         <SalesContext.Provider
-            value={{ sales, addSale, totalSale }}
+            value={{ 
+                cantidad, 
+                nameProduct,
+                idMarcaProduct,
+                sales, 
+                addSale, 
+                totalSale, 
+                calculateCantidad, 
+                saveNameProducto, 
+                saveIdMarcaProduct 
+            }}
         >
             { children }
         </SalesContext.Provider>

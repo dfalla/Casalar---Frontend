@@ -6,12 +6,15 @@ import { queryClient } from './common'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from './theme'
 import { AppRouter } from './router'
+import { SalesProvider } from './context'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   // <StrictMode>
     <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
-        <AppRouter />
+        <SalesProvider>
+          <AppRouter />
+        </SalesProvider>
         <ReactQueryDevtools initialIsOpen={false}/>
       </QueryClientProvider>
     </ChakraProvider>

@@ -1,12 +1,14 @@
 import { FC, useEffect, useState } from 'react'
 import { ErrorMessage, useField } from 'formik';
 import { Select, Box, FormControl, FormErrorMessage, FormLabel, Text } from '@chakra-ui/react';
+import { useSales } from '@/context/SalesContext';
 
 interface Option {
   id: number;  
   value: string;
   nombre: string;
   marca?: string;
+  stock?: number;
   id_producto?: string;
 }
 
@@ -29,12 +31,21 @@ export const SelectFieldAsynchronous: FC<SelectFieldAsynchronousProps> = ({
 }) => {
     const [options, setOptions] = useState<Option[]>([]);
     const [field, meta, helpers] = useField(name);
+    const { saveNameProducto, saveIdMarcaProduct } = useSales();
+
+    if(field.name === 'producto'){
+      // console.log("producto", field)
+      saveNameProducto(field.value)
+    }
+
+    if(field.name === 'marca'){
+      saveIdMarcaProduct(field.value);
+    }
 
     useEffect(() => {
         const obtenerOpciones = async () => {
           try {
             const data = await fetchOptions(parentValue);
-            // console.log("Data desde obtenerOptions", data)
             setOptions(data);
           } catch (error) {
             console.error('Error al obtener las opciones del select', error);

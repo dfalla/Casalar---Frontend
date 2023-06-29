@@ -1,11 +1,11 @@
-import { InputField, SelectField, SelectFieldAsynchronous } from "@/common";
-import { Box, Button, HStack } from "@chakra-ui/react"
+import { useState, useEffect } from "react";
+import { InputField, SelectFieldAsynchronous } from "@/common";
+import { Box, Button, HStack, useToast } from "@chakra-ui/react"
 import { Form, Formik } from 'formik'
 import { useGetAllNameOfProducts } from "../hooks";
 import { INITIALVALUES, validationSchema } from "../domain";
 import Http from "@/libs";
-import { useState } from "react";
-import { useSales } from "../context/SalesContext";
+import { useSales } from "../../../context/SalesContext";
 export interface Data {
     id     : number;
     nombre : string;
@@ -19,22 +19,76 @@ export interface Option {
 
 export const FormSale = () => {
     const { data, isError, isLoading } = useGetAllNameOfProducts();
-    const [bandera, setbandera] = useState<boolean>(false);
-    const { addSale } = useSales()
+    const { addSale, cantidad, nameProduct, idMarcaProduct } = useSales()
+    const [disabledButtonAdd, setDisabledButtonAdd] = useState(false);
+    const [stock, setStock] = useState<number>();
+    const toast = useToast();
+    
 
+    const getProductAccordingToBrand = async({
+        nameProduct, 
+        idMarcaProduct
+    }: {nameProduct: string, idMarcaProduct: string}) => {
+
+        try {
+            const { data } = await Http.get(`/${nameProduct}/${idMarcaProduct}`)
+            
+            setStock(data.producto.stock)
+
+        } catch (error) {
+
+            console.log("error a la vista 😀", error)
+        
+        }
+    }
+
+
+    useEffect(() => {
+        if(nameProduct && idMarcaProduct){
+           getProductAccordingToBrand({nameProduct, idMarcaProduct});
+            if(stock!){
+                if(cantidad > stock){
+                    setDisabledButtonAdd(true);
+                    toast({
+                        title: `Error al tratar de registrar la venta`,
+                        status: 'error',
+                        description: "La cantidad supera al stock del producto",
+                        duration: 3000,
+                        isClosable: true,
+                        position: 'top'
+                      })
+                } else {
+                    setDisabledButtonAdd(false)
+                }
+            }
+           
+        }
+        // console.log("producto, id", {nameProduct, idMarcaProduct})
+    }, [nameProduct, idMarcaProduct, cantidad]);
 
     const fetchChildOptions = async (parentValue: string): Promise<Option[]> => {
+
         // Lógica para obtener las opciones del select hijo en función del valor del select padre
-        // console.log("parentValue", parentValue)
+        
         const { data } = await Http.get(`/${parentValue}`)
 
-        console.log("data de los selects", data);
+        // console.log("data de los selects", data.productos);
 
-        // Retorna una promesa con las opciones del select hijo
-        if(data.productos!.length === 0){
-            setbandera(true)
+        const newDataProducts = [...data.productos];
+
+        const dataWithStockGreaterThanZero = [];
+        
+        for (let i = 0; i < newDataProducts.length; i++) {
+            if(newDataProducts[i].stock > 0){
+                dataWithStockGreaterThanZero.push(newDataProducts[i]);
+            }
         }
-        return data.productos!
+
+        const dataToReturn = dataWithStockGreaterThanZero.length > 0 ? dataWithStockGreaterThanZero : data.productos!;
+        
+        return dataToReturn;
+
+
     };
  
     
@@ -49,8 +103,8 @@ export const FormSale = () => {
         <Formik
             initialValues={ INITIALVALUES }
             validationSchema={ validationSchema }
-            onSubmit={async (values, { resetForm,  })=> {
-                
+            onSubmit={async (values, { resetForm  })=> {
+                console.log("😁", values);
                 const { data: productToAddToCart } = await Http.get(`/${values.producto}/${values.marca}`);
                 // console.log("producto ", productToAddToCart);
                 const productToCart = {
@@ -61,11 +115,9 @@ export const FormSale = () => {
                     subTotal: productToAddToCart.producto.precio * values.cantidad
                 }
 
-
-                // console.log("productToCart", productToCart);
-
                 //agregar al estado el productToCart, creo que se hace con el contexto
                  addSale(productToCart);
+
                 //resetear el formulario
                 resetForm();
                 
@@ -106,7 +158,7 @@ export const FormSale = () => {
                                     bg='brand.clonika.blue.800' 
                                     marginTop={10} 
                                     type='submit'
-                                    // onClick={ () => resetForm() }
+                                    isDisabled={disabledButtonAdd}
                                 >
                                     Añadir
                                 </Button>    
