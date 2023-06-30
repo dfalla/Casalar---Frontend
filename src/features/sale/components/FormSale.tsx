@@ -104,7 +104,7 @@ export const FormSale = () => {
             initialValues={ INITIALVALUES }
             validationSchema={ validationSchema }
             onSubmit={async (values, { resetForm  })=> {
-                console.log("😁", values);
+                // console.log("😁", values);
                 const { data: productToAddToCart } = await Http.get(`/${values.producto}/${values.marca}`);
                 // console.log("producto ", productToAddToCart);
                 const productToCart = {
@@ -114,6 +114,8 @@ export const FormSale = () => {
                     marca: productToAddToCart.producto.marca,
                     subTotal: productToAddToCart.producto.precio * values.cantidad
                 }
+
+                // console.log("productToCart", productToCart);
 
                 //agregar al estado el productToCart, creo que se hace con el contexto
                  addSale(productToCart);

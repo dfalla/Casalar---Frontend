@@ -44,56 +44,58 @@ export const TableOfSales = () => {
 
   // console.log("newSales", newSales);
 
-  useEffect(() => {
-    if(newSales !== null){
-      console.log("hola mundo")
-    }
-  }, [newSales]);
+  // useEffect(() => {
+  //   if(newSales !== null){
+  //     console.log("hola mundo")
+  //   }
+  // }, [newSales]);
 
   const registredSale = async(venta: Sale[]) => {
+
+    console.log("venta total", venta);
     
-    for (let i = 0; i < venta.length; i++){
+    // for (let i = 0; i < venta.length; i++){
 
-      try {
-        const { data } = await Http.get(`/${venta[i].producto}/${venta[i].id_producto}`)
+    //   try {
+    //     const { data } = await Http.get(`/${venta[i].producto}/${venta[i].id_producto}`)
 
-        const { marca, precio, stock, descripcion, imagen } = data.producto;
+    //     const { marca, precio, stock, descripcion, imagen } = data.producto;
 
-        const newStock = stock - venta[i].cantidad;
+    //     const newStock = stock - venta[i].cantidad;
 
 
-        const dataProductToUpdate = {
-          marca,
-          precio,
-          stock: newStock,
-          imagen,
-          descripcion
-        }
+    //     const dataProductToUpdate = {
+    //       marca,
+    //       precio,
+    //       stock: newStock,
+    //       imagen,
+    //       descripcion
+    //     }
 
-        const formData = new FormData();
+    //     const formData = new FormData();
 
-        for(let key in dataProductToUpdate){
-          formData.append(key, (dataProductToUpdate as SafeAny)[key]);
-        }
+    //     for(let key in dataProductToUpdate){
+    //       formData.append(key, (dataProductToUpdate as SafeAny)[key]);
+    //     }
 
-        try {
-          const { data: resp } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, dataProductToUpdate)
-          queryClient.invalidateQueries({ queryKey: [venta[i].producto] })
-          console.log("resp", resp)
+    //     try {
+    //       const { data: resp } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, dataProductToUpdate)
+    //       queryClient.invalidateQueries({ queryKey: [venta[i].producto] })
+    //       console.log("resp", resp)
           
-        } catch (error) {
-          console.log("error")
-        }
+    //     } catch (error) {
+    //       console.log("error")
+    //     }
 
-      } catch (error) {
+    //   } catch (error) {
 
-        console.log("error")
+    //     console.log("error")
 
-      }
+    //   }
 
-    }
+    // }
 
-    localStorage.removeItem('sales');
+    // localStorage.removeItem('sales');
   }
 
 
