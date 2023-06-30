@@ -1,6 +1,7 @@
 import { useField, ErrorMessage } from "formik"
 import { Box, Input, FormControl, FormLabel, Text } from '@chakra-ui/react'
 import { useSales } from "@/context/SalesContext";
+import { useEffect } from "react";
 
 interface Props { 
     label: string;
@@ -12,14 +13,15 @@ interface Props {
 
 export const InputField = ({ label, ...props }: Props) => {
 
-    const [ field ] = useField(props);
-    // console.log("field cantidad", field);
+  const [ field ] = useField(props);
 
-    const { calculateCantidad } = useSales();
+  const { calculateCantidad } = useSales();
 
+  useEffect(() => {
     if(field.name === 'cantidad'){
       calculateCantidad(field.value);
     }
+  }, [field]);
 
   return (
     <FormControl>
