@@ -1,16 +1,29 @@
+import { SafeAny } from "@/common";
 import Http from "@/libs";
 
-export interface SegistredSale{
-    ventas: any[];
+
+interface Sale{
+    id_producto?: string;
+    cantidad: number;
+    marca: string;
+    subTotal: number;
+    producto: string;
 }
 
-export const registredSale = async( ventas :SegistredSale ) => {
+export interface SegistredSale{
+    venta: Sale[];
+}
 
-    console.log("ventas", ventas);
-    // try {
-    //     const { data } = await Http.post(`/${url}`, nombre)
-    //     modalNotificationsSuccess(data.msg)
-    // } catch (error) {
-    //     console.log('error', error)
-    // }
+const url = 'ventas';
+
+export const createRegistredSale = async( saleToRegistred :SegistredSale ) => {
+
+    const { venta } = saleToRegistred;
+    
+    try {
+        const { data } = await Http.post(`/${url}`, venta)
+        console.log("resp", data.message)
+    } catch (error) {
+        console.log('error', error)
+    }
 }

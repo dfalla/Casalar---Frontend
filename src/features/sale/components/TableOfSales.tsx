@@ -4,9 +4,10 @@ import { useSales } from "../../../context/SalesContext";
 import { useEffect } from "react";
 import Http from "@/libs";
 import { SafeAny } from "@/common";
+import { useRegistredSale } from "../hooks";
 
 interface Sale{
-  id_producto: string;
+  id_producto?: string;
   cantidad: number;
   marca: string;
   subTotal: number;
@@ -19,6 +20,7 @@ export const TableOfSales = () => {
   const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
   const queryClient = useQueryClient()
+  const { saleToRegistred } = useRegistredSale();
 
   useEffect(() => {
     return () => {
@@ -52,8 +54,9 @@ export const TableOfSales = () => {
 
   const registredSale = async(venta: Sale[]) => {
 
-    console.log("venta total", venta);
-    
+    // console.log("venta total", venta);
+
+    saleToRegistred.mutate({venta})
     // for (let i = 0; i < venta.length; i++){
 
     //   try {
