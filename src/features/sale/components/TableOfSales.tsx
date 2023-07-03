@@ -1,4 +1,16 @@
-import { Box, Button } from "@chakra-ui/react"
+import {
+  Box, 
+  Button,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+} from '@chakra-ui/react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSales } from "../../../context/SalesContext";
 import { useEffect } from "react";
@@ -7,11 +19,13 @@ import { SafeAny } from "@/common";
 import { useRegistredSale } from "../hooks";
 
 interface Sale{
-  id_producto?: string;
-  cantidad: number;
-  marca: string;
-  subTotal: number;
-  producto: string;
+  id_producto? : string;
+  cantidad     : number;
+  marca        : string;
+  subTotal     : number;
+  producto     : string;
+  fecha        : string;
+  hora         : string;
 }
 
 export const TableOfSales = () => {
@@ -26,7 +40,6 @@ export const TableOfSales = () => {
     return () => {
       // Código a ejecutar cuando el componente se desmonte
       localStorage.removeItem('sales');
-      console.log('El componente se ha dejado de renderizar');
     };
   }, []);
 
@@ -34,7 +47,6 @@ export const TableOfSales = () => {
     const handlePageReload = () => {
       // Lógica para manejar la recarga de la página
       localStorage.removeItem('sales');
-      console.log('La página se ha recargado');
     };
 
     window.addEventListener('load', handlePageReload);
@@ -44,75 +56,98 @@ export const TableOfSales = () => {
     };
 }, []);
 
-  // console.log("newSales", newSales);
-
-  // useEffect(() => {
-  //   if(newSales !== null){
-  //     console.log("hola mundo")
-  //   }
-  // }, [newSales]);
-
   const registredSale = async(venta: Sale[]) => {
 
-    // console.log("venta total", venta);
 
     saleToRegistred.mutate({venta})
-    // for (let i = 0; i < venta.length; i++){
 
-    //   try {
-    //     const { data } = await Http.get(`/${venta[i].producto}/${venta[i].id_producto}`)
+    for (let i = 0; i < venta.length; i++){
 
-    //     const { marca, precio, stock, descripcion, imagen } = data.producto;
+      try {
+        const { data } = await Http.get(`/${venta[i].producto}/${venta[i].id_producto}`)
 
-    //     const newStock = stock - venta[i].cantidad;
+        const { marca, precio, stock, descripcion, imagen } = data.producto;
+
+        const newStock = stock - venta[i].cantidad;
 
 
-    //     const dataProductToUpdate = {
-    //       marca,
-    //       precio,
-    //       stock: newStock,
-    //       imagen,
-    //       descripcion
-    //     }
+        const dataProductToUpdate = {
+          marca,
+          precio,
+          stock: newStock,
+          imagen,
+          descripcion
+        }
 
-    //     const formData = new FormData();
+        const formData = new FormData();
 
-    //     for(let key in dataProductToUpdate){
-    //       formData.append(key, (dataProductToUpdate as SafeAny)[key]);
-    //     }
+        for(let key in dataProductToUpdate){
+          formData.append(key, (dataProductToUpdate as SafeAny)[key]);
+        }
 
-    //     try {
-    //       const { data: resp } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, dataProductToUpdate)
-    //       queryClient.invalidateQueries({ queryKey: [venta[i].producto] })
-    //       console.log("resp", resp)
+        try {
+          const { data: resp } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, dataProductToUpdate)
+          queryClient.invalidateQueries({ queryKey: [venta[i].producto] })
           
-    //     } catch (error) {
-    //       console.log("error")
-    //     }
+        } catch (error) {
+          console.log("error")
+        }
 
-    //   } catch (error) {
+      } catch (error) {
 
-    //     console.log("error")
+        console.log("error")
 
-    //   }
+      }
 
-    // }
+    }
 
-    // localStorage.removeItem('sales');
+    localStorage.setItem('sales', JSON.stringify([]));
   }
 
 
   return (
     <Box>
-        <ul>
-          { 
-            newSales?.map(({ cantidad, marca, producto, subTotal, id_producto }: Sale)=>(
-              <li key={id_producto}>{`Producto: ${producto} - ${id_producto} - Marca: ${marca} - Cantidad: ${cantidad} - Subtotal: S/. ${subTotal}`}</li>
-            )) 
-          }
-        </ul>
 
-        <h1>Total a Pagar: { totalAPagar }</h1>
+        <TableContainer>
+          <Table variant={'unstyled'}>
+            <Thead>
+              <Tr>
+                <Th>Producto</Th>
+                <Th>Marca</Th>
+                <Th>Cantidad</Th>
+                <Th>SubTotal</Th>
+                <Th>Acciones</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+                {
+                  newSales?.map(({ cantidad, marca, producto, subTotal, id_producto }: Sale) => (
+                    <Tr
+                      key={id_producto}
+                    >
+                      <Td>{producto}</Td>
+                      <Td>{marca}</Td>
+                      <Td>{cantidad}</Td>
+                      <Td>{`S/.${subTotal}`}</Td>
+
+                    </Tr>
+                  ))
+                }
+
+                {
+                  newSales?.length > 0 && (
+                  <Tr>
+                    <Td colSpan={3} textAlign={'center'} fontWeight={'bold'} >Total a pagar: </Td>
+                    <Td>{`S/.${totalAPagar}`}</Td>
+                  </Tr>
+                  ) 
+                }
+
+                
+            </Tbody>
+          </Table>
+        </TableContainer>
+
 
         <Button
           onClick={() => registredSale(newSales)}

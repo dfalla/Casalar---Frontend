@@ -33,7 +33,10 @@ export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
     }
 
     const totalSale = () => {
-        return sales.reduce((acumulator, element) => acumulator + element.subTotal, 0);
+        if(sales.length > 0){
+            return sales.reduce((acumulator, element) => acumulator + element.subTotal, 0);
+        }
+        return 0;
     }
 
     const saveNameProducto = (nameProduct: string) => {
