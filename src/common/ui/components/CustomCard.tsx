@@ -1,15 +1,13 @@
 import {
     Box,
-    Center,
     useColorModeValue,
     Heading,
     Text,
     Stack,
     Image,
     Button,
-    useToast
 } from '@chakra-ui/react';
-import { MESSAGES_NOTIFICATIONS, PRODUCT } from '@/constants';
+import {  PRODUCT } from '@/constants';
 import { useDeleteProduct } from '@/features';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +25,6 @@ export interface CardArgs{
 
 export const CustomCard = ({marca, imagen, precio, stock, id_producto, variant, descripcion} : CardArgs) => {
   const navigate = useNavigate();
-  const toast = useToast();
   const { mutate } = useDeleteProduct(variant);
   
   const deleteItem = (id_producto: string) => {
@@ -43,13 +40,6 @@ export const CustomCard = ({marca, imagen, precio, stock, id_producto, variant, 
     }).then(( result )=>{
       if(result.isConfirmed) {
         mutate(id_producto)
-        toast({
-          title: `${MESSAGES_NOTIFICATIONS.deleted}`,
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-          position: 'top'
-        })
       }
     });
   }

@@ -8,11 +8,9 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
 } from '@chakra-ui/react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 import { useSales } from "../../../context/SalesContext";
 import { useEffect } from "react";
 import Http from "@/libs";
@@ -30,15 +28,12 @@ interface Sale{
 }
 
 export const TableOfSales = () => {
-  // const { totalSale, deleteSales } = useSales();
   const { totalSale } = useSales();
-
   const sales = localStorage.getItem("sales")
   const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
   const queryClient = useQueryClient()
   const { saleToRegistred } = useRegistredSale();
-  const navigate = useNavigate();
 
   useEffect(() => {
     return () => {
@@ -65,6 +60,7 @@ export const TableOfSales = () => {
 
 
     saleToRegistred.mutate({venta})
+    
 
     for (let i = 0; i < venta.length; i++){
 

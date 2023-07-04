@@ -33,10 +33,9 @@ export const createRegistredSale = async( saleToRegistred :SegistredSale ) => {
 
     formData.append('ventas', ventasInJSON);
 
-    // try {
-    //     const { data } = await Http.post(`/${URL}`, formData)
-    //     console.log("resp", data.message)
-    // } catch (error) {
-    //     console.log('error', error)
-    // }
+    try {
+        await Http.post(`/${URL}`, formData)
+    } catch (error) {
+        console.log('error', error)
+    }
 }

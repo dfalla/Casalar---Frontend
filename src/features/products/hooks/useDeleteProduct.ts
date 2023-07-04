@@ -1,8 +1,9 @@
 import { MutationFunction, UseMutateFunction, useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteAceite, deleteMochila, deleteLlanta, deleteMotor, deleteMotosierra } from "../../../api";
-import { PRODUCT } from "../../../constants";
+import { MESSAGES_NOTIFICATIONS, PRODUCT } from "../../../constants";
 import { deleteMotoguadana } from "@/api/brush-cutter";
 import { deleteAccesorioElectrico } from "@/api/electricalAccesories";
+import { useToast } from "@chakra-ui/react";
 
 function deleteFunctionProduct(variant: string){
     let deleteProduct: MutationFunction<unknown, string> | undefined;
@@ -38,10 +39,19 @@ function deleteFunctionProduct(variant: string){
 export const useDeleteProduct = (variant: string) => {
   const queryClient = useQueryClient();  
   const  productToDelete =  deleteFunctionProduct(variant);
+  const toast = useToast();
+
 
   const { mutate } = useMutation({
     mutationFn: productToDelete,
     onSuccess: async()=>{
+      toast({
+        title: `${MESSAGES_NOTIFICATIONS.deleted}`,
+        status: 'success',
+        duration: 1000,
+        isClosable: true,
+        position: 'top'
+      })
       await queryClient.invalidateQueries({
         queryKey: [variant], 
         refetchType: 'active',

@@ -12,9 +12,10 @@ import {
   updateMotosierra } from "@/api";
 
 import { UpdateProductArgs, usEditProductArgs } from "@/interfaces";
-import { PRODUCT } from "@/constants";
+import { MESSAGES_NOTIFICATIONS, PRODUCT } from "@/constants";
 import { getMotoguadanaById, updateMotoguadana } from "@/api/brush-cutter";
 import { getAccesorioElectricoById, updateAccesorioElectrico } from "@/api";
+import { useToast } from "@chakra-ui/react";
 
 
 function functionUpdateProductAccordingVariant(variant: string | undefined){
@@ -53,7 +54,9 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
 
   const updateFnMutation = functionUpdateProductAccordingVariant(variant);
   
-  const queryClient = useQueryClient();  
+  const queryClient = useQueryClient(); 
+  const toast = useToast();
+
   
   let getProductById:  QueryFunction<any, (string | undefined)[]> | undefined = undefined;
 
@@ -106,6 +109,14 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
   const editProduct = useMutation({
     mutationFn: updateFnMutation,
     onSuccess: async() =>{
+
+      toast({
+        title: `${MESSAGES_NOTIFICATIONS.edited}`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top'
+      })
       await queryClient.invalidateQueries({
         queryKey: [variant], 
         refetchType: 'active',

@@ -18,9 +18,10 @@ export const NAME_PRODUCTS = {
 }
 
 export const MESSAGES_NOTIFICATIONS = {
-    registred  : 'Producto registrado exitosamente',
-    edited     : 'Producto editado exitosamente',
-    deleted    : 'Producto eliminado exitosamente'
+    registred      : 'Producto registrado exitosamente',
+    edited         : 'Producto editado exitosamente',
+    deleted        : 'Producto eliminado exitosamente',
+    saleRegistred  : 'Venta registrada exitosamente'
 }
 
 

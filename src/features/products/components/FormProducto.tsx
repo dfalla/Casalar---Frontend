@@ -155,14 +155,6 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
 
                   addProduct.mutate(values)
                  
-                  toast({
-                    title: `${MESSAGES_NOTIFICATIONS.registred}`,
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                    position: 'top'
-                  })
-
                 }
 
                 if(params.id !== undefined && edit === true) {
@@ -175,15 +167,8 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
                   }
 
                   editProduct.mutate({id: params.id, values: VALUES})
-                  
-                  toast({
-                    title: `${MESSAGES_NOTIFICATIONS.edited}`,
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                    position: 'top'
-                  })
                 }
+
                 closeModal();
 
               }}
