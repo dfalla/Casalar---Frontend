@@ -12,6 +12,7 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { useSales } from "../../../context/SalesContext";
 import { useEffect } from "react";
 import Http from "@/libs";
@@ -29,12 +30,15 @@ interface Sale{
 }
 
 export const TableOfSales = () => {
+  // const { totalSale, deleteSales } = useSales();
   const { totalSale } = useSales();
+
   const sales = localStorage.getItem("sales")
   const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
   const queryClient = useQueryClient()
   const { saleToRegistred } = useRegistredSale();
+  const navigate = useNavigate();
 
   useEffect(() => {
     return () => {
@@ -46,6 +50,7 @@ export const TableOfSales = () => {
   useEffect(() => {
     const handlePageReload = () => {
       // Lógica para manejar la recarga de la página
+      // console.log("pagina recargada")
       localStorage.removeItem('sales');
     };
 
@@ -101,9 +106,8 @@ export const TableOfSales = () => {
 
     }
 
-    // logica para que se eliminen todos los items del array de ventas a registrar
-
-    localStorage.setItem('sales', JSON.stringify([]));
+    localStorage.removeItem("sales");
+    
   }
 
 

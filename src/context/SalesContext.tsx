@@ -14,7 +14,7 @@ export interface SalesContextProps {
     idMarcaProduct: string;
     addSale: (sale: Sale) => void;
     calculateCantidad: (cantidad: number) => void;
-    deleteSales?: () => void;
+    // deleteSales: () => void;
     saveIdMarcaProduct: (id_product: string) => void
     saveNameProducto: (nameProduct: string) => void
     totalSale: () => number;
@@ -28,13 +28,17 @@ export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
     const [nameProduct, setNameProduct] = useState<string>('');
     const [idMarcaProduct, setIdMarcaProduct] = useState<string>('');
 
+    useEffect(() => {
+        const sales = localStorage.getItem('sales');
+        const salesParse = JSON.parse(sales!);
+        if(salesParse === null){
+            setSales([]);
+        }
+    }, [localStorage.getItem('sales')]);
+
     const addSale = (sale: Sale) => {
         setSales([...sales, sale])
         localStorage.setItem("sales", JSON.stringify([...sales, sale]))
-    }
-
-    const deleteSales = () => {
-
     }
 
     const totalSale = () => {
@@ -66,7 +70,6 @@ export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
                 sales, 
                 addSale, 
                 calculateCantidad, 
-                deleteSales,
                 saveNameProducto, 
                 saveIdMarcaProduct, 
                 totalSale 

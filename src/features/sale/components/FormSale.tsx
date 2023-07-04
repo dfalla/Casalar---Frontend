@@ -151,6 +151,7 @@ export const FormSale = () => {
                                 name='cantidad'
                                 label='Cantidad'
                                 type='number'
+                                isDisabled={values.marca ? false : true}
                             />
 
                             <Box>
