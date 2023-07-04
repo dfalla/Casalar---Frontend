@@ -48,6 +48,16 @@ export const SelectFieldAsynchronous: FC<SelectFieldAsynchronousProps> = ({
         const obtenerOpciones = async () => {
           try {
             const data = await fetchOptions(parentValue);
+            for (let i = 0; i < data.length; i++) {
+              if(data[i].nombre){
+                const dataOrdered = data.sort((a,b)=>a.nombre.localeCompare(b.nombre))
+                setOptions(dataOrdered)
+              }
+              if(data[i].marca){
+                const dataOrdered = data.sort((a,b)=>a.marca!.localeCompare(b.marca!))
+                setOptions(dataOrdered)
+              }
+            }
             setOptions(data);
           } catch (error) {
             console.error('Error al obtener las opciones del select', error);
