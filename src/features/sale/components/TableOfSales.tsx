@@ -101,6 +101,8 @@ export const TableOfSales = () => {
 
     }
 
+    // logica para que se eliminen todos los items del array de ventas a registrar
+
     localStorage.setItem('sales', JSON.stringify([]));
   }
 
