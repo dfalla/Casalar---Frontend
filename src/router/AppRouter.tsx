@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "@/store";
 import { Container, ProtectedRoutes } from "@/common";
-import { Aceites, Llantas, Motores, Fumigadoras, LoginPage, RegisterPage, Motoguadanas, Motosierras, ElectricalAccesories, Sale } from "@/features";
+import { Aceites, Llantas, Motores, Fumigadoras, LoginPage, RegisterPage, Motoguadanas, Motosierras, ElectricalAccesories, Sale, SeeAllSales } from "@/features";
 import { activeSale } from "@/helpers";
 
 export const AppRouter = () => {
@@ -38,7 +38,8 @@ export const AppRouter = () => {
 
                   {/* <Route path="/venta" element={ <Sale/> }/> */}
 
-                  <Route path="/venta" element={ isDisabled() ? <Navigate to ='/accesorios-electricos'/> : <Sale/> }/>
+                  <Route path="/registrar-venta" element={ isDisabled() ? <Navigate to ='/accesorios-electricos'/> : <Sale/> }/>
+                  <Route path="/ventas" element={<SeeAllSales/>}/>
 
 
                   <Route path="/fumigadoras/:id" element={<Fumigadoras edit={true}/>}/>

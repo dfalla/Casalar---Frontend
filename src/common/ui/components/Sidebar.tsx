@@ -351,6 +351,21 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <HStack spacing={{ base: '0', md: '6' }}>
         <Button 
+          color={'brand.clonika.blue.800'} 
+          variant={'outline'} 
+          disabled={true}
+          borderColor={'brand.clonika.blue.800'}
+          _hover={{
+            backgroundColor: 'brand.clonika.blue.800',
+            color: 'white'
+          }}
+          onClick={()=>{
+            navigate('/ventas')
+          }}
+        >
+          Ventas diarias
+        </Button>
+        <Button 
           color={'white'} 
           variant={'outline'} 
           disabled={true}
@@ -361,18 +376,18 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             color: 'brand.clonika.blue.800'
           }}
           onClick={()=>{
-            navigate('/venta')
+            navigate('/registrar-venta')
           }}
           isDisabled={ isDisabled() }
         >
           Registrar Venta
         </Button>
-        <IconButton
+        {/* <IconButton
           size="lg"
           variant="ghost"
           aria-label="open menu"
           icon={<FiBell />}
-        />
+        /> */}
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton

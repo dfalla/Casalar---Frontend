@@ -7,6 +7,9 @@ import { INITIALVALUES, validationSchema } from "../domain";
 import Http from "@/libs";
 import { useSales } from "../../../context/SalesContext";
 import { Data, Option } from "../interfaces";
+import { MESSAGES_NOTIFICATIONS } from "@/constants";
+import { generateProductToCart } from "@/utilities";
+import { fetchChildOptions } from "@/utilities/fetchChildOptions";
 
 
 export const FormSale = () => {
@@ -42,9 +45,9 @@ export const FormSale = () => {
                 if(cantidad > stock){
                     setDisabledButtonAdd(true);
                     toast({
-                        title: `Error al tratar de registrar la venta`,
+                        title: `${MESSAGES_NOTIFICATIONS.saleRegistredError.title}`,
                         status: 'error',
-                        description: "La cantidad supera al stock del producto",
+                        description: `${MESSAGES_NOTIFICATIONS.saleRegistredError.description}`,
                         duration: 3000,
                         isClosable: true,
                         position: 'top'
@@ -58,30 +61,30 @@ export const FormSale = () => {
         // console.log("producto, id", {nameProduct, idMarcaProduct})
     }, [nameProduct, idMarcaProduct, cantidad]);
 
-    const fetchChildOptions = async (parentValue: string): Promise<Option[]> => {
+    // const fetchChildOptions = async (parentValue: string): Promise<Option[]> => {
 
-        // Lógica para obtener las opciones del select hijo en función del valor del select padre
+    //     // Lógica para obtener las opciones del select hijo en función del valor del select padre
         
-        const { data } = await Http.get(`/${parentValue}`)
+    //     const { data } = await Http.get(`/${parentValue}`)
 
-        // console.log("data de los selects", data.productos);
+    //     // console.log("data de los selects", data.productos);
 
-        const newDataProducts = [...data.productos];
+    //     const newDataProducts = [...data.productos];
 
-        const dataWithStockGreaterThanZero = [];
+    //     const dataWithStockGreaterThanZero = [];
         
-        for (let i = 0; i < newDataProducts.length; i++) {
-            if(newDataProducts[i].stock > 0){
-                dataWithStockGreaterThanZero.push(newDataProducts[i]);
-            }
-        }
+    //     for (let i = 0; i < newDataProducts.length; i++) {
+    //         if(newDataProducts[i].stock > 0){
+    //             dataWithStockGreaterThanZero.push(newDataProducts[i]);
+    //         }
+    //     }
 
-        const dataToReturn = dataWithStockGreaterThanZero.length > 0 ? dataWithStockGreaterThanZero : data.productos!;
+    //     const dataToReturn = dataWithStockGreaterThanZero.length > 0 ? dataWithStockGreaterThanZero : data.productos!;
         
-        return dataToReturn;
+    //     return dataToReturn;
 
 
-    };
+    // };
  
     
     let newData: Data[] = [];
@@ -97,15 +100,7 @@ export const FormSale = () => {
             validationSchema={ validationSchema }
             onSubmit={async (values, { resetForm  })=> {
 
-                const { data: productToAddToCart } = await Http.get(`/${values.producto}/${values.marca}`);
-
-                const productToCart = {
-                    id_producto   : productToAddToCart.producto.id_producto,
-                    cantidad      : values.cantidad,
-                    producto      : values.producto,
-                    marca         : productToAddToCart.producto.marca,
-                    subTotal      : productToAddToCart.producto.precio * values.cantidad,
-                }
+                const productToCart = await generateProductToCart({marca: values.marca, producto: values.producto, cantidad: cantidad})
 
                 //agregar al estado el productToCart, creo que se hace con el contexto
                  addSale(productToCart);

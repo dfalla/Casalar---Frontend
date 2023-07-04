@@ -18,10 +18,14 @@ export const NAME_PRODUCTS = {
 }
 
 export const MESSAGES_NOTIFICATIONS = {
-    registred      : 'Producto registrado exitosamente',
-    edited         : 'Producto editado exitosamente',
-    deleted        : 'Producto eliminado exitosamente',
-    saleRegistred  : 'Venta registrada exitosamente'
+    registred           : 'Producto registrado exitosamente',
+    edited              : 'Producto editado exitosamente',
+    deleted             : 'Producto eliminado exitosamente',
+    saleRegistred       : 'Venta registrada exitosamente',
+    saleRegistredError  : {
+        title        : 'Error al tratar de registrar la venta',
+        description  : 'La cantidad supera al stock del producto'
+    }
 }
 
 

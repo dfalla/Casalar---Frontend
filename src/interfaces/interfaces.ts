@@ -1,3 +1,6 @@
+import { Sale } from "@/features/sale/interfaces";
+import { QueryClient } from "@tanstack/react-query";
+
 export interface LoginArgs {
     username: string;
     password: string;
@@ -77,4 +80,9 @@ export interface UiGetAllProductsArgs {
 
 export interface ProductProps {
     edit?: boolean;
+}
+
+export interface EditProductAccordingSaleArgs {
+    queryClient: QueryClient;
+    venta: Sale[];
 }

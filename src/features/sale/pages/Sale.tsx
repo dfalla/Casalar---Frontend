@@ -5,9 +5,9 @@ import { FormSale, TableOfSales } from "../components"
 export const Sale = () => {
   return (
     <Box
-      marginTop={"100px"}
-      backgroundColor={'white'}
+      marginTop={20} 
       padding={4}
+      backgroundColor={'white'}
     >
       <VStack
         alignItems={'flex-start'}

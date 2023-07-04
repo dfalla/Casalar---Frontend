@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Box, 
   Button,
@@ -11,10 +12,10 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useSales } from "../../../context/SalesContext";
-import { useEffect } from "react";
+import { useSales } from "@/context";
 import Http from "@/libs";
 import { SafeAny } from "@/common";
+import { editProductAccordingSale } from '@/utilities';
 import { useRegistredSale } from "../hooks";
 import { Sale } from '../interfaces';
 
@@ -48,52 +49,12 @@ export const TableOfSales = () => {
 
   const registredSale = async(venta: Sale[]) => {
 
-
     saleToRegistred.mutate({venta})
-    
 
-    for (let i = 0; i < venta.length; i++){
-
-      try {
-        const { data } = await Http.get(`/${venta[i].producto}/${venta[i].id_producto}`)
-
-        const { marca, precio, stock, descripcion, imagen } = data.producto;
-
-        const newStock = stock - venta[i].cantidad;
-
-
-        const dataProductToUpdate = {
-          marca,
-          precio,
-          stock: newStock,
-          imagen,
-          descripcion
-        }
-
-        const formData = new FormData();
-
-        for(let key in dataProductToUpdate){
-          formData.append(key, (dataProductToUpdate as SafeAny)[key]);
-        }
-
-        try {
-          const { data: resp } = await Http.put(`/${venta[i].producto}/${venta[i].id_producto}`, dataProductToUpdate)
-          queryClient.invalidateQueries({ queryKey: [venta[i].producto] })
-          
-        } catch (error) {
-          console.log("error")
-        }
-
-      } catch (error) {
-
-        console.log("error")
-
-      }
-
-    }
-
+    editProductAccordingSale({queryClient, venta })
+      
     localStorage.removeItem("sales");
-    
+
   }
 
 
