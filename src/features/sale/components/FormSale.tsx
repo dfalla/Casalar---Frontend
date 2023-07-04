@@ -6,16 +6,8 @@ import { useGetAllNameOfProducts } from "../hooks";
 import { INITIALVALUES, validationSchema } from "../domain";
 import Http from "@/libs";
 import { useSales } from "../../../context/SalesContext";
-export interface Data {
-    id     : number;
-    nombre : string;
-}
+import { Data, Option } from "../interfaces";
 
-export interface Option {
-    id: number;
-    value: string;
-    nombre: string;
-}
 
 export const FormSale = () => {
     const { data, isError, isLoading } = useGetAllNameOfProducts();

@@ -150,11 +150,8 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
               initialValues={ initialValues }
               onSubmit={ (values) => {
                 if(!params.id && !edit){
-
                   values.id_producto =  id_producto;
-
                   addProduct.mutate(values)
-                 
                 }
 
                 if(params.id !== undefined && edit === true) {

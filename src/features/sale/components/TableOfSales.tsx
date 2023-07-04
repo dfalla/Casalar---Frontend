@@ -16,16 +16,7 @@ import { useEffect } from "react";
 import Http from "@/libs";
 import { SafeAny } from "@/common";
 import { useRegistredSale } from "../hooks";
-
-interface Sale{
-  id_producto? : string;
-  cantidad     : number;
-  marca        : string;
-  subTotal     : number;
-  producto     : string;
-  fecha        : string;
-  hora         : string;
-}
+import { Sale } from '../interfaces';
 
 export const TableOfSales = () => {
   const { totalSale } = useSales();
@@ -45,7 +36,6 @@ export const TableOfSales = () => {
   useEffect(() => {
     const handlePageReload = () => {
       // Lógica para manejar la recarga de la página
-      // console.log("pagina recargada")
       localStorage.removeItem('sales');
     };
 
