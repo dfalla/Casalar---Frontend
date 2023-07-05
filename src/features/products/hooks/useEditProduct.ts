@@ -53,9 +53,15 @@ function functionUpdateProductAccordingVariant(variant: string | undefined){
   return mutationUpdateFn;
 }
 
+export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductArgs) => {
 
-const functionGetProductById = ({edit, parameter, variant, ruta}: usEditProductArgs) => {
-  let getProductById:  QueryFunction<any, (string | undefined)[]> | undefined = undefined;
+  console.log("me ejecuto en useEditProduct")
+  const updateFnMutation = useMemo( () => functionUpdateProductAccordingVariant(variant), []);
+  
+  const queryClient = useQueryClient(); 
+  const toast = useToast();
+
+  let getProductById:  QueryFunction<any, (string | undefined)[]> | undefined;
 
   switch (variant!) {
     case PRODUCT.accesoriosElectricos:
@@ -100,19 +106,6 @@ const functionGetProductById = ({edit, parameter, variant, ruta}: usEditProductA
       }
       break;
   }
-
-  return getProductById;
-}
-
-export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductArgs) => {
-
-  console.log("me ejecuto en useEditProduct")
-  const updateFnMutation = useMemo( () => functionUpdateProductAccordingVariant(variant), []);
-  
-  const queryClient = useQueryClient(); 
-  const toast = useToast();
-
-  const getProductById =useMemo( () => functionGetProductById({variant, edit, parameter, ruta}), [])
 
   const { status, data, error } = useQuery({
     queryKey: [variant, parameter],
