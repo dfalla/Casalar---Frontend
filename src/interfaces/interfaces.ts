@@ -45,7 +45,7 @@ export interface usEditProductArgs {
     parameter?: string;
     edit?: boolean;
     variant: string | undefined;
-    ruta: string;
+    ruta?: string;
 }
 
 // hook Agregar Product

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { MutationFunction, UseMutateFunction, useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteAceite, deleteMochila, deleteLlanta, deleteMotor, deleteMotosierra } from "../../../api";
 import { MESSAGES_NOTIFICATIONS, PRODUCT } from "../../../constants";
@@ -37,8 +38,9 @@ function deleteFunctionProduct(variant: string){
 }
 
 export const useDeleteProduct = (variant: string) => {
+  console.log("me ejecuto useDeleteProduct");
   const queryClient = useQueryClient();  
-  const  productToDelete =  deleteFunctionProduct(variant);
+  const  productToDelete = useMemo( () => deleteFunctionProduct(variant), []);
   const toast = useToast();
 
 

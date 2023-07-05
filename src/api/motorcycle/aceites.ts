@@ -10,7 +10,6 @@ export const getAceites = async() => {
     try {
 
         const { data } = await Http.get(`/${url}`)
-        console.log("data desde getAceites", data);
         return data.productos!;
 
     } catch (error) {

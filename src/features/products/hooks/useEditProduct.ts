@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { MutationFunction, QueryFunction, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { 
   getAceiteById, 
@@ -16,6 +17,7 @@ import { MESSAGES_NOTIFICATIONS, PRODUCT } from "@/constants";
 import { getMotoguadanaById, updateMotoguadana } from "@/api/brush-cutter";
 import { getAccesorioElectricoById, updateAccesorioElectrico } from "@/api";
 import { useToast } from "@chakra-ui/react";
+
 
 
 function functionUpdateProductAccordingVariant(variant: string | undefined){
@@ -44,20 +46,15 @@ function functionUpdateProductAccordingVariant(variant: string | undefined){
       mutationUpdateFn = updateMochila;
       break;
     default:
+      mutationUpdateFn = updateAccesorioElectrico;
       break;
   }
 
   return mutationUpdateFn;
 }
 
-export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductArgs) => {
 
-  const updateFnMutation = functionUpdateProductAccordingVariant(variant);
-  
-  const queryClient = useQueryClient(); 
-  const toast = useToast();
-
-  
+const functionGetProductById = ({edit, parameter, variant, ruta}: usEditProductArgs) => {
   let getProductById:  QueryFunction<any, (string | undefined)[]> | undefined = undefined;
 
   switch (variant!) {
@@ -98,8 +95,24 @@ export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductAr
       break;
   
     default:
+      if(parameter && edit === true) {
+        getProductById = () => getAccesorioElectricoById!(parameter)
+      }
       break;
   }
+
+  return getProductById;
+}
+
+export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductArgs) => {
+
+  console.log("me ejecuto en useEditProduct")
+  const updateFnMutation = useMemo( () => functionUpdateProductAccordingVariant(variant), []);
+  
+  const queryClient = useQueryClient(); 
+  const toast = useToast();
+
+  const getProductById =useMemo( () => functionGetProductById({variant, edit, parameter, ruta}), [])
 
   const { status, data, error } = useQuery({
     queryKey: [variant, parameter],

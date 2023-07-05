@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState }  from 'react';
+import React, { useEffect, useRef, useState }  from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik, Form } from 'formik';
 import {
@@ -14,12 +14,11 @@ import {
   HStack,
   Input,
   Text,
-  useToast
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { FormProductoArgs, ProductArgs } from '@/interfaces';
 import { InputField, SafeAny } from '@/common';
-import { MESSAGES_NOTIFICATIONS, PRODUCT } from '@/constants';
+import { PRODUCT } from '@/constants';
 import { useAddProduct, useEditProduct } from '../hooks';
 import { INITIALVALUES, validationSchema } from '../domain';
 
@@ -58,10 +57,8 @@ function Ruta(variant: string | undefined){
 }
 
 export const FormProducto = ({variant, edit}: FormProductoArgs) => {
-  // console.log('variant', variant)
-    const id_producto = uuidv4();
-
-  const toast = useToast();
+  console.log('FormProducto')
+  const id_producto = uuidv4();
 
   const { isOpen, onOpen, onClose,  } = useDisclosure()
 

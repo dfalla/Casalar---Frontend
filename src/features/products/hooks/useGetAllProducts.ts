@@ -1,11 +1,12 @@
+import { useMemo } from 'react';
 import { QueryFunction, useQuery} from "@tanstack/react-query"
 import { getAceites, getMochilas, getMotores, getLlantas, getMotosierras } from "../../../api";
 import { PRODUCT } from "../../../constants";
 import { getMotoguadanas } from "@/api/brush-cutter";
 import { getAccesoriosElectricos } from "@/api/electricalAccesories";
 
-function getFunctionProducts(variant: string){
-    let getAllProducts: QueryFunction<any, string[]> | undefined;
+const  getFunctionProducts = ( variant: string ) => {
+    let getAllProducts: QueryFunction<any, string[]> | undefined = getAccesoriosElectricos;
     switch (variant) {
         case PRODUCT.accesoriosElectricos:
             getAllProducts = getAccesoriosElectricos;
@@ -30,6 +31,7 @@ function getFunctionProducts(variant: string){
             getAllProducts = getMochilas;
             break;
         default:
+            getAllProducts = getAccesoriosElectricos
             break;
     }
 
@@ -37,7 +39,8 @@ function getFunctionProducts(variant: string){
 }
 
 export const useGetAllProducts = (variant: string) => {
-    const getAllProducts = getFunctionProducts(variant);
+    console.log("me ejecuto useGetAllProducts")
+    const getAllProducts = useMemo(()=>getFunctionProducts(variant), [variant]);
     const { data, isLoading, isError } = useQuery({ 
         queryKey: [variant], 
         queryFn: getAllProducts,

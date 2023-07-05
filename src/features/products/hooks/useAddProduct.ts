@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import { MutationFunction, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAceite, createLlanta, createMochila, createMotor, createMotosierra } from "@/api";
 import { MESSAGES_NOTIFICATIONS, PRODUCT } from "@/constants";
@@ -6,14 +7,8 @@ import { createMotoguadana } from "@/api/brush-cutter";
 import { createAccesorioElectrico } from "@/api/electricalAccesories";
 import { useToast } from "@chakra-ui/react";
 
-
-export const useAddProduct = ({  variant }: useAddProductArgs ) => {
-
-  const queryClient = useQueryClient(); 
-  const toast = useToast();
-
-
-  let mutationCreateFn:  MutationFunction<void, ProductArgs> | undefined;
+const getMutationCreateFn = ({variant}: useAddProductArgs) =>{
+  let mutationCreateFn:  MutationFunction<void, ProductArgs> | undefined = createAccesorioElectrico;
 
   switch (variant!) {
     case PRODUCT.accesoriosElectricos:
@@ -38,8 +33,25 @@ export const useAddProduct = ({  variant }: useAddProductArgs ) => {
       mutationCreateFn = createMochila;
       break;
     default:
+      mutationCreateFn = createAccesorioElectrico
       break;
   }
+
+  return mutationCreateFn;
+
+}
+
+
+export const useAddProduct = ({  variant }: useAddProductArgs ) => {
+
+  console.log("me ejecuto useAddProduct 😍")
+  
+  const queryClient = useQueryClient(); 
+  const toast = useToast();
+
+  const mutationCreateFn = useMemo(() => getMutationCreateFn({variant}), []);
+
+  
 
   const addProduct = useMutation({
     mutationFn: mutationCreateFn,

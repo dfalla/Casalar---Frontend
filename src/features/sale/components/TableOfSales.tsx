@@ -61,55 +61,54 @@ export const TableOfSales = () => {
   return (
     <Box>
 
-        <TableContainer>
-          <Table variant={'unstyled'}>
-            <Thead>
-              <Tr>
-                <Th>Producto</Th>
-                <Th>Marca</Th>
-                <Th>Cantidad</Th>
-                <Th>SubTotal</Th>
-                <Th>Acciones</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-                {
-                  newSales?.map(({ cantidad, marca, producto, subTotal, id_producto }: Sale) => (
-                    <Tr
-                      key={id_producto}
-                    >
-                      <Td>{producto}</Td>
-                      <Td>{marca}</Td>
-                      <Td>{cantidad}</Td>
-                      <Td>{`S/.${subTotal}`}</Td>
+      <TableContainer>
+        <Table variant={'unstyled'}>
+          <Thead>
+            <Tr>
+              <Th>Producto</Th>
+              <Th>Marca</Th>
+              <Th>Cantidad</Th>
+              <Th>SubTotal</Th>
+              <Th>Acciones</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+              {
+                newSales?.map(({ cantidad, marca, producto, subTotal, id_producto }: Sale) => (
+                  <Tr
+                    key={id_producto}
+                  >
+                    <Td>{producto}</Td>
+                    <Td>{marca}</Td>
+                    <Td>{cantidad}</Td>
+                    <Td>{`S/.${subTotal}`}</Td>
 
-                    </Tr>
-                  ))
-                }
-
-                {
-                  newSales?.length > 0 && (
-                  <Tr>
-                    <Td colSpan={3} textAlign={'center'} fontWeight={'bold'} >Total a pagar: </Td>
-                    <Td>{`S/.${totalAPagar}`}</Td>
                   </Tr>
-                  ) 
-                }
+                ))
+              }
 
-                
-            </Tbody>
-          </Table>
-        </TableContainer>
+              {
+                newSales?.length > 0 && (
+                <Tr>
+                  <Td colSpan={3} textAlign={'center'} fontWeight={'bold'} >Total a pagar: </Td>
+                  <Td>{`S/.${totalAPagar}`}</Td>
+                </Tr>
+                ) 
+              }
 
+              
+          </Tbody>
+        </Table>
+      </TableContainer>
 
-        <Button
-          onClick={() => registredSale(newSales)}
-          backgroundColor={'red'}
-          mt={10}
-          isDisabled={ newSales === null ? true : false }
-        >
-          Registrar venta
-        </Button>
+      <Button
+        onClick={() => registredSale(newSales)}
+        backgroundColor={'red'}
+        mt={10}
+        isDisabled={ newSales === null ? true : false }
+      >
+        Registrar venta
+      </Button>
     </Box>
   )
 }

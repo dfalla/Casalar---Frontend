@@ -5,6 +5,7 @@ import { MutationFunction, useMutation, useQueryClient } from "@tanstack/react-q
 
 
 export const useRegistredSale = () => {
+    console.log("se ejecuta useRegistredSale")
 
     const queryClient = useQueryClient(); 
     const toast = useToast();
