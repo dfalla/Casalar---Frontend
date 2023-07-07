@@ -19,6 +19,8 @@ import { editProductAccordingSale } from '@/utilities';
 import { useRegistredSale } from "../hooks";
 import { Sale } from '../interfaces';
 
+const heads = ['PRODUCTO', 'MARCA', 'CANTIDAD', 'SUBTOTAL']
+
 export const TableOfSales = () => {
   const { totalSale } = useSales();
   const sales = localStorage.getItem("sales")
@@ -64,12 +66,12 @@ export const TableOfSales = () => {
       <TableContainer>
         <Table variant={'unstyled'}>
           <Thead>
-            <Tr>
-              <Th>Producto</Th>
-              <Th>Marca</Th>
-              <Th>Cantidad</Th>
-              <Th>SubTotal</Th>
-              <Th>Acciones</Th>
+            <Tr >
+              {
+                heads.map((head, index)=>(
+                  <Th key={index} fontSize={20}>{head}</Th>
+                ))
+              }
             </Tr>
           </Thead>
           <Tbody>
@@ -77,11 +79,12 @@ export const TableOfSales = () => {
                 newSales?.map(({ cantidad, marca, producto, subTotal, id_producto }: Sale) => (
                   <Tr
                     key={id_producto}
+                    
                   >
-                    <Td>{producto}</Td>
-                    <Td>{marca}</Td>
-                    <Td>{cantidad}</Td>
-                    <Td>{`S/.${subTotal}`}</Td>
+                    <Td textAlign={'center'}>{producto}</Td>
+                    <Td textAlign={'center'}>{marca}</Td>
+                    <Td textAlign={'center'}>{cantidad}</Td>
+                    <Td textAlign={'center'}>{`S/.${subTotal}`}</Td>
 
                   </Tr>
                 ))
@@ -89,9 +92,9 @@ export const TableOfSales = () => {
 
               {
                 newSales?.length > 0 && (
-                <Tr>
+                <Tr background={'brand.clonika.blue.800'} color={'white'}>
                   <Td colSpan={3} textAlign={'center'} fontWeight={'bold'} >Total a pagar: </Td>
-                  <Td>{`S/.${totalAPagar}`}</Td>
+                  <Td fontWeight={'bold'} textAlign={'center'}>{`S/.${totalAPagar}`}</Td>
                 </Tr>
                 ) 
               }

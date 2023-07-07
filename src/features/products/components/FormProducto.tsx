@@ -75,6 +75,13 @@ export const FormProducto = ({variant, edit}: FormProductoArgs) => {
   const { editProduct, data } = useEditProduct({variant, ruta, parameter: params.id, edit})
   const navigate = useNavigate();
 
+  // useEffect(() => {
+    
+  //   return () => {
+
+  //   }
+  // }, [onOpen]);
+
   const closeModal = () => {
     // const rutaFinal = finalRoute({ruta, variant: variant});
 
