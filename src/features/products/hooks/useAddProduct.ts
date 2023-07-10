@@ -44,7 +44,7 @@ const getMutationCreateFn = ({variant}: useAddProductArgs) =>{
 
 export const useAddProduct = ({  variant }: useAddProductArgs ) => {
 
-  console.log("me ejecuto useAddProduct 😍")
+  // console.log("me ejecuto useAddProduct 😍")
   
   const queryClient = useQueryClient(); 
   const toast = useToast();

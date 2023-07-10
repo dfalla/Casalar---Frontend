@@ -38,7 +38,7 @@ function deleteFunctionProduct(variant: string){
 }
 
 export const useDeleteProduct = (variant: string) => {
-  console.log("me ejecuto useDeleteProduct");
+  // console.log("me ejecuto useDeleteProduct");
   const queryClient = useQueryClient();  
   const  productToDelete = useMemo( () => deleteFunctionProduct(variant), []);
   const toast = useToast();

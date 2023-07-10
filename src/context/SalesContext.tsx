@@ -1,7 +1,8 @@
 import { SafeAny } from '@/common';
-import React, { createContext, useContext, useEffect, useState,  } from 'react';
+import React, { createContext, useContext, useEffect, useState, memo } from 'react';
 
 export interface Sale {
+    id_producto?:string;
     producto: string;
     marca: string;
     subTotal: number;
@@ -14,15 +15,17 @@ export interface SalesContextProps {
     idMarcaProduct: string;
     addSale: (sale: Sale) => void;
     calculateCantidad: (cantidad: number) => void;
-    // deleteSales: () => void;
-    saveIdMarcaProduct: (id_product: string) => void
+    deleteSale: (id_sale: string) => void;
+    deleteAllSales: () => void;
+    saveIdMarcaProduct: (id_product: string) => void;
+    setSales: React.Dispatch<React.SetStateAction<Sale[]>>;
     saveNameProducto: (nameProduct: string) => void
     totalSale: () => number;
 }
 
 const SalesContext = createContext<SalesContextProps | undefined>(undefined);
 
-export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
+export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     const [sales, setSales] = useState<Sale[]>([]);
     const [cantidad, setCantidad] = useState<number>(0);
     const [nameProduct, setNameProduct] = useState<string>('');
@@ -39,6 +42,20 @@ export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
     const addSale = (sale: Sale) => {
         setSales([...sales, sale])
         localStorage.setItem("sales", JSON.stringify([...sales, sale]))
+    }
+
+    const deleteSale = (id_sale: string) => {
+        console.log("id_sale", id_sale)
+        const sales = localStorage.getItem('sales');
+        const salesParse = JSON.parse(sales!);
+        const newSales = salesParse.filter((sale: Sale) => sale.id_producto !== id_sale);
+        setSales([...newSales]);
+        localStorage.setItem("sales", JSON.stringify([...newSales]))
+        
+    }
+
+    const deleteAllSales = () => {
+        setSales([])
     }
 
     const totalSale = () => {
@@ -70,7 +87,10 @@ export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
                 sales, 
                 addSale, 
                 calculateCantidad, 
+                deleteSale,
+                deleteAllSales,
                 saveNameProducto, 
+                setSales,
                 saveIdMarcaProduct, 
                 totalSale 
             }}
@@ -78,7 +98,7 @@ export const SalesProvider: React.FC<SafeAny> = ( {children} ) => {
             { children }
         </SalesContext.Provider>
     )
-} 
+}) 
 
 export const useSales = () => {
     const context = useContext(SalesContext);

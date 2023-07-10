@@ -1,15 +1,15 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import {
   Box, 
   Button,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   TableContainer,
+  HStack,
 } from '@chakra-ui/react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSales } from "@/context";
@@ -19,15 +19,17 @@ import { editProductAccordingSale } from '@/utilities';
 import { useRegistredSale } from "../hooks";
 import { Sale } from '../interfaces';
 
-const heads = ['PRODUCTO', 'MARCA', 'CANTIDAD', 'SUBTOTAL']
+const heads = ['PRODUCTO', 'MARCA', 'CANTIDAD', 'SUBTOTAL', 'ACCIONES']
 
-export const TableOfSales = () => {
-  const { totalSale } = useSales();
+export const TableOfSales = memo(() => {
+  const { totalSale, deleteSale, deleteAllSales } = useSales();
   const sales = localStorage.getItem("sales")
   const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
   const queryClient = useQueryClient()
   const { saleToRegistred } = useRegistredSale();
+
+  
 
   useEffect(() => {
     return () => {
@@ -39,6 +41,7 @@ export const TableOfSales = () => {
   useEffect(() => {
     const handlePageReload = () => {
       // Lógica para manejar la recarga de la página
+      deleteAllSales();
       localStorage.removeItem('sales');
     };
 
@@ -47,7 +50,7 @@ export const TableOfSales = () => {
     return () => {
       window.removeEventListener('load', handlePageReload);
     };
-}, []);
+  }, []);
 
   const registredSale = async(venta: Sale[]) => {
 
@@ -59,17 +62,20 @@ export const TableOfSales = () => {
 
   }
 
+  const deleteProductToCart = (id_product: string) => {
+    deleteSale(id_product)
+  }
+
 
   return (
     <Box>
-
       <TableContainer>
         <Table variant={'unstyled'}>
           <Thead>
             <Tr >
               {
                 heads.map((head, index)=>(
-                  <Th key={index} fontSize={20}>{head}</Th>
+                  <Th key={index} fontSize={18}>{head}</Th>
                 ))
               }
             </Tr>
@@ -85,7 +91,27 @@ export const TableOfSales = () => {
                     <Td textAlign={'center'}>{marca}</Td>
                     <Td textAlign={'center'}>{cantidad}</Td>
                     <Td textAlign={'center'}>{`S/.${subTotal}`}</Td>
-
+                    <Td 
+                       
+                    >
+                      <HStack
+                        gap={2}
+                      >
+                        <Button
+                          color={'white'}
+                          backgroundColor={'brand.clonika.blue.800'}
+                        >
+                          Editar
+                        </Button>
+                        <Button
+                          color={'white'}
+                          backgroundColor={'red'}
+                          onClick={()=>deleteProductToCart(id_producto!)}
+                        >
+                          Eliminar
+                        </Button>
+                      </HStack>
+                    </Td>
                   </Tr>
                 ))
               }
@@ -114,4 +140,4 @@ export const TableOfSales = () => {
       </Button>
     </Box>
   )
-}
+})

@@ -52,7 +52,7 @@ import { AuthLayout } from '../layout';
                 <InputField
                   label='Usuario'
                   name='username'
-                  placeholder='DFalla'
+                  placeholder='Escribe tu usuario'
                 />
 
                 <InputField

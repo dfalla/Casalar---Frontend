@@ -55,7 +55,7 @@ function functionUpdateProductAccordingVariant(variant: string | undefined){
 
 export const useEditProduct = ({edit, parameter, variant, ruta}: usEditProductArgs) => {
 
-  console.log("me ejecuto en useEditProduct")
+  // console.log("me ejecuto en useEditProduct")
   const updateFnMutation = useMemo( () => functionUpdateProductAccordingVariant(variant), []);
   
   const queryClient = useQueryClient(); 
