@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState, memo } from 'rea
 
 export interface Sale {
     id_producto?:string;
+    cantidad? : number;
     producto: string;
     marca: string;
     subTotal: number;
@@ -13,10 +14,12 @@ export interface SalesContextProps {
     cantidad: number;
     nameProduct: string;
     idMarcaProduct: string;
+    productToEdit: Sale | null;
     addSale: (sale: Sale) => void;
     calculateCantidad: (cantidad: number) => void;
     deleteSale: (id_sale: string) => void;
     deleteAllSales: () => void;
+    getproductToEdit: (product: Sale) => void;
     saveIdMarcaProduct: (id_product: string) => void;
     setSales: React.Dispatch<React.SetStateAction<Sale[]>>;
     saveNameProducto: (nameProduct: string) => void
@@ -27,6 +30,7 @@ const SalesContext = createContext<SalesContextProps | undefined>(undefined);
 
 export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     const [sales, setSales] = useState<Sale[]>([]);
+    const [productToEdit, setProductToEdit] = useState<Sale | null>(null);
     const [cantidad, setCantidad] = useState<number>(0);
     const [nameProduct, setNameProduct] = useState<string>('');
     const [idMarcaProduct, setIdMarcaProduct] = useState<string>('');
@@ -44,6 +48,10 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
         localStorage.setItem("sales", JSON.stringify([...sales, sale]))
     }
 
+    const getproductToEdit = (product: Sale) => {
+        setProductToEdit(product);
+    }
+
     const deleteSale = (id_sale: string) => {
         console.log("id_sale", id_sale)
         const sales = localStorage.getItem('sales');
@@ -57,6 +65,7 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     const deleteAllSales = () => {
         setSales([])
     }
+
 
     const totalSale = () => {
         if(sales.length > 0){
@@ -84,11 +93,13 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
                 cantidad, 
                 nameProduct,
                 idMarcaProduct,
+                productToEdit,
                 sales, 
                 addSale, 
                 calculateCantidad, 
                 deleteSale,
                 deleteAllSales,
+                getproductToEdit,
                 saveNameProducto, 
                 setSales,
                 saveIdMarcaProduct, 

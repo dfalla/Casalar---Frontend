@@ -3,7 +3,7 @@ import { InputField, SelectFieldAsynchronous } from "@/common";
 import { Box, Button, HStack, useToast } from "@chakra-ui/react"
 import { Form, Formik } from 'formik'
 import { useGetAllNameOfProducts } from "../hooks";
-import { INITIALVALUES, validationSchema } from "../domain";
+import { INITIALVALUES, Sale, validationSchema } from "../domain";
 import Http from "@/libs";
 import { useSales } from "../../../context/SalesContext";
 import { Data, Option } from "../interfaces";
@@ -13,12 +13,13 @@ import { fetchChildOptions } from "@/utilities/fetchChildOptions";
 
 
 export const FormSale = () => {
+    const [initialValues, setInitialValues] = useState<Sale>(INITIALVALUES);
     const { data, isError, isLoading } = useGetAllNameOfProducts();
     const { addSale, cantidad, nameProduct, idMarcaProduct } = useSales()
     const [disabledButtonAdd, setDisabledButtonAdd] = useState(false);
     const [stock, setStock] = useState<number>();
     const toast = useToast();
-    
+    const { productToEdit } = useSales();
 
     const getProductAccordingToBrand = async({
         nameProduct, 
@@ -36,7 +37,6 @@ export const FormSale = () => {
         
         }
     }
-
 
     useEffect(() => {
         if(nameProduct && idMarcaProduct){
@@ -56,35 +56,20 @@ export const FormSale = () => {
                     setDisabledButtonAdd(false)
                 }
             }
-           
         }
-        // console.log("producto, id", {nameProduct, idMarcaProduct})
     }, [nameProduct, idMarcaProduct, cantidad]);
 
-    // const fetchChildOptions = async (parentValue: string): Promise<Option[]> => {
-
-    //     // Lógica para obtener las opciones del select hijo en función del valor del select padre
-        
-    //     const { data } = await Http.get(`/${parentValue}`)
-
-    //     // console.log("data de los selects", data.productos);
-
-    //     const newDataProducts = [...data.productos];
-
-    //     const dataWithStockGreaterThanZero = [];
-        
-    //     for (let i = 0; i < newDataProducts.length; i++) {
-    //         if(newDataProducts[i].stock > 0){
-    //             dataWithStockGreaterThanZero.push(newDataProducts[i]);
-    //         }
-    //     }
-
-    //     const dataToReturn = dataWithStockGreaterThanZero.length > 0 ? dataWithStockGreaterThanZero : data.productos!;
-        
-    //     return dataToReturn;
-
-
-    // };
+    useEffect(() => {
+        if(productToEdit !== null){
+          setInitialValues({
+                cantidad: productToEdit.cantidad!,
+                producto: productToEdit.producto,
+                marca: productToEdit.id_producto!
+              })
+        } else {
+          setInitialValues(INITIALVALUES)
+        }
+    }, [productToEdit]);
  
     
     let newData: Data[] = [];
@@ -96,7 +81,7 @@ export const FormSale = () => {
   return (
     <Box>
         <Formik
-            initialValues={ INITIALVALUES }
+            initialValues={ initialValues }
             validationSchema={ validationSchema }
             onSubmit={async (values, { resetForm  })=> {
 
@@ -109,7 +94,7 @@ export const FormSale = () => {
                 resetForm();
                 
             }}
-            enableReinitialize
+            enableReinitialize={true}
         >
             {
                 ({ values }) => (
@@ -143,12 +128,14 @@ export const FormSale = () => {
 
                             <Box>
                                 <Button 
-                                    bg='brand.clonika.blue.800' 
+                                    bg='brand.clonika.blue.800'
                                     marginTop={10} 
                                     type='submit'
                                     isDisabled={disabledButtonAdd}
                                 >
-                                    Añadir
+                                    { 
+                                        productToEdit ? 'Editar' : 'Añadir'
+                                    }
                                 </Button>    
                             </Box> 
                         </HStack>

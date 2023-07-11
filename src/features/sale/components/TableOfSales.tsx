@@ -11,6 +11,7 @@ import {
   TableContainer,
   HStack,
 } from '@chakra-ui/react'
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSales } from "@/context";
 import Http from "@/libs";
@@ -22,13 +23,17 @@ import { Sale } from '../interfaces';
 const heads = ['PRODUCTO', 'MARCA', 'CANTIDAD', 'SUBTOTAL', 'ACCIONES']
 
 export const TableOfSales = memo(() => {
-  const { totalSale, deleteSale, deleteAllSales } = useSales();
+  const { totalSale, deleteSale, deleteAllSales, getproductToEdit } = useSales();
   const sales = localStorage.getItem("sales")
   const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
   const queryClient = useQueryClient()
   const { saleToRegistred } = useRegistredSale();
 
+
+  useEffect(() => {
+    console.log("newSales", newSales)
+  }, [newSales]);
   
 
   useEffect(() => {
@@ -54,6 +59,8 @@ export const TableOfSales = memo(() => {
 
   const registredSale = async(venta: Sale[]) => {
 
+    //Logica para verificar si el producto ya está en el carrito de venta
+
     saleToRegistred.mutate({venta})
 
     editProductAccordingSale({queryClient, venta })
@@ -64,6 +71,22 @@ export const TableOfSales = memo(() => {
 
   const deleteProductToCart = (id_product: string) => {
     deleteSale(id_product)
+  }
+
+  const editProductAccordingId = (id_product: string) => {
+    let productAccordingId: Sale | null = null;
+
+    if(newSales.length !== 0 || newSales !== null){
+        for (let i = 0; i < newSales.length; i++) {
+            if(newSales[i].id_producto === id_product){
+                productAccordingId = newSales[i];
+            }
+        }
+    }
+
+    // console.log("productAccordingId", productAccordingId)
+
+    getproductToEdit(productAccordingId!)
   }
 
 
@@ -85,31 +108,30 @@ export const TableOfSales = memo(() => {
                 newSales?.map(({ cantidad, marca, producto, subTotal, id_producto }: Sale) => (
                   <Tr
                     key={id_producto}
-                    
                   >
                     <Td textAlign={'center'}>{producto}</Td>
                     <Td textAlign={'center'}>{marca}</Td>
                     <Td textAlign={'center'}>{cantidad}</Td>
                     <Td textAlign={'center'}>{`S/.${subTotal}`}</Td>
-                    <Td 
-                       
-                    >
+                    <Td>
                       <HStack
                         gap={2}
+                        justifyContent={'center'}
                       >
-                        <Button
-                          color={'white'}
-                          backgroundColor={'brand.clonika.blue.800'}
-                        >
-                          Editar
-                        </Button>
-                        <Button
-                          color={'white'}
-                          backgroundColor={'red'}
+                        <EditIcon
+                          color={'brand.clonika.blue.800'}
+                          _hover={{
+                            cursor: 'pointer'
+                          }} 
+                          onClick={()=>editProductAccordingId(id_producto!)}
+                          />
+                        <DeleteIcon
+                          color={'red'} 
+                          _hover={{
+                            cursor: 'pointer'
+                          }} 
                           onClick={()=>deleteProductToCart(id_producto!)}
-                        >
-                          Eliminar
-                        </Button>
+                        />
                       </HStack>
                     </Td>
                   </Tr>
@@ -134,7 +156,7 @@ export const TableOfSales = memo(() => {
         onClick={() => registredSale(newSales)}
         backgroundColor={'red'}
         mt={10}
-        isDisabled={ newSales === null ? true : false }
+        isDisabled={ (newSales === null || newSales.length === 0) ? true : false }
       >
         Registrar venta
       </Button>
