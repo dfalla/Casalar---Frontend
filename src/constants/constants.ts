@@ -25,6 +25,10 @@ export const MESSAGES_NOTIFICATIONS = {
     saleRegistredError  : {
         title        : 'Error al tratar de registrar la venta',
         description  : 'La cantidad supera al stock del producto'
+    },
+    saleAddToCart: {
+        title: 'El producto no se puede añadir',
+        description: 'El motivo es porque ya se encuentra agregado, lo que puedes hacer es editar el producto en la tabla de abajo'
     }
 }
 

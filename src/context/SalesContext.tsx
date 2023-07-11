@@ -12,6 +12,7 @@ export interface Sale {
 export interface SalesContextProps {
     sales: Sale[];
     cantidad: number;
+    edit: boolean;
     nameProduct: string;
     idMarcaProduct: string;
     productToEdit: Sale | null;
@@ -30,6 +31,7 @@ const SalesContext = createContext<SalesContextProps | undefined>(undefined);
 
 export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     const [sales, setSales] = useState<Sale[]>([]);
+    const [edit, setEdit] = useState<boolean>(false);
     const [productToEdit, setProductToEdit] = useState<Sale | null>(null);
     const [cantidad, setCantidad] = useState<number>(0);
     const [nameProduct, setNameProduct] = useState<string>('');
@@ -49,6 +51,7 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     }
 
     const getproductToEdit = (product: Sale) => {
+        setEdit(true)
         setProductToEdit(product);
     }
 
@@ -91,6 +94,7 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
         <SalesContext.Provider
             value={{ 
                 cantidad, 
+                edit,
                 nameProduct,
                 idMarcaProduct,
                 productToEdit,

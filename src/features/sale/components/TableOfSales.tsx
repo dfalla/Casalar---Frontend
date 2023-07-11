@@ -32,11 +32,6 @@ export const TableOfSales = memo(() => {
 
 
   useEffect(() => {
-    console.log("newSales", newSales)
-  }, [newSales]);
-  
-
-  useEffect(() => {
     return () => {
       // Código a ejecutar cuando el componente se desmonte
       localStorage.removeItem('sales');
@@ -58,8 +53,6 @@ export const TableOfSales = memo(() => {
   }, []);
 
   const registredSale = async(venta: Sale[]) => {
-
-    //Logica para verificar si el producto ya está en el carrito de venta
 
     saleToRegistred.mutate({venta})
 
