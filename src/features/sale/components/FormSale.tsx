@@ -39,6 +39,8 @@ export const FormSale = memo(() => {
         sales, 
         saveIdMarcaProduct,
         updateSales,
+        setProductToEdit,
+        saveNameProducto,
         setEdit
     } = useSales()
     const [initialValues, setInitialValues] = useState<Sale>(INITIALVALUES);
@@ -129,9 +131,17 @@ export const FormSale = memo(() => {
         }
     }, [sales, idMarcaProduct, edit]);
 
+
     useEffect(() => {
-        console.log("edit", edit)
-    }, [edit]);
+        return () => {
+            setProductToEdit(null)
+            setEdit(false)
+        };
+    }, []);
+
+    useEffect(() => {
+        console.log("sales", sales)
+    }, [sales]);
 
 
   return (
@@ -143,21 +153,24 @@ export const FormSale = memo(() => {
 
                 const productToCart = await generateProductToCart({marca: values.marca, producto: values.producto, cantidad: cantidad})
                 saveIdMarcaProduct('')
-                console.log("idMarca en el formulario despues del submit", idMarcaProduct)
 
-                if(edit){
+                if(edit && productToEdit !== null){
 
                     updateSales(productToCart)
+                    setProductToEdit(null)
+                    // setInitialValues(INITIALVALUES)
 
                 } else {
-
-                    // console.log("id de la marca despues de hacer submit", idMarcaProduct)
-
                     //agregar al estado el productToCart, creo que se hace con el contexto
                     addSale(productToCart);
+
+
+                    resetForm();
                 }
 
-                resetForm();
+                // console.log("id de la marca despues de hacer submit", idMarcaProduct)
+
+                
                 
             }}
             enableReinitialize={true}
@@ -201,7 +214,7 @@ export const FormSale = memo(() => {
                                     // isDisabled={true}
                                 >
                                     { 
-                                        edit ? 'Editar' : 'Añadir'
+                                        (edit && productToEdit !== null) ? 'Editar' : 'Añadir'
                                     }
                                 </Button>    
                             </Box> 

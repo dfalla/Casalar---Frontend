@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState, memo, Dispatch, 
 export interface Sale {
     id_producto?:string;
     cantidad? : number;
+    precio?: number;
     producto: string;
     marca: string;
     subTotal: number;
@@ -23,6 +24,7 @@ export interface SalesContextProps {
     getproductToEdit: (product: Sale) => void;
     setEdit: Dispatch<SetStateAction<boolean>>;
     saveIdMarcaProduct: (id_product: string) => void;
+    setProductToEdit: (value: React.SetStateAction<Sale | null>) => void
     setSales: React.Dispatch<React.SetStateAction<Sale[]>>;
     saveNameProducto: (nameProduct: string) => void;
     totalSale: () => number;
@@ -56,7 +58,6 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     const getproductToEdit = (product: Sale) => {
         setEdit(true)
         setProductToEdit(product);
-        // setEdit(false)
     }
 
     const updateSales = (product: Sale) => {
@@ -70,11 +71,14 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
         for (let i = 0; i < sales.length; i++) {
             if(sales[i].id_producto === product.id_producto){
                 sales[i].cantidad = product.cantidad
+                sales[i].subTotal   = sales[i].precio! * product.cantidad!
             }
         }
         // setSales(sales)
         setSales([...sales]);
         localStorage.setItem("sales", JSON.stringify([...sales]))
+        setIdMarcaProduct('')
+
 
     }
 
@@ -131,6 +135,7 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
                 saveNameProducto, 
                 setSales,
                 saveIdMarcaProduct, 
+                setProductToEdit,
                 totalSale,
                 updateSales
             }}
