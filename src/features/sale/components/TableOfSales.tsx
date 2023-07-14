@@ -10,12 +10,11 @@ import {
   Td,
   TableContainer,
   HStack,
+  IconButton
 } from '@chakra-ui/react'
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { LiaEdit, LiaTrashSolid } from "react-icons/lia";
+import { useQueryClient } from '@tanstack/react-query'
 import { useSales } from "@/context";
-import Http from "@/libs";
-import { SafeAny } from "@/common";
 import { editProductAccordingSale } from '@/utilities';
 import { useRegistredSale } from "../hooks";
 import { Sale } from '../interfaces';
@@ -23,7 +22,7 @@ import { Sale } from '../interfaces';
 const heads = ['PRODUCTO', 'MARCA', 'CANTIDAD', 'SUBTOTAL', 'ACCIONES']
 
 export const TableOfSales = memo(() => {
-  const { totalSale, deleteSale, deleteAllSales, getproductToEdit, setEdit } = useSales();
+  const { totalSale, deleteSale, deleteAllSales, getproductToEdit, setEdit, idMarcaProduct } = useSales();
   const sales = localStorage.getItem("sales")
   const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
@@ -78,10 +77,14 @@ export const TableOfSales = memo(() => {
         }
     }
 
-    // console.log("productAccordingId", productAccordingId)
-
     getproductToEdit(productAccordingId!)
+    // setEdit(false)
+
   }
+
+  useEffect(() => {
+    console.log("idMarcaProduct en la table", idMarcaProduct)
+  }, [idMarcaProduct]);
 
 
   return (
@@ -112,19 +115,26 @@ export const TableOfSales = memo(() => {
                         gap={2}
                         justifyContent={'center'}
                       >
-                        <EditIcon
+                        <IconButton
                           color={'brand.clonika.blue.800'}
                           _hover={{
                             cursor: 'pointer'
-                          }} 
+                          }}
+                          aria-label='edit sale'
+                          icon={<LiaEdit fontSize={25}/>}
                           onClick={()=>editProductAccordingId(id_producto!)}
-                          />
-                        <DeleteIcon
+                          isDisabled={id_producto === idMarcaProduct}
+                        />
+
+                        <IconButton
                           color={'red'} 
                           _hover={{
                             cursor: 'pointer'
-                          }} 
+                          }}
+                          aria-label='delete sale'
+                          icon={<LiaTrashSolid fontSize={25}/>}
                           onClick={()=>deleteProductToCart(id_producto!)}
+                          isDisabled={id_producto === idMarcaProduct}
                         />
                       </HStack>
                     </Td>

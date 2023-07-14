@@ -48,6 +48,7 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     }, [localStorage.getItem('sales')]);
 
     const addSale = (sale: Sale) => {
+        console.log("me ejecuto addSales")
         setSales([...sales, sale])
         localStorage.setItem("sales", JSON.stringify([...sales, sale]))
     }
@@ -55,16 +56,26 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     const getproductToEdit = (product: Sale) => {
         setEdit(true)
         setProductToEdit(product);
+        // setEdit(false)
     }
 
     const updateSales = (product: Sale) => {
+        // console.log("me ejecuto updateSales")
+
+        // const newSales = localStorage.getItem('sales');
+        // const salesParse = JSON.parse(newSales!);
+        // console.log("antes de editar", salesParse)
+        // setEdit(false)
+        // console.log("edit", edit);
         for (let i = 0; i < sales.length; i++) {
             if(sales[i].id_producto === product.id_producto){
                 sales[i].cantidad = product.cantidad
             }
         }
+        // setSales(sales)
+        setSales([...sales]);
+        localStorage.setItem("sales", JSON.stringify([...sales]))
 
-        console.log("después", sales)
     }
 
     const deleteSale = (id_sale: string) => {

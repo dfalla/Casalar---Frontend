@@ -113,19 +113,25 @@ export const FormSale = memo(() => {
 
 
     useEffect(() => {
-        if(sales.length >= 1 && idMarcaProduct.length >= 1 && edit === false){
-            for (let i = 0; i < sales.length; i++) {
-                if(sales[i].id_producto === idMarcaProduct){
-                    messageNotifications({
-                        disabled: true, 
-                        description: MESSAGES_NOTIFICATIONS.saleAddToCart.description, 
-                        title: MESSAGES_NOTIFICATIONS.saleAddToCart.title
-                    })
-
+        if(edit === false){
+            if(sales.length >= 1 && idMarcaProduct.length >= 1){
+                for (let i = 0; i < sales.length; i++) {
+                    if(sales[i].id_producto === idMarcaProduct){
+                        messageNotifications({
+                            disabled: true, 
+                            description: MESSAGES_NOTIFICATIONS.saleAddToCart.description, 
+                            title: MESSAGES_NOTIFICATIONS.saleAddToCart.title
+                        })
+    
+                    }
                 }
             }
         }
-    }, [sales, idMarcaProduct]);
+    }, [sales, idMarcaProduct, edit]);
+
+    useEffect(() => {
+        console.log("edit", edit)
+    }, [edit]);
 
 
   return (
@@ -134,25 +140,23 @@ export const FormSale = memo(() => {
             initialValues={ initialValues }
             validationSchema={ validationSchema }
             onSubmit={async (values, { resetForm  })=> {
+
                 const productToCart = await generateProductToCart({marca: values.marca, producto: values.producto, cantidad: cantidad})
+                saveIdMarcaProduct('')
+                console.log("idMarca en el formulario despues del submit", idMarcaProduct)
 
-                if(edit === false){
+                if(edit){
 
-                    saveIdMarcaProduct('')
+                    updateSales(productToCart)
 
-                    console.log("id de la marca despues de hacer submit", idMarcaProduct)
+                } else {
+
+                    // console.log("id de la marca despues de hacer submit", idMarcaProduct)
 
                     //agregar al estado el productToCart, creo que se hace con el contexto
                     addSale(productToCart);
                 }
 
-                console.log("antes", sales)
-
-                console.log("values cuando edit es true", values)
-
-                updateSales(productToCart)
-                setEdit(false)
-                //resetear el formulario
                 resetForm();
                 
             }}
