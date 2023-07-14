@@ -23,7 +23,7 @@ import { Sale } from '../interfaces';
 const heads = ['PRODUCTO', 'MARCA', 'CANTIDAD', 'SUBTOTAL', 'ACCIONES']
 
 export const TableOfSales = memo(() => {
-  const { totalSale, deleteSale, deleteAllSales, getproductToEdit } = useSales();
+  const { totalSale, deleteSale, deleteAllSales, getproductToEdit, setEdit } = useSales();
   const sales = localStorage.getItem("sales")
   const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
@@ -67,6 +67,7 @@ export const TableOfSales = memo(() => {
   }
 
   const editProductAccordingId = (id_product: string) => {
+    setEdit(true)
     let productAccordingId: Sale | null = null;
 
     if(newSales.length !== 0 || newSales !== null){

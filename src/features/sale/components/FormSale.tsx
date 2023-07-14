@@ -10,6 +10,7 @@ import { Data, Option } from "../interfaces";
 import { MESSAGES_NOTIFICATIONS } from "@/constants";
 import { generateProductToCart } from "@/utilities";
 import { fetchChildOptions } from "@/utilities/fetchChildOptions";
+import { boolean } from "yup";
 
 export interface ProductForToCart {
     id_producto: string;
@@ -19,24 +20,55 @@ export interface ProductForToCart {
     subTotal: number;
 }
 
+interface MessageNotificationsArgs {
+    disabled: boolean;
+    title: string;
+    description: string;
+
+}
+
 
 export const FormSale = memo(() => {
+    const { 
+        addSale, 
+        cantidad, 
+        nameProduct, 
+        idMarcaProduct, 
+        productToEdit, 
+        edit, 
+        sales, 
+        saveIdMarcaProduct,
+        updateSales,
+        setEdit
+    } = useSales()
     const [initialValues, setInitialValues] = useState<Sale>(INITIALVALUES);
-    const [productForToCart, setProductForToCart] = useState<ProductForToCart | null>(null);
     const { data, isError, isLoading } = useGetAllNameOfProducts();
-    const { addSale, cantidad, nameProduct, idMarcaProduct, productToEdit, edit } = useSales()
     const [disabledButtonAdd, setDisabledButtonAdd] = useState(false);
     const [stock, setStock] = useState<number>();
     const toast = useToast();
-    const sales = localStorage.getItem("sales")
-    const newSales = JSON.parse(sales!);
 
+    let newData: Data[] = [];
+
+    if(data != undefined){
+        newData = data.sort((a: Data, b: Data) => a.nombre.localeCompare(b.nombre) )
+    }
+
+    const messageNotifications = ({disabled, title, description }: MessageNotificationsArgs) => {
+        setDisabledButtonAdd(disabled);
+        toast({
+            title: `${title}`,
+            status: 'error',
+            description: `${description}`,
+            duration: 3000,
+            isClosable: true,
+            position: 'top'
+        })
+    }
 
     const getProductAccordingToBrand = async({
         nameProduct, 
         idMarcaProduct
     }: {nameProduct: string, idMarcaProduct: string}) => {
-
         try {
             const { data } = await Http.get(`/${nameProduct}/${idMarcaProduct}`)
             
@@ -48,21 +80,17 @@ export const FormSale = memo(() => {
         
         }
     }
-
+    
     useEffect(() => {
         if(nameProduct && idMarcaProduct){
            getProductAccordingToBrand({nameProduct, idMarcaProduct});
             if(stock!){
                 if(cantidad > stock){
-                    setDisabledButtonAdd(true);
-                    toast({
-                        title: `${MESSAGES_NOTIFICATIONS.saleRegistredError.title}`,
-                        status: 'error',
-                        description: `${MESSAGES_NOTIFICATIONS.saleRegistredError.description}`,
-                        duration: 3000,
-                        isClosable: true,
-                        position: 'top'
-                      })
+                    messageNotifications({
+                        disabled: true, 
+                        description: MESSAGES_NOTIFICATIONS.saleRegistredError.description, 
+                        title: MESSAGES_NOTIFICATIONS.saleRegistredError.title
+                    })
                 } else {
                     setDisabledButtonAdd(false)
                 }
@@ -70,47 +98,35 @@ export const FormSale = memo(() => {
         }
     }, [nameProduct, idMarcaProduct, cantidad]);
 
-    useEffect(() => {
-        if(newSales !== null && newSales.length > 0 && idMarcaProduct && edit === false ){
-            for (let i = 0; i < newSales.length; i++) {
-                if(newSales[i].id_producto === idMarcaProduct){
-                    setDisabledButtonAdd(true);
-                    toast({
-                        title: `${MESSAGES_NOTIFICATIONS.saleAddToCart.title}`,
-                        status: 'error',
-                        description: `${MESSAGES_NOTIFICATIONS.saleAddToCart.description}`,
-                        duration: 3000,
-                        isClosable: true,
-                        position: 'top'
-                    })
-                   
-                } else {
-                    setDisabledButtonAdd(false);
-                }
-            }
-        }
-
-        
-    }, [idMarcaProduct]);
 
     useEffect(() => {
-        if(productToEdit !== null){
-          setInitialValues({
+        if(productToEdit !== null && edit === true){
+            setInitialValues({
                 cantidad: productToEdit.cantidad!,
                 producto: productToEdit.producto,
                 marca: productToEdit.id_producto!
-              })
+            })
         } else {
           setInitialValues(INITIALVALUES)
         }
-    }, [productToEdit]);
- 
-    
-    let newData: Data[] = [];
+    }, [productToEdit, edit]);
 
-    if(data != undefined){
-        newData = data.sort((a: Data, b: Data) => a.nombre.localeCompare(b.nombre) )
-    }
+
+    useEffect(() => {
+        if(sales.length >= 1 && idMarcaProduct.length >= 1 && edit === false){
+            for (let i = 0; i < sales.length; i++) {
+                if(sales[i].id_producto === idMarcaProduct){
+                    messageNotifications({
+                        disabled: true, 
+                        description: MESSAGES_NOTIFICATIONS.saleAddToCart.description, 
+                        title: MESSAGES_NOTIFICATIONS.saleAddToCart.title
+                    })
+
+                }
+            }
+        }
+    }, [sales, idMarcaProduct]);
+
 
   return (
     <Box>
@@ -118,14 +134,24 @@ export const FormSale = memo(() => {
             initialValues={ initialValues }
             validationSchema={ validationSchema }
             onSubmit={async (values, { resetForm  })=> {
-                
                 const productToCart = await generateProductToCart({marca: values.marca, producto: values.producto, cantidad: cantidad})
-                setProductForToCart(productToCart);
 
+                if(edit === false){
 
-                //agregar al estado el productToCart, creo que se hace con el contexto
-                addSale(productToCart);
-                
+                    saveIdMarcaProduct('')
+
+                    console.log("id de la marca despues de hacer submit", idMarcaProduct)
+
+                    //agregar al estado el productToCart, creo que se hace con el contexto
+                    addSale(productToCart);
+                }
+
+                console.log("antes", sales)
+
+                console.log("values cuando edit es true", values)
+
+                updateSales(productToCart)
+                setEdit(false)
                 //resetear el formulario
                 resetForm();
                 
@@ -171,7 +197,7 @@ export const FormSale = memo(() => {
                                     // isDisabled={true}
                                 >
                                     { 
-                                        productToEdit ? 'Editar' : 'Añadir'
+                                        edit ? 'Editar' : 'Añadir'
                                     }
                                 </Button>    
                             </Box> 
@@ -180,7 +206,6 @@ export const FormSale = memo(() => {
                 )
             }
         </Formik>
-        
     </Box>
   )
 })
