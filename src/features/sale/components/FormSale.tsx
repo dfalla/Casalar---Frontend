@@ -10,6 +10,7 @@ import { Data } from "../interfaces";
 import { MESSAGES_NOTIFICATIONS } from "@/constants";
 import { generateProductToCart } from "@/utilities";
 import { fetchChildOptions } from "@/utilities/fetchChildOptions";
+import { FiEdit2 } from "react-icons/fi";
 
 export interface ProductForToCart {
     id_producto: string;
@@ -41,7 +42,7 @@ export const FormSale = memo(() => {
         setEdit
     } = useSales()
     const [initialValues, setInitialValues] = useState<Sale>(INITIALVALUES);
-    const [repetProductInTheCart, setRepetProductInTheCart] = useState<boolean>(false);
+    // const [repetProductInTheCart, setRepetProductInTheCart] = useState<boolean>(false);
     const { data, isError, isLoading } = useGetAllNameOfProducts();
     const [disabledButtonAdd, setDisabledButtonAdd] = useState(false);
     const [stock, setStock] = useState<number>();
@@ -113,11 +114,9 @@ export const FormSale = memo(() => {
 
 
     useEffect(() => {
-        // console.log("edit", edit)
-        console.log("idMarca", idMarcaProduct);
-        console.log("repetProductInTheCart", repetProductInTheCart)
-
-    }, [edit, repetProductInTheCart]); 
+        console.log("edit", edit)
+        console.log("idMarca actualizado", idMarcaProduct);
+    }, [edit, idMarcaProduct]); 
 
 
     useEffect(() => {
@@ -125,7 +124,6 @@ export const FormSale = memo(() => {
             if(sales.length >= 1 && idMarcaProduct.length >= 1){
                 for (let i = 0; i < sales.length; i++) {
                     if(sales[i].id_producto === idMarcaProduct){
-                        setRepetProductInTheCart(true)
                         messageNotifications({
                             disabled: true, 
                             description: MESSAGES_NOTIFICATIONS.saleAddToCart.description, 
@@ -152,17 +150,16 @@ export const FormSale = memo(() => {
             initialValues={ initialValues }
             validationSchema={ validationSchema }
             onSubmit={async (values, { resetForm  })=> {
-
+                
                 const productToCart = await generateProductToCart({marca: values.marca, producto: values.producto, cantidad: cantidad})
                 
-                saveIdMarcaProduct('')
 
                 if(edit === true && productToEdit !== null){
                     updateSales(productToCart)
-                    setRepetProductInTheCart(false)
                 } 
 
                 if(!edit && productToEdit === null){
+                    saveIdMarcaProduct('')
                     addSale(productToCart);
                 }
                 

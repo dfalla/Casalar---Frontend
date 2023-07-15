@@ -1,5 +1,5 @@
-import { SafeAny } from '@/common';
 import React, { createContext, useContext, useEffect, useState, memo, Dispatch, SetStateAction } from 'react';
+import { SafeAny } from '@/common';
 
 export interface Sale {
     id_producto?:string;
@@ -52,7 +52,6 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     }, [localStorage.getItem('sales')]);
 
     const addSale = (sale: Sale) => {
-        console.log("me ejecuto addSales")
         setSales([...sales, sale])
         localStorage.setItem("sales", JSON.stringify([...sales, sale]))
     }
@@ -62,6 +61,14 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     }
 
     const updateSales = (product: Sale) => {
+        console.log("idMarca antes del update 😎", idMarcaProduct)
+        console.log("me ejecuto updateSales 😁")
+        // setIdMarcaProduct('')
+
+        console.log("idMarca después del update 🙄", idMarcaProduct)
+
+
+
         for (let i = 0; i < sales.length; i++) {
             if(sales[i].id_producto === product.id_producto){
                 sales[i].cantidad = product.cantidad
@@ -71,7 +78,6 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
         
         setSales([...sales]);
         localStorage.setItem("sales", JSON.stringify([...sales]))
-        setIdMarcaProduct('')
         setProductToEdit(null)
         setEdit(false)
     }
