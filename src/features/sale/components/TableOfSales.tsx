@@ -22,7 +22,7 @@ import { Sale } from '../interfaces';
 const heads = ['PRODUCTO', 'MARCA', 'CANTIDAD', 'SUBTOTAL', 'ACCIONES']
 
 export const TableOfSales = memo(() => {
-  const { totalSale, deleteSale, deleteAllSales, getproductToEdit, setEdit, idMarcaProduct } = useSales();
+  const { totalSale, deleteSale, deleteAllSales, getproductToEdit, setEdit, idMarcaProduct, edit } = useSales();
   const sales = localStorage.getItem("sales")
   const newSales = JSON.parse(sales!);
   const totalAPagar = totalSale();
@@ -78,14 +78,7 @@ export const TableOfSales = memo(() => {
     }
 
     getproductToEdit(productAccordingId!)
-    // setEdit(false)
-
   }
-
-  useEffect(() => {
-    console.log("idMarcaProduct en la table", idMarcaProduct)
-  }, [idMarcaProduct]);
-
 
   return (
     <Box>
@@ -123,7 +116,7 @@ export const TableOfSales = memo(() => {
                           aria-label='edit sale'
                           icon={<LiaEdit fontSize={25}/>}
                           onClick={()=>editProductAccordingId(id_producto!)}
-                          isDisabled={id_producto === idMarcaProduct}
+                          isDisabled={(id_producto === idMarcaProduct) && edit}
                         />
 
                         <IconButton
@@ -134,7 +127,7 @@ export const TableOfSales = memo(() => {
                           aria-label='delete sale'
                           icon={<LiaTrashSolid fontSize={25}/>}
                           onClick={()=>deleteProductToCart(id_producto!)}
-                          isDisabled={id_producto === idMarcaProduct}
+                          isDisabled={(id_producto === idMarcaProduct) && edit}
                         />
                       </HStack>
                     </Td>

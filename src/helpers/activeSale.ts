@@ -18,7 +18,7 @@ export const activeSale = () => {
         const currentHour = getCurrentTime(currentTime);
 
         // Deshabilitar el botón si la hora es antes de las 7:00 a.m. o después de las 07:00 p.m.
-        return currentHour < '07:00:00' || currentHour >= '23:00:00'; 
+        return currentHour < '07:00:00' || currentHour >= '19:00:00'; 
     };
 
 

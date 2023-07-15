@@ -41,9 +41,11 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     const [nameProduct, setNameProduct] = useState<string>('');
     const [idMarcaProduct, setIdMarcaProduct] = useState<string>('');
 
+    const actualSales = localStorage.getItem('sales');
+    const salesParse = JSON.parse(actualSales!);
+
     useEffect(() => {
-        const sales = localStorage.getItem('sales');
-        const salesParse = JSON.parse(sales!);
+        
         if(salesParse === null){
             setSales([]);
         }
@@ -56,39 +58,29 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     }
 
     const getproductToEdit = (product: Sale) => {
-        setEdit(true)
         setProductToEdit(product);
     }
 
     const updateSales = (product: Sale) => {
-        // console.log("me ejecuto updateSales")
-
-        // const newSales = localStorage.getItem('sales');
-        // const salesParse = JSON.parse(newSales!);
-        // console.log("antes de editar", salesParse)
-        // setEdit(false)
-        // console.log("edit", edit);
         for (let i = 0; i < sales.length; i++) {
             if(sales[i].id_producto === product.id_producto){
                 sales[i].cantidad = product.cantidad
                 sales[i].subTotal   = sales[i].precio! * product.cantidad!
             }
         }
-        // setSales(sales)
+        
         setSales([...sales]);
         localStorage.setItem("sales", JSON.stringify([...sales]))
         setIdMarcaProduct('')
-
-
+        setProductToEdit(null)
+        setEdit(false)
     }
 
     const deleteSale = (id_sale: string) => {
-        console.log("id_sale", id_sale)
-        const sales = localStorage.getItem('sales');
-        const salesParse = JSON.parse(sales!);
-        const newSales = salesParse.filter((sale: Sale) => sale.id_producto !== id_sale);
-        setSales([...newSales]);
-        localStorage.setItem("sales", JSON.stringify([...newSales]))
+
+        const newActualSales = salesParse.filter((sale: Sale) => sale.id_producto !== id_sale);
+        setSales([...newActualSales]);
+        localStorage.setItem("sales", JSON.stringify([...newActualSales]))
         
     }
 

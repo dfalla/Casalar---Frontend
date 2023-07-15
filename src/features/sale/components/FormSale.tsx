@@ -6,11 +6,10 @@ import { useGetAllNameOfProducts } from "../hooks";
 import { INITIALVALUES, Sale, validationSchema } from "../domain";
 import Http from "@/libs";
 import { useSales } from "../../../context/SalesContext";
-import { Data, Option } from "../interfaces";
+import { Data } from "../interfaces";
 import { MESSAGES_NOTIFICATIONS } from "@/constants";
 import { generateProductToCart } from "@/utilities";
 import { fetchChildOptions } from "@/utilities/fetchChildOptions";
-import { boolean } from "yup";
 
 export interface ProductForToCart {
     id_producto: string;
@@ -27,7 +26,6 @@ interface MessageNotificationsArgs {
 
 }
 
-
 export const FormSale = memo(() => {
     const { 
         addSale, 
@@ -40,10 +38,10 @@ export const FormSale = memo(() => {
         saveIdMarcaProduct,
         updateSales,
         setProductToEdit,
-        saveNameProducto,
         setEdit
     } = useSales()
     const [initialValues, setInitialValues] = useState<Sale>(INITIALVALUES);
+    const [repetProductInTheCart, setRepetProductInTheCart] = useState<boolean>(false);
     const { data, isError, isLoading } = useGetAllNameOfProducts();
     const [disabledButtonAdd, setDisabledButtonAdd] = useState(false);
     const [stock, setStock] = useState<number>();
@@ -115,10 +113,19 @@ export const FormSale = memo(() => {
 
 
     useEffect(() => {
+        // console.log("edit", edit)
+        console.log("idMarca", idMarcaProduct);
+        console.log("repetProductInTheCart", repetProductInTheCart)
+
+    }, [edit, repetProductInTheCart]); 
+
+
+    useEffect(() => {
         if(edit === false){
             if(sales.length >= 1 && idMarcaProduct.length >= 1){
                 for (let i = 0; i < sales.length; i++) {
                     if(sales[i].id_producto === idMarcaProduct){
+                        setRepetProductInTheCart(true)
                         messageNotifications({
                             disabled: true, 
                             description: MESSAGES_NOTIFICATIONS.saleAddToCart.description, 
@@ -139,11 +146,6 @@ export const FormSale = memo(() => {
         };
     }, []);
 
-    useEffect(() => {
-        console.log("sales", sales)
-    }, [sales]);
-
-
   return (
     <Box>
         <Formik
@@ -152,26 +154,21 @@ export const FormSale = memo(() => {
             onSubmit={async (values, { resetForm  })=> {
 
                 const productToCart = await generateProductToCart({marca: values.marca, producto: values.producto, cantidad: cantidad})
+                
                 saveIdMarcaProduct('')
 
-                if(edit && productToEdit !== null){
-
+                if(edit === true && productToEdit !== null){
                     updateSales(productToCart)
-                    setProductToEdit(null)
-                    // setInitialValues(INITIALVALUES)
+                    setRepetProductInTheCart(false)
+                } 
 
-                } else {
-                    //agregar al estado el productToCart, creo que se hace con el contexto
+                if(!edit && productToEdit === null){
                     addSale(productToCart);
-
-
-                    resetForm();
                 }
-
-                // console.log("id de la marca despues de hacer submit", idMarcaProduct)
-
                 
-                
+                resetForm();
+
+
             }}
             enableReinitialize={true}
         >
@@ -188,6 +185,7 @@ export const FormSale = memo(() => {
                                 label="Producto"
                                 parentValue="productos"
                                 fetchOptions={fetchChildOptions}
+                                isDisabled = { edit && productToEdit !== null }
                             />
 
                             <SelectFieldAsynchronous
@@ -195,14 +193,14 @@ export const FormSale = memo(() => {
                                 label="Marca"
                                 parentValue={values.producto}
                                 fetchOptions={fetchChildOptions}
-                                isDisabled={values.producto ? false : true}
+                                isDisabled={(values.producto ? false : true) || (edit && productToEdit !== null)}
                             />
 
                             <InputField
                                 name='cantidad'
                                 label='Cantidad'
                                 type='number'
-                                isDisabled={values.marca ? false : true}
+                                isDisabled={(values.marca ? false : true) || disabledButtonAdd}
                             />
 
                             <Box>
@@ -211,7 +209,6 @@ export const FormSale = memo(() => {
                                     marginTop={10} 
                                     type='submit'
                                     isDisabled={disabledButtonAdd}
-                                    // isDisabled={true}
                                 >
                                     { 
                                         (edit && productToEdit !== null) ? 'Editar' : 'Añadir'

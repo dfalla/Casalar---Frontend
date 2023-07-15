@@ -8,8 +8,6 @@ export interface GenerateProductToCartArgs {
 export const generateProductToCart = async ({marca, producto, cantidad}:GenerateProductToCartArgs) => {
     const { data: productToAddToCart } = await Http.get(`/${producto}/${marca}`);
 
-    console.log("productToAddToCart", productToAddToCart)
-
     return {
         id_producto   : productToAddToCart.producto.id_producto,
         cantidad      : cantidad,
