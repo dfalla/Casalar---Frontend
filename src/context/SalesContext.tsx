@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, memo, Dispatch, SetStateAction } from 'react';
+import { createContext, useContext, useEffect, useState, memo, Dispatch, SetStateAction } from 'react';
 import { SafeAny } from '@/common';
 
 export interface Sale {
@@ -16,6 +16,7 @@ export interface SalesContextProps {
     edit: boolean;
     nameProduct: string;
     idMarcaProduct: string;
+    productRepeatInTheSaleCart: boolean;
     productToEdit: Sale | null;
     addSale: (sale: Sale) => void;
     calculateCantidad: (cantidad: number) => void;
@@ -23,12 +24,13 @@ export interface SalesContextProps {
     deleteAllSales: () => void;
     getproductToEdit: (product: Sale) => void;
     setEdit: Dispatch<SetStateAction<boolean>>;
-    saveIdMarcaProduct: (id_product: string) => void;
-    setProductToEdit: (value: React.SetStateAction<Sale | null>) => void
-    setSales: React.Dispatch<React.SetStateAction<Sale[]>>;
-    saveNameProducto: (nameProduct: string) => void;
+    setIdMarcaProduct: Dispatch<SetStateAction<string>>;
+    setNameProduct: Dispatch<SetStateAction<string>>;
+    setProductRepeatInTheSaleCart: Dispatch<SetStateAction<boolean>>;
+    setProductToEdit: (value: React.SetStateAction<Sale | null>) => void;
+    setSales: Dispatch<SetStateAction<Sale[]>>;
     totalSale: () => number;
-    updateSales: (product: Sale) => void
+    updateSales: (product: Sale) => void;
 }
 
 const SalesContext = createContext<SalesContextProps | undefined>(undefined);
@@ -40,7 +42,7 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     const [cantidad, setCantidad] = useState<number>(0);
     const [nameProduct, setNameProduct] = useState<string>('');
     const [idMarcaProduct, setIdMarcaProduct] = useState<string>('');
-
+    const [productRepeatInTheSaleCart, setProductRepeatInTheSaleCart] = useState<boolean>(false);
     const actualSales = localStorage.getItem('sales');
     const salesParse = JSON.parse(actualSales!);
 
@@ -61,13 +63,6 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
     }
 
     const updateSales = (product: Sale) => {
-        console.log("idMarca antes del update 😎", idMarcaProduct)
-        console.log("me ejecuto updateSales 😁")
-        // setIdMarcaProduct('')
-
-        console.log("idMarca después del update 🙄", idMarcaProduct)
-
-
 
         for (let i = 0; i < sales.length; i++) {
             if(sales[i].id_producto === product.id_producto){
@@ -94,22 +89,12 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
         setSales([])
     }
 
-
     const totalSale = () => {
         if(sales.length > 0){
             return sales.reduce((acumulator, element) => acumulator + element.subTotal, 0);
         }
         return 0;
     }
-
-    const saveNameProducto = (nameProduct: string) => {
-        setNameProduct(nameProduct)
-    }
-
-    const saveIdMarcaProduct = (idMarcaProduct: string) => {
-        setIdMarcaProduct(idMarcaProduct)
-    }
-
 
     const calculateCantidad = (cantidad: number) => {
         setCantidad(cantidad)
@@ -122,6 +107,7 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
                 edit,
                 nameProduct,
                 idMarcaProduct,
+                productRepeatInTheSaleCart,
                 productToEdit,
                 sales, 
                 addSale, 
@@ -130,9 +116,10 @@ export const SalesProvider: React.FC<SafeAny> = memo(( {children} ) => {
                 deleteAllSales,
                 getproductToEdit,
                 setEdit,
-                saveNameProducto, 
+                setIdMarcaProduct,
+                setNameProduct,
                 setSales,
-                saveIdMarcaProduct, 
+                setProductRepeatInTheSaleCart,
                 setProductToEdit,
                 totalSale,
                 updateSales

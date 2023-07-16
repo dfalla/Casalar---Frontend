@@ -31,18 +31,17 @@ export const SelectFieldAsynchronous: FC<SelectFieldAsynchronousProps> = ({
 }) => {
     const [options, setOptions] = useState<Option[]>([]);
     const [field, meta, helpers] = useField(name);
-    const { saveNameProducto, saveIdMarcaProduct } = useSales();
+    const { setNameProduct, setIdMarcaProduct } = useSales();
 
     useEffect(() => {
       if(field.name === 'producto'){
-        // console.log("producto", field)
-        saveNameProducto(field.value)
+        setNameProduct(field.value)
       }
   
       if(field.name === 'marca'){
-        saveIdMarcaProduct(field.value);
+        setIdMarcaProduct(field.value);
       }
-    }, [field]);
+    }, [field.name, field.value]);
 
     useEffect(() => {
         const obtenerOpciones = async () => {

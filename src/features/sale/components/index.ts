@@ -1,2 +1,2 @@
 export * from './FormSale';
-export * from './TableOfSales';
+export * from './SalesInTheCart';

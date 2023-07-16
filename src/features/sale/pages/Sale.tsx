@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Text, VStack } from "@chakra-ui/react"
-import { FormSale, TableOfSales } from "../components"
+import { FormSale, SalesInTheCart } from "../components"
 
 export const Sale = () => {
   return (
@@ -14,7 +14,7 @@ export const Sale = () => {
         gap={20}
       >
         <FormSale/>
-        <TableOfSales/>
+        <SalesInTheCart/>
       </VStack>
     </Box>
   )

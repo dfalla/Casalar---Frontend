@@ -10,7 +10,6 @@ import { Data } from "../interfaces";
 import { MESSAGES_NOTIFICATIONS } from "@/constants";
 import { generateProductToCart } from "@/utilities";
 import { fetchChildOptions } from "@/utilities/fetchChildOptions";
-import { FiEdit2 } from "react-icons/fi";
 
 export interface ProductForToCart {
     id_producto: string;
@@ -36,13 +35,14 @@ export const FormSale = memo(() => {
         productToEdit, 
         edit, 
         sales, 
-        saveIdMarcaProduct,
+        setIdMarcaProduct,
         updateSales,
         setProductToEdit,
+        setProductRepeatInTheSaleCart,
+        productRepeatInTheSaleCart,
         setEdit
     } = useSales()
     const [initialValues, setInitialValues] = useState<Sale>(INITIALVALUES);
-    // const [repetProductInTheCart, setRepetProductInTheCart] = useState<boolean>(false);
     const { data, isError, isLoading } = useGetAllNameOfProducts();
     const [disabledButtonAdd, setDisabledButtonAdd] = useState(false);
     const [stock, setStock] = useState<number>();
@@ -112,29 +112,34 @@ export const FormSale = memo(() => {
         }
     }, [productToEdit, edit]);
 
-
     useEffect(() => {
-        console.log("edit", edit)
-        console.log("idMarca actualizado", idMarcaProduct);
-    }, [edit, idMarcaProduct]); 
-
+        if(edit) {
+            setProductRepeatInTheSaleCart(false)
+        } 
+    }, [edit]);
 
     useEffect(() => {
         if(edit === false){
             if(sales.length >= 1 && idMarcaProduct.length >= 1){
                 for (let i = 0; i < sales.length; i++) {
                     if(sales[i].id_producto === idMarcaProduct){
+                        setProductRepeatInTheSaleCart(true)
                         messageNotifications({
                             disabled: true, 
                             description: MESSAGES_NOTIFICATIONS.saleAddToCart.description, 
                             title: MESSAGES_NOTIFICATIONS.saleAddToCart.title
                         })
-    
+                    } else {
+                        setProductRepeatInTheSaleCart(false)
                     }
                 }
             }
         }
-    }, [sales, idMarcaProduct, edit]);
+    }, [sales, idMarcaProduct, edit, setProductRepeatInTheSaleCart]);
+    
+    useEffect(() => {
+        console.log("productRepeatInTheSaleCart", productRepeatInTheSaleCart)    
+    }, [productRepeatInTheSaleCart]);
 
 
     useEffect(() => {
@@ -150,21 +155,20 @@ export const FormSale = memo(() => {
             initialValues={ initialValues }
             validationSchema={ validationSchema }
             onSubmit={async (values, { resetForm  })=> {
-                
-                const productToCart = await generateProductToCart({marca: values.marca, producto: values.producto, cantidad: cantidad})
-                
 
+                const productToCart = await generateProductToCart({marca: values.marca, producto: values.producto, cantidad: cantidad})
+            
                 if(edit === true && productToEdit !== null){
                     updateSales(productToCart)
                 } 
 
                 if(!edit && productToEdit === null){
-                    saveIdMarcaProduct('')
                     addSale(productToCart);
                 }
+
+                setIdMarcaProduct('')
                 
                 resetForm();
-
 
             }}
             enableReinitialize={true}
@@ -197,7 +201,7 @@ export const FormSale = memo(() => {
                                 name='cantidad'
                                 label='Cantidad'
                                 type='number'
-                                isDisabled={(values.marca ? false : true) || disabledButtonAdd}
+                                isDisabled={(values.marca ? false : true) || productRepeatInTheSaleCart}
                             />
 
                             <Box>
