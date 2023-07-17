@@ -25,10 +25,12 @@ export const SeeAllSales = memo(() => {
   const {data, isError, isLoading} = useGetAllSales();
 
   const fechaInicio = moment('01/01/2023', 'DD/MM/YYYY').toDate();
-  
+
   const fechaFin = moment('31/12/2023', 'DD/MM/YYYY').toDate();
 
   let arrayOfSaleTodays: SaleToday[][] = []
+
+  
   
 
   if(data !== undefined){
@@ -55,7 +57,7 @@ export const SeeAllSales = memo(() => {
 
       {
         arrayOfSaleTodays.length > 0 && arrayOfSaleTodays.map((sale: SaleToday[], index) => (
-          <Box mt={10} color={'black'} bg={'green'} key={index}>
+          <Box mt={10} color={'black'} key={index}>
             <TableComponent 
               array={sale} 
               heads={HEADS}  
