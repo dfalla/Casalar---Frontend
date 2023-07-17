@@ -10,7 +10,7 @@ import { useRegistredSale } from "../hooks";
 import { Sale } from '../interfaces';
 import { TableComponent } from "@/common";
 
-const heads = ['PRODUCTO', 'MARCA', 'CANTIDAD', 'SUBTOTAL', 'ACCIONES']
+const HEADS = ['PRODUCTO', 'MARCA', 'CANTIDAD', 'SUBTOTAL', 'ACCIONES']
 
 export const SalesInTheCart = memo(() => {
   const { deleteSale, deleteAllSales, getproductToEdit, setEdit, setIdMarcaProduct} = useSales();
@@ -78,7 +78,7 @@ export const SalesInTheCart = memo(() => {
   return (
     <Box>
       <TableComponent
-        heads={heads}
+        heads={HEADS}
         deleteProductToCart={deleteProductToCart}
         editProductAccordingId={editProductAccordingId} 
         exportTableExcel={false}
@@ -88,8 +88,8 @@ export const SalesInTheCart = memo(() => {
 
       <Button
         onClick={() => registredSale(newSales)}
-        backgroundColor={'red'}
         mt={10}
+        colorScheme = { (newSales === null || newSales.length === 0) ? 'gray' : 'whatsapp' }
         isDisabled={ (newSales === null || newSales.length === 0) ? true : false }
       >
         Registrar venta

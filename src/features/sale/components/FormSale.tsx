@@ -46,6 +46,8 @@ export const FormSale = memo(() => {
     const { data, isError, isLoading } = useGetAllNameOfProducts();
     const [disabledButtonAdd, setDisabledButtonAdd] = useState(false);
     const [stock, setStock] = useState<number>();
+    const repeatProduct = sales.some((sale) => sale.id_producto === idMarcaProduct);
+
     const toast = useToast();
 
     let newData: Data[] = [];
@@ -99,7 +101,6 @@ export const FormSale = memo(() => {
         }
     }, [nameProduct, idMarcaProduct, cantidad]);
 
-
     useEffect(() => {
         if(productToEdit !== null && edit === true){
             setInitialValues({
@@ -120,32 +121,38 @@ export const FormSale = memo(() => {
 
     useEffect(() => {
         if(edit === false){
-            if(sales.length >= 1 && idMarcaProduct.length >= 1){
+            if(sales.length >= 1 && idMarcaProduct.length >= 1 ){
+                if(repeatProduct){
+                    setProductRepeatInTheSaleCart(true)
+
+                } else {
+                    setProductRepeatInTheSaleCart(false)
+                }
+            }
+        }
+    }, [edit, idMarcaProduct, sales]);
+
+    useEffect(() => {
+        if(edit === false){
+            if(sales.length >= 1 && idMarcaProduct.length >= 1 ){
                 for (let i = 0; i < sales.length; i++) {
                     if(sales[i].id_producto === idMarcaProduct){
-                        setProductRepeatInTheSaleCart(true)
                         messageNotifications({
                             disabled: true, 
                             description: MESSAGES_NOTIFICATIONS.saleAddToCart.description, 
                             title: MESSAGES_NOTIFICATIONS.saleAddToCart.title
                         })
-                    } else {
-                        setProductRepeatInTheSaleCart(false)
-                    }
+                    } 
                 }
             }
         }
-    }, [sales, idMarcaProduct, edit, setProductRepeatInTheSaleCart]);
+    }, [sales, idMarcaProduct, edit]);
     
-    useEffect(() => {
-        console.log("productRepeatInTheSaleCart", productRepeatInTheSaleCart)    
-    }, [productRepeatInTheSaleCart]);
-
-
     useEffect(() => {
         return () => {
             setProductToEdit(null)
             setEdit(false)
+            setProductRepeatInTheSaleCart(false)
         };
     }, []);
 
@@ -206,7 +213,7 @@ export const FormSale = memo(() => {
 
                             <Box>
                                 <Button 
-                                    bg='brand.clonika.blue.800'
+                                    bg={(edit && productToEdit !== null) ? 'teal' : 'brand.clonika.blue.800'}
                                     marginTop={10} 
                                     type='submit'
                                     isDisabled={disabledButtonAdd}
