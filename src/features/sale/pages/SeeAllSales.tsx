@@ -49,6 +49,7 @@ export const SeeAllSales = memo(() => {
     });
 
     arrayOfSaleTodays = Object.values(ventasPorDia);
+    
   
   }
 
@@ -57,14 +58,16 @@ export const SeeAllSales = memo(() => {
 
       {
         arrayOfSaleTodays.length > 0 && arrayOfSaleTodays.map((sale: SaleToday[], index) => (
-          <Box mt={10} color={'black'} key={index}>
-            <TableComponent 
-              array={sale} 
-              heads={HEADS}  
-              exportTableExcel={true} 
-              variant='unstyled'
-            />
-          </Box>
+            <Box mt={10} color={'black'} key={index}>
+              <TableComponent 
+                array={sale} 
+                heads={HEADS}  
+                exportTableExcel={true} 
+                variant='simple'
+                // colorScheme='facebook'
+              />
+            </Box>
+         
         ))
       }
     </Box>

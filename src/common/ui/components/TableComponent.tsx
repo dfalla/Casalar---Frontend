@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { Sale } from '@/features/sale/interfaces';
 import { Box, Button, HStack, IconButton, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { LiaEdit, LiaTrashSolid } from "react-icons/lia";
@@ -7,18 +7,22 @@ import { useDownloadExcel  } from 'react-export-table-to-excel';
 import { useSales } from '@/context';
 
 interface TableComponentsProps {
-    variant: string;
-    heads: string[];
-    exportTableExcel: boolean;
     array: Sale[];
+    colorScheme?: string;
+    exportTableExcel: boolean;
+    fecha?: string;
+    heads: string[];
+    variant: string;
     editProductAccordingId?: (id_product: string) => void;
+    exportToExcel?: (fecha: string) => () => boolean;
     deleteProductToCart?: (id_product: string) => void;
 }
 
 export const TableComponent: FC<TableComponentsProps> = ({ 
-    heads, 
-    exportTableExcel, 
     array, 
+    colorScheme,
+    exportTableExcel, 
+    heads, 
     variant, 
     deleteProductToCart, 
     editProductAccordingId 
@@ -27,39 +31,40 @@ export const TableComponent: FC<TableComponentsProps> = ({
   
     const {totalSale, idMarcaProduct, edit} = useSales();
 
+    const tableRef = useRef(null);
+
     const totalAPagar = totalSale();
 
     let pagoTotal : number = 0;
     let fileNames : string[] ;
+    let excelExport: () => boolean;
 
-    const fechas = ['17/07/2023', '17/07/2023', '17/07/2023', '18/07/2023', '18/07/2023', '19/07/2023']
-    const mapa = new Set(fechas)
+   
+    const { onDownload } = useDownloadExcel({
+        currentTableRef: tableRef.current,
+        filename: `Inventario ${'fecha'}`,
+        sheet: 'VENTA',
+    })
 
-    console.log("fileName", Array.from(mapa))
+       
 
     if(array !== null){
         pagoTotal = array.reduce((acumulator, element) => acumulator + element.subTotal, 0);
-        // fileNames = array.map(sale => sale.fecha);
-        // const mapa = new Set(fileNames)
-        // console.log("fileName", mapa)
-
     }
 
+    // if(array !== null && exportTableExcel){
+    //     array.forEach((element)=>{
+    //         excelExport = exportToExcel(element.fecha);
+    //     }) 
+    // }
 
-    const tableRef = useRef(null);
-
-    const { onDownload } = useDownloadExcel({
-        currentTableRef: tableRef.current,
-        filename: `Inventario ${'fileNames'}`,
-        sheet: 'VENTA',
-    })
-  
-  
- 
   return (
-    <HStack>
+    
+    <HStack
+        gap={5}
+    >
         <TableContainer>
-            <Table variant={variant} ref={tableRef}>
+            <Table variant={variant} ref={tableRef} colorScheme={colorScheme}>
                 <Thead>
                     <Tr >
                     {
@@ -71,7 +76,7 @@ export const TableComponent: FC<TableComponentsProps> = ({
                 </Thead>
                 <Tbody>
                     {
-                        array?.map(({ cantidad, marca, producto, subTotal, id_producto, hora, id_venta }: Sale) => (
+                        array?.map(({ cantidad, marca, producto, subTotal, id_producto, id_venta }: Sale) => (
                             
                         <Tr
                             key={`${id_producto}-${id_venta}`}
