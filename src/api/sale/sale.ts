@@ -1,4 +1,5 @@
 import { SafeAny } from "@/common";
+import { SALES } from "@/constants";
 import Http from "@/libs";
 
 
@@ -15,7 +16,7 @@ export interface SegistredSale{
     venta: Sale[];
 }
 
-const URL = 'ventas';
+const URL = SALES.sales;
 
 export const createRegistredSale = async( saleToRegistred :SegistredSale ) => {
 
@@ -35,6 +36,17 @@ export const createRegistredSale = async( saleToRegistred :SegistredSale ) => {
 
     try {
         await Http.post(`/${URL}`, formData)
+    } catch (error) {
+        console.log('error', error)
+    }
+}
+
+export const getAllSales = async() => {
+    try {
+
+        const { data } = await Http.get(`/${URL}`)
+        return data.ventas!;
+
     } catch (error) {
         console.log('error', error)
     }

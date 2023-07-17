@@ -17,4 +17,5 @@ export interface Sale{
     producto     : string;
     fecha        : string;
     hora         : string;
+    id_venta?    : number;
   }

@@ -13,6 +13,10 @@ export const AUTH = {
     register    : '/auth/register'  
 }
 
+export const SALES = {
+    sales: 'ventas'
+}
+
 export const NAME_PRODUCTS = {
     name_products : 'productos'
 }

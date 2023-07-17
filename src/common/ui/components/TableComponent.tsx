@@ -9,8 +9,8 @@ interface TableComponentsProps {
     heads: string[];
     exportTableExcel: boolean;
     array: Sale[];
-    editProductAccordingId: (id_product: string) => void;
-    deleteProductToCart: (id_product: string) => void;
+    editProductAccordingId?: (id_product: string) => void;
+    deleteProductToCart?: (id_product: string) => void;
 }
 
 export const TableComponent: FC<TableComponentsProps> = ({ 
@@ -24,9 +24,17 @@ export const TableComponent: FC<TableComponentsProps> = ({
 }) => {
   
   const {totalSale, idMarcaProduct, edit} = useSales();
-  
+
   const totalAPagar = totalSale();
 
+  let pagoTotal : number = 0;
+
+  if(array !== null){
+    pagoTotal = array.reduce((acumulator, element) => acumulator + element.subTotal, 0);
+  }
+  
+  
+ 
   return (
     <TableContainer>
         <Table variant={variant}>
@@ -34,16 +42,18 @@ export const TableComponent: FC<TableComponentsProps> = ({
             <Tr >
             {
                 heads.map((head, index)=>(
-                <Th key={index} fontSize={18}>{head}</Th>
+                <Th key={index} fontSize={18} textAlign={'center'}>{head}</Th>
                 ))
             }
             </Tr>
         </Thead>
         <Tbody>
             {
-                array?.map(({ cantidad, marca, producto, subTotal, id_producto }: Sale) => (
+                array?.map(({ cantidad, marca, producto, subTotal, id_producto, hora, id_venta }: Sale) => (
+                    
                 <Tr
-                    key={id_producto}
+                    key={`${id_producto}-${id_venta}`}
+
                 >
                     <Td textAlign={'center'}>{producto}</Td>
                     <Td textAlign={'center'}>{marca}</Td>
@@ -64,7 +74,7 @@ export const TableComponent: FC<TableComponentsProps> = ({
                                         }}
                                         aria-label='edit sale'
                                         icon={<LiaEdit fontSize={25}/>}
-                                        onClick={()=>editProductAccordingId(id_producto!)}
+                                        onClick={()=>editProductAccordingId!(id_producto!)}
                                         isDisabled={(id_producto === idMarcaProduct) && edit}
                                     />
 
@@ -75,7 +85,7 @@ export const TableComponent: FC<TableComponentsProps> = ({
                                         }}
                                         aria-label='delete sale'
                                         icon={<LiaTrashSolid fontSize={25}/>}
-                                        onClick={()=>deleteProductToCart(id_producto!)}
+                                        onClick={()=>deleteProductToCart!(id_producto!)}
                                         isDisabled={(id_producto === idMarcaProduct) && edit}
                                     />
                                 </HStack>
@@ -90,8 +100,8 @@ export const TableComponent: FC<TableComponentsProps> = ({
             {
                 array?.length > 0 && (
                 <Tr background={'brand.clonika.blue.800'} color={'white'}>
-                <Td colSpan={3} textAlign={'center'} fontWeight={'bold'} >Total a pagar: </Td>
-                <Td fontWeight={'bold'} textAlign={'center'}>{`S/.${totalAPagar}`}</Td>
+                <Td colSpan={3} textAlign={'center'} fontWeight={'bold'} >{exportTableExcel ? 'Venta Total' : 'Total a pagar' } </Td>
+                <Td fontWeight={'bold'} textAlign={'center'}>{`S/.${ exportTableExcel ? pagoTotal : totalAPagar }`}</Td>
                 </Tr>
                 ) 
             }

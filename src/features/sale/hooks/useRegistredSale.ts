@@ -1,10 +1,11 @@
 import { createRegistredSale } from "@/api";
-import { MESSAGES_NOTIFICATIONS } from "@/constants";
+import { MESSAGES_NOTIFICATIONS, SALES } from "@/constants";
 import { useToast } from "@chakra-ui/react";
 import { MutationFunction, useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 export const useRegistredSale = () => {
+    const queryKey =  SALES.sales;
 
     const queryClient = useQueryClient(); 
 
@@ -20,10 +21,10 @@ export const useRegistredSale = () => {
                 isClosable: true,
                 position: 'top'
             })
-            // await queryClient.invalidateQueries({
-            //     queryKey: ['ventas'], 
-            //     refetchType: 'active',
-            // })
+            await queryClient.invalidateQueries({
+                queryKey: [queryKey], 
+                refetchType: 'active',
+            })
         }
     })
     return {
