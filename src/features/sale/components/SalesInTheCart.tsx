@@ -18,6 +18,7 @@ export const SalesInTheCart = memo(() => {
   const newSales = JSON.parse(sales!);
   const queryClient = useQueryClient()
   const { saleToRegistred } = useRegistredSale();
+  console.log("newSales", newSales);
 
 
   useEffect(() => {

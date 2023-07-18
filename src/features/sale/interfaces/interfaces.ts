@@ -18,4 +18,15 @@ export interface Sale{
     fecha        : string;
     hora         : string;
     id_venta?    : number;
-  }
+}
+
+export interface SaleToday {
+    cantidad: number;
+    fecha: string;
+    hora: string;
+    id_producto: string;
+    id_venta: number;
+    marca:string;
+    producto: string;
+    subTotal: number;
+}

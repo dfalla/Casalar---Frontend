@@ -1,4 +1,5 @@
+export * from './convertToArrayOfArraySales';
+export * from './detectedExportToExcel';
 export * from './useGetAllNameOfProducts';
-export * from './useRegistredSale';
 export * from './useGetAllSales';
-export * from './detectedExportToExcel'
+export * from './useRegistredSale';

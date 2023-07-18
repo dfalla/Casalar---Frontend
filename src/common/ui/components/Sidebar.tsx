@@ -361,17 +361,31 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             navigate('/ventas')
           }}
         >
-          Ventas diarias
+          Todas las ventas
         </Button>
         <Button 
-          color={'white'} 
+          color={'brand.clonika.blue.800'} 
           variant={'outline'} 
           disabled={true}
           borderColor={'brand.clonika.blue.800'}
-          backgroundColor= 'brand.clonika.blue.800'
           _hover={{
-            backgroundColor: 'white',
-            color: 'brand.clonika.blue.800'
+            backgroundColor: 'brand.clonika.blue.800',
+            color: 'white'
+          }}
+          onClick={()=>{
+            navigate('/venta-del-dia')
+          }}
+        >
+          Venta del día
+        </Button>
+        <Button 
+          color={'brand.clonika.blue.800'} 
+          variant={'outline'} 
+          disabled={true}
+          borderColor={'brand.clonika.blue.800'}
+          _hover={{
+            backgroundColor: 'brand.clonika.blue.800',
+            color: 'white'
           }}
           onClick={()=>{
             navigate('/registrar-venta')
