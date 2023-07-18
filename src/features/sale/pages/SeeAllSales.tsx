@@ -1,9 +1,13 @@
 import { memo } from 'react';
-import { Box } from "@chakra-ui/react"
+import { Box, Divider  } from "@chakra-ui/react"
 import moment from 'moment';
 import 'moment/locale/es-us';
 import { useGetAllSales } from "../hooks";
 import { TableComponent } from '@/common';
+
+interface VentasPorDia {
+  [key: string]: SaleToday[];
+}
 
 interface SaleToday {
   cantidad: number;
@@ -30,8 +34,7 @@ export const SeeAllSales = memo(() => {
 
   let arrayOfSaleTodays: SaleToday[][] = []
 
-  
-  
+  let ventasPorDia: VentasPorDia = {};
 
   if(data !== undefined){
     const ventasFiltradas = data.filter((venta: SaleToday) => {
@@ -39,7 +42,7 @@ export const SeeAllSales = memo(() => {
       return fechaVenta >= fechaInicio && fechaVenta <= fechaFin;
     });
 
-    const ventasPorDia: { [key: string]: SaleToday[] } = {};
+    // const ventasPorDia: { [key: string]: SaleToday[] } = {};
     ventasFiltradas.forEach((venta: SaleToday) => {
       const fecha = moment(venta.fecha, 'DD/MM/YYYY').format('DD/MM/YYYY');
       if (!ventasPorDia[fecha]) {
@@ -48,26 +51,29 @@ export const SeeAllSales = memo(() => {
       ventasPorDia[fecha].push(venta);
     });
 
+
     arrayOfSaleTodays = Object.values(ventasPorDia);
     
-  
   }
 
-  return (
-    <Box  marginTop={20} padding={4} color={'white'}>
+  const arrayOfArrayTheDateAndSale = Object.entries(ventasPorDia)
 
+ 
+
+  return (
+    <Box  marginTop={20} padding={4} color={'white'} bg={'white'}>
       {
-        arrayOfSaleTodays.length > 0 && arrayOfSaleTodays.map((sale: SaleToday[], index) => (
-            <Box mt={10} color={'black'} key={index}>
+        arrayOfArrayTheDateAndSale.map(([fecha, sale], index)=>(
+          <Box mt={10} color={'black'} key={index}>
               <TableComponent 
                 array={sale} 
-                heads={HEADS}  
                 exportTableExcel={true} 
-                variant='simple'
-                // colorScheme='facebook'
+                fecha={fecha}
+                heads={HEADS}  
+                variant='unstyled'
               />
-            </Box>
-         
+              <Divider color={'gray'} width={'52%'}/>
+          </Box>
         ))
       }
     </Box>

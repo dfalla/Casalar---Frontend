@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 import { Sale } from '@/features/sale/interfaces';
-import { Box, Button, HStack, IconButton, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { Box, Button, HStack, IconButton, Table, TableContainer, Tbody, Td, Th, Thead, Tr, TableCaption, Tfoot, Text } from '@chakra-ui/react'
 import { LiaEdit, LiaTrashSolid } from "react-icons/lia";
 import { useDownloadExcel  } from 'react-export-table-to-excel';
 
@@ -14,7 +14,6 @@ interface TableComponentsProps {
     heads: string[];
     variant: string;
     editProductAccordingId?: (id_product: string) => void;
-    exportToExcel?: (fecha: string) => () => boolean;
     deleteProductToCart?: (id_product: string) => void;
 }
 
@@ -22,6 +21,7 @@ export const TableComponent: FC<TableComponentsProps> = ({
     array, 
     colorScheme,
     exportTableExcel, 
+    fecha,
     heads, 
     variant, 
     deleteProductToCart, 
@@ -36,56 +36,53 @@ export const TableComponent: FC<TableComponentsProps> = ({
     const totalAPagar = totalSale();
 
     let pagoTotal : number = 0;
-    let fileNames : string[] ;
-    let excelExport: () => boolean;
-
    
     const { onDownload } = useDownloadExcel({
         currentTableRef: tableRef.current,
-        filename: `Inventario ${'fecha'}`,
+        filename: `Inventario - ${fecha}`,
         sheet: 'VENTA',
     })
 
-       
 
     if(array !== null){
         pagoTotal = array.reduce((acumulator, element) => acumulator + element.subTotal, 0);
     }
 
-    // if(array !== null && exportTableExcel){
-    //     array.forEach((element)=>{
-    //         excelExport = exportToExcel(element.fecha);
-    //     }) 
-    // }
-
   return (
     
     <HStack
+        mb={5}
         gap={5}
     >
         <TableContainer>
-            <Table variant={variant} ref={tableRef} colorScheme={colorScheme}>
+            <Table variant={variant} ref={tableRef} colorScheme={colorScheme} size='sm'>
+                { exportTableExcel && 
+                    <TableCaption placement='top' mb={5} mt={0}> 
+                        <Text fontWeight={'bold'} fontSize={30} color={'brand.clonika.blue.800'}> 
+                            Ventas del día { fecha }
+                        </Text>
+                    </TableCaption> }
+                
                 <Thead>
                     <Tr >
-                    {
-                        heads.map((head, index)=>(
-                        <Th key={index} fontSize={18} textAlign={'center'}>{head}</Th>
-                        ))
-                    }
+                        {
+                            heads.map((head, index)=>(
+                            <Th key={index} fontSize={18} textAlign={'start'} color={'brand.clonika.blue.800'}>{head}</Th>
+                            ))
+                        }
                     </Tr>
                 </Thead>
-                <Tbody>
+                <Tbody mb={20}>
                     {
                         array?.map(({ cantidad, marca, producto, subTotal, id_producto, id_venta }: Sale) => (
                             
                         <Tr
                             key={`${id_producto}-${id_venta}`}
-
                         >
-                            <Td textAlign={'center'}>{producto}</Td>
-                            <Td textAlign={'center'}>{marca}</Td>
-                            <Td textAlign={'center'}>{cantidad}</Td>
-                            <Td textAlign={'center'}>{`S/.${subTotal}`}</Td>
+                            <Td textAlign={'start'} width={'200px'}>{producto}</Td>
+                            <Td textAlign={'start'} width={'200px'}>{marca}</Td>
+                            <Td textAlign={'start'} width={'200px'}>{cantidad}</Td>
+                            <Td textAlign={'start'} width={'200px'}>{`S/.${subTotal}`}</Td>
                             <Td>
                                 {
                                     exportTableExcel ? null : 
@@ -123,16 +120,17 @@ export const TableComponent: FC<TableComponentsProps> = ({
                         </Tr>
                         ))
                     }
-
+                </Tbody>
+                <Tfoot>
                     {
                         array?.length > 0 && (
-                        <Tr background={'brand.clonika.blue.800'} color={'white'}>
-                        <Td colSpan={3} textAlign={'center'} fontWeight={'bold'} >{exportTableExcel ? 'Venta Total' : 'Total a pagar' } </Td>
-                        <Td fontWeight={'bold'} textAlign={'center'}>{`S/.${ exportTableExcel ? pagoTotal : totalAPagar }`}</Td>
+                        <Tr background={'brand.clonika.blue.800'} color={'white'} mt={5}>
+                            <Td colSpan={3} textAlign={'center'} fontWeight={'bold'} >{exportTableExcel ? 'Venta Total' : 'Total a pagar' } </Td>
+                            <Td colSpan={2} fontWeight={'bold'} textAlign={'inherit'}>{`S/.${ exportTableExcel ? pagoTotal : totalAPagar }`}</Td>
                         </Tr>
                         ) 
                     }
-                </Tbody>
+                </Tfoot>
             </Table>
         </TableContainer>
         <Box
@@ -148,7 +146,6 @@ export const TableComponent: FC<TableComponentsProps> = ({
                     </Button>
                 ) 
             }
-
         </Box>
     </HStack>
   )
