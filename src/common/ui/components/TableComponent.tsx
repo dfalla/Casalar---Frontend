@@ -31,7 +31,7 @@ export const TableComponent: FC<TableComponentsProps> = ({
     editProductAccordingId 
     
 }) => {
-  
+  console.log("fecha", fecha)
     const {totalSale, idMarcaProduct, edit} = useSales();
 
     const tableRef = useRef(null);
@@ -68,7 +68,7 @@ export const TableComponent: FC<TableComponentsProps> = ({
                     <TableCaption placement='top' mb={5} mt={0}> 
                         <Text fontWeight={'bold'} fontSize={30} color={'brand.clonika.blue.800'}> 
                             {
-                                today ? 'Ventas del día' : `Ventas del día ${ fecha }` 
+                                today ? 'VENTAS DE HOY' : `Ventas del día ${ fecha }` 
                             }
                         </Text>
                     </TableCaption> }
