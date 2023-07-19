@@ -25,7 +25,8 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionIcon,
-  AccordionPanel
+  AccordionPanel,
+  Image
 } from '@chakra-ui/react';
 import {
   FiMenu,
@@ -164,10 +165,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos="fixed"
       h="full"
       {...rest}>
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" mb={5}>
+        {/* <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
           Logo
-        </Text>
+        </Text> */}
+        <Image src='../../../../public/casalar.jpeg' alt='Calasar' width={'300px'} />
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
