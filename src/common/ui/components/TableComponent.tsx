@@ -46,14 +46,14 @@ export const TableComponent: FC<TableComponentsProps> = ({
         sheet: 'VENTA',
     })
 
-    console.log("array", array)
-
-
-
-
-    if(array !== null || array !== undefined){
+    if(exportTableExcel || today){
         pagoTotal = array.reduce((acumulator, element) => acumulator + element.subTotal, 0);
     }
+
+
+    // if(array !== null || array !== undefined){
+    //     pagoTotal = array.reduce((acumulator, element) => acumulator + element.subTotal, 0);
+    // }
 
   return (
     
