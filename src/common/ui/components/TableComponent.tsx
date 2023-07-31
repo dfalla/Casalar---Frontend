@@ -31,7 +31,6 @@ export const TableComponent: FC<TableComponentsProps> = ({
     editProductAccordingId 
     
 }) => {
-  console.log("fecha", fecha)
     const {totalSale, idMarcaProduct, edit} = useSales();
 
     const tableRef = useRef(null);

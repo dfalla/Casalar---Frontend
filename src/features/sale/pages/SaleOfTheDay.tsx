@@ -13,7 +13,6 @@ export const SaleOfTheDay = memo(() => {
   const arrayFilter: SaleToday[][] = [];
 
   const { arrayOfArrayTheDateAndSale } = convertToArrayOfArraySales({data});
-  console.log("arrayOfArrayTheDateAndSale", arrayOfArrayTheDateAndSale)
 
   if(arrayOfArrayTheDateAndSale.length > 0){
 
