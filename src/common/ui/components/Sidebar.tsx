@@ -169,7 +169,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         {/* <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
           Logo
         </Text> */}
-        <Image src='../../../../public/casalar.jpeg' alt='Calasar' width={'300px'} />
+        <Image src='../../../../casalar.jpeg' alt='Calasar' width={'300px'} />
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
